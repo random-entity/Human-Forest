@@ -35,7 +35,7 @@ class _Test : MonoBehaviour
             for (int i = 0; i < myMemberInfo.Length; i++)
             {
                 // Display name and type of the concerned member.
-                Console.WriteLine("'{0}' is a {1}", myMemberInfo[i].Name, myMemberInfo[i].MemberType);
+                Debug.LogFormat("'{0}' is a {1}", myMemberInfo[i].Name, myMemberInfo[i].MemberType);
             }
         }
         catch (SecurityException e)
