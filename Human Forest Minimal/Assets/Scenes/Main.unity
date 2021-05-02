@@ -449,6 +449,7 @@ GameObject:
   - component: {fileID: 2065345328}
   - component: {fileID: 2065345329}
   - component: {fileID: 2065345330}
+  - component: {fileID: 2065345331}
   m_Layer: 0
   m_Name: TotalManager
   m_TagString: Untagged
@@ -498,3 +499,61 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PersonPrefab: {fileID: 5444046423477402851, guid: 99b4770ee3838f441a110d03275d2201, type: 3}
   InitialPersonCount: 16
+--- !u!114 &2065345331
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2065345327}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a244bed79a16d0243aaeebba2c8a0e18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PPActionList: []
+  kill:
+    sub_f_0_1_inf:
+      f_0: 1
+      f_1: -1
+      f_inf: -1.1
+    obj_f_0_1_inf:
+      f_0: -1
+      f_1: -0.99
+      f_inf: -1
+  violence:
+    sub_f_0_1_inf:
+      f_0: 0.8
+      f_1: -1
+      f_inf: -1.5
+    obj_f_0_1_inf:
+      f_0: -1
+      f_1: -0.8
+      f_inf: 0
+  idle:
+    sub_f_0_1_inf:
+      f_0: -0.1
+      f_1: 0.1
+      f_inf: 0
+    obj_f_0_1_inf:
+      f_0: -0.1
+      f_1: 0.1
+      f_inf: 0
+  befriend:
+    sub_f_0_1_inf:
+      f_0: -0.5
+      f_1: 0.5
+      f_inf: 4
+    obj_f_0_1_inf:
+      f_0: -0.5
+      f_1: 0.5
+      f_inf: 4
+  love:
+    sub_f_0_1_inf:
+      f_0: -1
+      f_1: 1
+      f_inf: -1.2
+    obj_f_0_1_inf:
+      f_0: -1
+      f_1: 1
+      f_inf: -1.1

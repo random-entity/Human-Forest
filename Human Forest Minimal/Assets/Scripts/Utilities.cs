@@ -9,6 +9,7 @@ public struct PersonPair
     }
 }
 
+[System.Serializable]
 public struct float2
 {
     public float x, y;
@@ -20,14 +21,15 @@ public struct float2
     }
 }
 
-public struct float3
+[System.Serializable]
+public struct f_0_1_inf
 {
-    public float x, y, z;
+    public float f_0, f_1, f_inf;
 
-    public float3(float x, float y, float z)
+    public f_0_1_inf(float f_0, float f_1, float f_inf)
     {
-        this.x = x;
-        this.y = y;
-        this.z = z;
+        this.f_0 = f_0;
+        this.f_1 = f_1;
+        this.f_inf = f_inf;
     }
 }
