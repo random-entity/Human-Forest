@@ -34,7 +34,7 @@ public class Person : MonoBehaviour
                 Person imaginedSelf = Instantiate(this);
                 Person imaginedOther = Instantiate(obj);
 
-                float selfDeltaEmotion = pPAction.EstimateDeltaEmotionSub(imaginedSelf, imaginedOther);
+                float selfDeltaEmotion = pPAction.EstimateDeltaEmotionSub(this, obj);
 
                 Debug.LogFormat("Checking PPAction {0}, Object {1}, selfDeltaEmotion {2}", pPAction.ToString(), obj.tempIndex, selfDeltaEmotion);
 
