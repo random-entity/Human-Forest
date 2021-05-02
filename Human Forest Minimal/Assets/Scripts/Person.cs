@@ -23,41 +23,9 @@ public class Person : MonoBehaviour
             DirectionalEmotions[obj] = 0.5f;
             DirectionalExpectedEmotions[obj] = 0.5f;
         }
-    }
 
-    private void Update()
-    {
         SetTransformToPositionVector();
     }
-
-    // public (PPAction DesiredPPAction, Person obj) GetDesiredPPAction()
-    // {
-    //     PPAction desire = BehaviorManager.instance.Idle;
-    //     Person desireObj = null;
-    //     float max = Mathf.NegativeInfinity;
-
-    //     foreach (PPAction pPAction in BehaviorManager.instance.PPActionList)
-    //     {
-    //         foreach (Person obj in SocietyManager.instance.RealSociety)
-    //         {
-    //             if (obj != this)
-    //             {
-    //                 float selfDeltaEmotion = pPAction.EstimateDeltaEmotionSub(this, obj);
-
-    //                 if (max < selfDeltaEmotion)
-    //                 {
-    //                     max = selfDeltaEmotion;
-    //                     desire = pPAction;
-    //                     desireObj = obj;
-    //                 }
-
-    //                 // Debug.LogFormat("Subject {0} is Estimating DesiredPPAction {1} to Object {2}\nselfDeltaEmotion = {3}", this.tempIndex, pPAction.tempName, obj.tempIndex, selfDeltaEmotion);
-    //             }
-    //         }
-    //     }
-
-    //     return (desire, desireObj);
-    // }
 
     public ((PPAction DesiredPPAction, Person obj), (PPAction PersonallyGoodPPAction, Person obj), (PPAction EthicalAction, Person obj)) GetDesiredAndPersonallyGoodAndEthicalPPAction()
     {
@@ -115,7 +83,9 @@ public class Person : MonoBehaviour
 
                     GameObject.Destroy(cloneConfig.Item3);
 
-                    // Debug.LogFormat("Subject {0} is Estimating PersonallyGoodPPAction {1} to Object {2}\nsumOfHappiness = {3}", this.tempIndex, pPAction.tempName, obj.tempIndex, sumOfHappiness);
+                    Debug.LogFormat(
+                        "Subject {0} is Estimating PPAction {1} to Object {2}\nselfDeltaEmotion = {3}\nsumOfHappinessSubjectivePersonal = {4}\nsumOfHappinessObjectiveEthical = {5}",
+                        this.tempIndex, pPAction.tempName, obj.tempIndex, selfDeltaEmotion, sumOfHappinessSubjectivePersonal, sumOfHappinessObjectiveEthical);
                 }
             }
         }

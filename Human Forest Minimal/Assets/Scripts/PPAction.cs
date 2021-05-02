@@ -12,12 +12,12 @@ public class PPAction
     {
         this.sub_f_0_1_inf = _sub_f_0_1_inf;
         this.obj_f_0_1_inf = _obj_f_0_1_inf;
-        InitializeFuncs();
+        UpdateFunctions();
 
         this.tempName = tempName;
     }
 
-    public void InitializeFuncs()
+    public void UpdateFunctions()
     {
         this.deltaEmotionSub = GetDeltaEmotionFunc(this.sub_f_0_1_inf);
         this.deltaEmotionObj = GetDeltaEmotionFunc(this.obj_f_0_1_inf);

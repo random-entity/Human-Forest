@@ -22,7 +22,7 @@ public struct float2
 }
 
 [System.Serializable]
-public struct f_0_1_inf
+public class f_0_1_inf
 {
     public float f_0, f_1, f_inf;
 

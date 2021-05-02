@@ -6,7 +6,7 @@ public class BehaviorManager : MonoSingleton<BehaviorManager>
     [HideInInspector] public List<PPAction> PPActionList;
     public PPAction Kill, Violence, Idle, Befriend, Love;
 
-    private void Awake()
+    public override void Init()
     {
         Kill = new PPAction(new f_0_1_inf(1f, -1f, -1.1f), new f_0_1_inf(-1f, -0.99f, 1f), "Kill");
         Violence = new PPAction(new f_0_1_inf(0.5f, -1f, -4f), new f_0_1_inf(-0.75f, -0.5f, -2f), "Violence");
@@ -19,5 +19,13 @@ public class BehaviorManager : MonoSingleton<BehaviorManager>
         PPActionList.Add(Idle);
         PPActionList.Add(Befriend);
         PPActionList.Add(Love);
+    }
+
+    private void Update()
+    {
+        foreach (var pPAction in PPActionList)
+        {
+            pPAction.UpdateFunctions();
+        }
     }
 }
