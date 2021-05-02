@@ -13,6 +13,8 @@ public class ValueSystem
         WeightReputation = 0.25f;
         WeightKindness = 0.25f;
         Liberty = 0.5f;
+
+        // + 금지조항들?
     }
 
     private void normalize()
