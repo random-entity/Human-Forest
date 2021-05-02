@@ -3,10 +3,7 @@ using UnityEngine;
 
 public class SocietyManager : MonoSingleton<SocietyManager>
 {
-    public Dictionary<(Person, Person), float> DirectionalEmotions = new Dictionary<(Person, Person), float>();
-    public Dictionary<(Person, Person), float> DirectionalExpectedEmotions = new Dictionary<(Person, Person), float>();
     public Person PersonPrefab;
-    public Transform RealSocietyGO;
     public int InitialPersonCount = 16;
     public List<Person> RealSociety = new List<Person>();
 

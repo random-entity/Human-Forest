@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Person : MonoBehaviour
@@ -6,6 +7,8 @@ public class Person : MonoBehaviour
     public int tempIndex;
 
     public float Emotion, Health;
+    public Dictionary<Person, float> DirectionalEmotions = new Dictionary<Person, float>();
+    public Dictionary<Person, float> DirectionalExpectedEmotions = new Dictionary<Person, float>();
     public ValueSystem Values;
     public Vector2 Position;
 
