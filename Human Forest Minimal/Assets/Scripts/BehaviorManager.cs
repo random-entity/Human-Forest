@@ -1,17 +1,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BehaviorManager : MonoBehaviour
+public class BehaviorManager : MonoSingleton<BehaviorManager>
 {
-    [SerializeField] private List<PPAction> PPActionList;
-    public PPAction kill, violence, idle, befriend, love;
+    [HideInInspector] public List<PPAction> PPActionList;
+    public PPAction Kill, Violence, Idle, Befriend, Love;
 
     private void Awake()
     {
-        PPActionList.Add(kill);
-        PPActionList.Add(violence);
-        PPActionList.Add(idle);
-        PPActionList.Add(befriend);
-        PPActionList.Add(love);
+        PPActionList.Add(Kill);
+        PPActionList.Add(Violence);
+        PPActionList.Add(Idle);
+        PPActionList.Add(Befriend);
+        PPActionList.Add(Love);
     }
 }

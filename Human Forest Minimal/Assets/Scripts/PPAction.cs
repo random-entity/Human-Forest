@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 [System.Serializable]
 public class PPAction
@@ -42,17 +43,20 @@ public class PPAction
         PersonPair objToSub = new PersonPair(obj, sub);
 
         float deltaEmotionSub = EstimateDeltaEmotionSub(sub, obj);
-        sub.Stats.Emotion.State += deltaEmotionSub;
-        SocietyManager.instance.DirectionalEmotions[subToObj] += deltaEmotionSub * 0.5f;
+
+        sub.Emotion = Mathf.Clamp01(sub.Emotion + deltaEmotionSub);
+
+        SocietyManager.instance.DirectionalEmotions[subToObj] = Mathf.Clamp01(SocietyManager.instance.DirectionalEmotions[subToObj] + deltaEmotionSub * 0.5f);
+
 
         float deltaEmotionObj = EstimateDeltaEmotionSub(obj, sub);
-        obj.Stats.Emotion.State += deltaEmotionObj;
-        SocietyManager.instance.DirectionalEmotions[objToSub] += deltaEmotionObj * 0.5f;
-        
-        SocietyManager.instance.DirectionalExpectedEmotions[subToObj] += SocietyManager.instance.DirectionalEmotions[objToSub];
-        SocietyManager.instance.DirectionalExpectedEmotions[subToObj] /= 2f;
 
-        SocietyManager.instance.DirectionalExpectedEmotions[objToSub] += SocietyManager.instance.DirectionalEmotions[subToObj];
-        SocietyManager.instance.DirectionalExpectedEmotions[objToSub] /= 2f;
+        obj.Emotion = Mathf.Clamp01(obj.Emotion + deltaEmotionObj);
+
+        SocietyManager.instance.DirectionalEmotions[objToSub] = Mathf.Clamp01(SocietyManager.instance.DirectionalEmotions[objToSub] + deltaEmotionObj * 0.5f);
+
+        SocietyManager.instance.DirectionalExpectedEmotions[subToObj] = Mathf.Clamp01((SocietyManager.instance.DirectionalExpectedEmotions[subToObj] + SocietyManager.instance.DirectionalEmotions[objToSub]) * 0.5f);
+
+        SocietyManager.instance.DirectionalExpectedEmotions[objToSub] = Mathf.Clamp01((SocietyManager.instance.DirectionalExpectedEmotions[objToSub] + SocietyManager.instance.DirectionalEmotions[subToObj]) * 0.5f);
     }
 }
