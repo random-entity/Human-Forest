@@ -29,18 +29,18 @@ public class PPAction
 
     public float EstimateDeltaEmotionSub(Person sub, Person obj)
     {
-        return deltaEmotionSub(SocietyManager.instance.DirectionalExpectedEmotions[new PersonPair(sub, obj)]);
+        return deltaEmotionSub(SocietyManager.instance.DirectionalExpectedEmotions[(sub, obj)]);
     }
 
     public float EstimateDeltaEmotionObj(Person sub, Person obj)
     {
-        return deltaEmotionObj(SocietyManager.instance.DirectionalExpectedEmotions[new PersonPair(sub, obj)]);
+        return deltaEmotionObj(SocietyManager.instance.DirectionalExpectedEmotions[(sub, obj)]);
     }
 
     public void Execute(Person sub, Person obj)
     {
-        PersonPair subToObj = new PersonPair(sub, obj);
-        PersonPair objToSub = new PersonPair(obj, sub);
+        var subToObj = (sub, obj);
+        var objToSub = (obj, sub);
 
         float deltaEmotionSub = EstimateDeltaEmotionSub(sub, obj);
 

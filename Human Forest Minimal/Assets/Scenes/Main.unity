@@ -438,6 +438,36 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1232391493
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1232391494}
+  m_Layer: 0
+  m_Name: RealSociety
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1232391494
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1232391493}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2065345327
 GameObject:
   m_ObjectHideFlags: 0
@@ -450,6 +480,7 @@ GameObject:
   - component: {fileID: 2065345329}
   - component: {fileID: 2065345330}
   - component: {fileID: 2065345331}
+  - component: {fileID: 2065345332}
   m_Layer: 0
   m_Name: TotalManager
   m_TagString: Untagged
@@ -498,7 +529,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PersonPrefab: {fileID: 5444046423477402851, guid: 99b4770ee3838f441a110d03275d2201, type: 3}
+  RealSocietyGO: {fileID: 0}
   InitialPersonCount: 16
+  RealSociety: []
 --- !u!114 &2065345331
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -512,48 +545,60 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PPActionList: []
-  kill:
+  Kill:
     sub_f_0_1_inf:
-      f_0: 1
-      f_1: -1
-      f_inf: -1.1
-    obj_f_0_1_inf:
-      f_0: -1
-      f_1: -0.99
-      f_inf: -1
-  violence:
-    sub_f_0_1_inf:
-      f_0: 0.8
-      f_1: -1
-      f_inf: -1.5
-    obj_f_0_1_inf:
-      f_0: -1
-      f_1: -0.8
-      f_inf: 0
-  idle:
-    sub_f_0_1_inf:
-      f_0: -0.1
-      f_1: 0.1
+      f_0: 0
+      f_1: 0
       f_inf: 0
     obj_f_0_1_inf:
-      f_0: -0.1
-      f_1: 0.1
+      f_0: 0
+      f_1: 0
       f_inf: 0
-  befriend:
+  Violence:
     sub_f_0_1_inf:
-      f_0: -0.5
-      f_1: 0.5
-      f_inf: 4
+      f_0: 0
+      f_1: 0
+      f_inf: 0
     obj_f_0_1_inf:
-      f_0: -0.5
-      f_1: 0.5
-      f_inf: 4
-  love:
+      f_0: 0
+      f_1: 0
+      f_inf: 0
+  Idle:
     sub_f_0_1_inf:
-      f_0: -1
-      f_1: 1
-      f_inf: -1.2
+      f_0: 0
+      f_1: 0
+      f_inf: 0
     obj_f_0_1_inf:
-      f_0: -1
-      f_1: 1
-      f_inf: -1.1
+      f_0: 0
+      f_1: 0
+      f_inf: 0
+  Befriend:
+    sub_f_0_1_inf:
+      f_0: 0
+      f_1: 0
+      f_inf: 0
+    obj_f_0_1_inf:
+      f_0: 0
+      f_1: 0
+      f_inf: 0
+  Love:
+    sub_f_0_1_inf:
+      f_0: 0
+      f_1: 0
+      f_inf: 0
+    obj_f_0_1_inf:
+      f_0: 0
+      f_1: 0
+      f_inf: 0
+--- !u!114 &2065345332
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2065345327}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a5f2f1f7fd0e004ea3abb26d285e12f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

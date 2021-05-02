@@ -3,6 +3,7 @@ using UnityEngine;
 public class Person : MonoBehaviour
 {
     public bool isAlive;
+    public int tempIndex;
 
     public float Emotion, Health;
     public ValueSystem Values;
@@ -34,6 +35,9 @@ public class Person : MonoBehaviour
                 Person imaginedOther = Instantiate(obj);
 
                 float selfDeltaEmotion = pPAction.EstimateDeltaEmotionSub(imaginedSelf, imaginedOther);
+
+                Debug.LogFormat("Checking PPAction {0}, Object {1}, selfDeltaEmotion {2}", pPAction.ToString(), obj.tempIndex, selfDeltaEmotion);
+
                 if (max < selfDeltaEmotion)
                 {
                     max = selfDeltaEmotion;
@@ -64,9 +68,9 @@ public class Person : MonoBehaviour
             {
                 aliveCount++;
 
-                reputation += SocietyManager.instance.DirectionalExpectedEmotions[new PersonPair(this, obj)];
+                reputation += SocietyManager.instance.DirectionalExpectedEmotions[(this, obj)];
 
-                othersEmotion += obj.Emotion * SocietyManager.instance.DirectionalEmotions[new PersonPair(this, obj)];
+                othersEmotion += obj.Emotion * SocietyManager.instance.DirectionalEmotions[(this, obj)];
             }
         }
         reputation /= (float)aliveCount;
