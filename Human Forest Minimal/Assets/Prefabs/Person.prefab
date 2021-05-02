@@ -109,12 +109,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b82c558cad991f45bae8bfcee8e0ac9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Stats:
-    Health:
-      State: 0.5
-      ValueWeight: 0.25
-    Emotion:
-      State: 0.5
-      ValueWeight: 0.25
+  isAlive: 1
+  tempIndex: 0
+  Emotion: 0
+  Health: 0
+  PersonalValues:
+    WeightEmotion: 0.25
+    WeightHealth: 0.25
+    WeightReputation: 0.25
+    WeightKindness: 0.25
+    Liberty: 0.5
   Position: {x: 0, y: 0}
   Happiness: 0

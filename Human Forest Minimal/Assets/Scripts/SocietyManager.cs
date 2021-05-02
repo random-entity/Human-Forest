@@ -17,15 +17,29 @@ public class SocietyManager : MonoSingleton<SocietyManager>
         }
     }
 
-    public (List<Person>, (Dictionary<Person, Person>, Dictionary<Person, Person>)) CloneSociety()
+    public float GetSumOfHappiness(List<Person> society)
+    {
+        float sum = 0f;
+        foreach (Person p in society)
+        {
+            sum += p.GetHappiness(p.PersonalValues, society);
+            Debug.Log(p.GetHappiness(p.PersonalValues, society));
+        }
+
+        return sum;
+    }
+
+    public (List<Person>, (Dictionary<Person, Person>, Dictionary<Person, Person>), GameObject) CloneSociety()
     {
         List<Person> cloneSociety = new List<Person>();
         Dictionary<Person, Person> real2Clone = new Dictionary<Person, Person>();
         Dictionary<Person, Person> clone2Real = new Dictionary<Person, Person>();
 
+        var cloneParentGO = new GameObject("CloneSociety");
+
         foreach (Person person in RealSociety)
         {
-            Person clone = Instantiate(person);
+            Person clone = Instantiate(person, cloneParentGO.transform);
             cloneSociety.Add(clone);
             real2Clone[person] = clone;
             clone2Real[clone] = person;
@@ -42,6 +56,6 @@ public class SocietyManager : MonoSingleton<SocietyManager>
             }
         }
 
-        return (cloneSociety, (real2Clone, clone2Real));
+        return (cloneSociety, (real2Clone, clone2Real), cloneParentGO);
     }
 }

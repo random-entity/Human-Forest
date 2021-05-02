@@ -16,6 +16,9 @@ public class Person : MonoBehaviour
 
     private void Start()
     {
+        isAlive = true;
+        PersonalValues = new ValueSystem();
+
         Position = new Vector2(Random.Range(-0.5f, 0.5f), Random.Range(-0.5f, 0.5f)) * GameManager.instance.LandSize;
         foreach (Person obj in SocietyManager.instance.RealSociety)
         {
@@ -72,14 +75,23 @@ public class Person : MonoBehaviour
                 {
                     var cloneConfig = SocietyManager.instance.CloneSociety();
 
-                    // Debug.LogFormat("Subject {0} is Estimating DesiredPPAction {1} to Object {2}\nselfDeltaEmotion = {3}", this.tempIndex, pPAction.tempName, obj.tempIndex, selfDeltaEmotion);
+                    Person cloneThis = cloneConfig.Item2.Item1[this];
+                    Person cloneObj = cloneConfig.Item2.Item1[obj];
 
-                    // if (max < )
-                    // {
-                    //     max = ;
-                    //     good = pPAction;
-                    //     goodObj = obj;
-                    // }
+                    pPAction.Execute(cloneThis, cloneObj);
+
+                    float sumOfHappiness = SocietyManager.instance.GetSumOfHappiness(cloneConfig.Item1);
+
+                    if (max < sumOfHappiness)
+                    {
+                        max = sumOfHappiness;
+                        good = pPAction;
+                        goodObj = obj;
+                    }
+
+                    GameObject.Destroy(cloneConfig.Item3);
+
+                    Debug.LogFormat("Subject {0} is Estimating PersonallyGoodPPAction {1} to Object {2}\nsumOfHappiness = {3}", this.tempIndex, pPAction.tempName, obj.tempIndex, sumOfHappiness);
                 }
             }
         }
@@ -111,6 +123,7 @@ public class Person : MonoBehaviour
                 othersEmotion += obj.Emotion * DirectionalEmotions[obj];
             }
         }
+        Debug.LogFormat("aliveCount {0}", aliveCount);
         reputation /= (float)aliveCount;
         othersEmotion /= (float)aliveCount;
 
