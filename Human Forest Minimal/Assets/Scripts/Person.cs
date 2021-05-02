@@ -9,7 +9,7 @@ public class Person : MonoBehaviour
     public float Emotion, Health;
     public Dictionary<Person, float> DirectionalEmotions = new Dictionary<Person, float>();
     public Dictionary<Person, float> DirectionalExpectedEmotions = new Dictionary<Person, float>();
-    public ValueSystem Values;
+    public ValueSystem PersonalValues;
     public Vector2 Position;
 
     public float Happiness;
@@ -32,27 +32,59 @@ public class Person : MonoBehaviour
     public (PPAction DesiredPPAction, Person obj) GetDesiredPPAction()
     {
         PPAction desire = BehaviorManager.instance.Idle;
-        Person desireObject = null;
+        Person desireObj = null;
         float max = Mathf.NegativeInfinity;
 
         foreach (PPAction pPAction in BehaviorManager.instance.PPActionList)
         {
             foreach (Person obj in SocietyManager.instance.RealSociety)
             {
-                float selfDeltaEmotion = pPAction.EstimateDeltaEmotionSub(this, obj);
-
-                Debug.LogFormat("Checking PPAction {0}, Object {1}, selfDeltaEmotion {2}", pPAction.ToString(), obj.tempIndex, selfDeltaEmotion);
-
-                if (max < selfDeltaEmotion)
+                if (obj != this)
                 {
-                    max = selfDeltaEmotion;
-                    desire = pPAction;
-                    desireObject = obj;
+                    float selfDeltaEmotion = pPAction.EstimateDeltaEmotionSub(this, obj);
+
+                    if (max < selfDeltaEmotion)
+                    {
+                        max = selfDeltaEmotion;
+                        desire = pPAction;
+                        desireObj = obj;
+                    }
+
+                    Debug.LogFormat("Subject {0} is Estimating DesiredPPAction {1} to Object {2}\nselfDeltaEmotion = {3}", this.tempIndex, pPAction.tempName, obj.tempIndex, selfDeltaEmotion);
                 }
             }
         }
 
-        return (desire, desireObject);
+        return (desire, desireObj);
+    }
+
+    public (PPAction PersonallyGoodPPAction, Person obj) GetPersonallyGoodPPAction()
+    {
+        PPAction good = BehaviorManager.instance.Idle;
+        Person goodObj = this;
+        float max = Mathf.NegativeInfinity;
+
+        foreach (PPAction pPAction in BehaviorManager.instance.PPActionList)
+        {
+            foreach (Person obj in SocietyManager.instance.RealSociety)
+            {
+                if (obj != this)
+                {
+                    var cloneConfig = SocietyManager.instance.CloneSociety();
+
+                    // Debug.LogFormat("Subject {0} is Estimating DesiredPPAction {1} to Object {2}\nselfDeltaEmotion = {3}", this.tempIndex, pPAction.tempName, obj.tempIndex, selfDeltaEmotion);
+
+                    // if (max < )
+                    // {
+                    //     max = ;
+                    //     good = pPAction;
+                    //     goodObj = obj;
+                    // }
+                }
+            }
+        }
+
+        return (good, goodObj);
     }
 
     public PPAction GetEthicalPPAction()
@@ -60,14 +92,15 @@ public class Person : MonoBehaviour
         return null;
     }
 
-    public float GetHappiness()
+
+    public float GetHappiness(ValueSystem valueSystem, List<Person> society)
     {
         float happiness = 0f;
 
         float reputation = 0f;
         float othersEmotion = 0f;
         int aliveCount = 0;
-        foreach (Person obj in SocietyManager.instance.RealSociety)
+        foreach (Person obj in society)
         {
             if (obj.isAlive)
             {
@@ -81,7 +114,7 @@ public class Person : MonoBehaviour
         reputation /= (float)aliveCount;
         othersEmotion /= (float)aliveCount;
 
-        happiness = Values.WeightEmotion * Emotion + Values.WeightHealth * Health + Values.WeightReputation * reputation + Values.WeightKindness * othersEmotion;
+        happiness = valueSystem.WeightEmotion * Emotion + valueSystem.WeightHealth * Health + valueSystem.WeightReputation * reputation + valueSystem.WeightKindness * othersEmotion;
 
         return happiness;
     }

@@ -6,12 +6,15 @@ public class PPAction
 {
     public f_0_1_inf sub_f_0_1_inf, obj_f_0_1_inf;
     Func<float, float> deltaEmotionSub, deltaEmotionObj;
+    public string tempName;
 
-    public PPAction(f_0_1_inf _sub_f_0_1_inf, f_0_1_inf _obj_f_0_1_inf)
+    public PPAction(f_0_1_inf _sub_f_0_1_inf, f_0_1_inf _obj_f_0_1_inf, string tempName)
     {
         this.sub_f_0_1_inf = _sub_f_0_1_inf;
-        this.obj_f_0_1_inf = _obj_f_0_1_inf; 
+        this.obj_f_0_1_inf = _obj_f_0_1_inf;
         InitializeFuncs();
+
+        this.tempName = tempName;
     }
 
     public void InitializeFuncs()
@@ -34,9 +37,6 @@ public class PPAction
 
     public float EstimateDeltaEmotionSub(Person sub, Person obj)
     {
-        Debug.Log(sub.tempIndex);
-        Debug.Log(obj.tempIndex);
-        Debug.Log(deltaEmotionSub);
         return deltaEmotionSub(sub.DirectionalEmotions[obj]);
     }
 
