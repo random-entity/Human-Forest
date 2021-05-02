@@ -14,9 +14,14 @@ public class Person : MonoBehaviour
 
     public float Happiness;
 
-    private void Awake()
+    private void Start()
     {
         Position = new Vector2(Random.Range(-0.5f, 0.5f), Random.Range(-0.5f, 0.5f)) * GameManager.instance.LandSize;
+        foreach (Person obj in SocietyManager.instance.RealSociety)
+        {
+            DirectionalEmotions[obj] = 0.5f;
+            DirectionalExpectedEmotions[obj] = 0.5f;
+        }
     }
 
     private void Update()
@@ -34,9 +39,6 @@ public class Person : MonoBehaviour
         {
             foreach (Person obj in SocietyManager.instance.RealSociety)
             {
-                Person imaginedSelf = Instantiate(this);
-                Person imaginedOther = Instantiate(obj);
-
                 float selfDeltaEmotion = pPAction.EstimateDeltaEmotionSub(this, obj);
 
                 Debug.LogFormat("Checking PPAction {0}, Object {1}, selfDeltaEmotion {2}", pPAction.ToString(), obj.tempIndex, selfDeltaEmotion);
@@ -71,9 +73,9 @@ public class Person : MonoBehaviour
             {
                 aliveCount++;
 
-                reputation += SocietyManager.instance.DirectionalExpectedEmotions[(this, obj)];
+                reputation += DirectionalExpectedEmotions[obj];
 
-                othersEmotion += obj.Emotion * SocietyManager.instance.DirectionalEmotions[(this, obj)];
+                othersEmotion += obj.Emotion * DirectionalEmotions[obj];
             }
         }
         reputation /= (float)aliveCount;

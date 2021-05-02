@@ -499,7 +499,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PersonPrefab: {fileID: 5444046423477402851, guid: 99b4770ee3838f441a110d03275d2201, type: 3}
-  RealSocietyGO: {fileID: 0}
   InitialPersonCount: 16
   RealSociety: []
 --- !u!114 &2065345331
@@ -517,18 +516,18 @@ MonoBehaviour:
   PPActionList: []
   Kill:
     sub_f_0_1_inf:
-      f_0: 0
-      f_1: 0
-      f_inf: 0
+      f_0: 1
+      f_1: -1
+      f_inf: -1.1
     obj_f_0_1_inf:
-      f_0: 0
-      f_1: 0
-      f_inf: 0
+      f_0: -1
+      f_1: -0.99
+      f_inf: 1
   Violence:
     sub_f_0_1_inf:
-      f_0: 0
-      f_1: 0
-      f_inf: 0
+      f_0: 0.5
+      f_1: -1
+      f_inf: -4
     obj_f_0_1_inf:
       f_0: 0
       f_1: 0

@@ -10,7 +10,12 @@ public class PPAction
     public PPAction(f_0_1_inf _sub_f_0_1_inf, f_0_1_inf _obj_f_0_1_inf)
     {
         this.sub_f_0_1_inf = _sub_f_0_1_inf;
-        this.obj_f_0_1_inf = _obj_f_0_1_inf;
+        this.obj_f_0_1_inf = _obj_f_0_1_inf; 
+        InitializeFuncs();
+    }
+
+    public void InitializeFuncs()
+    {
         this.deltaEmotionSub = GetDeltaEmotionFunc(this.sub_f_0_1_inf);
         this.deltaEmotionObj = GetDeltaEmotionFunc(this.obj_f_0_1_inf);
     }
@@ -29,34 +34,47 @@ public class PPAction
 
     public float EstimateDeltaEmotionSub(Person sub, Person obj)
     {
-        return deltaEmotionSub(SocietyManager.instance.DirectionalExpectedEmotions[(sub, obj)]);
+        Debug.Log(sub.tempIndex);
+        Debug.Log(obj.tempIndex);
+        Debug.Log(deltaEmotionSub);
+        return deltaEmotionSub(sub.DirectionalEmotions[obj]);
     }
 
     public float EstimateDeltaEmotionObj(Person sub, Person obj)
     {
-        return deltaEmotionObj(SocietyManager.instance.DirectionalExpectedEmotions[(sub, obj)]);
+        return deltaEmotionObj(sub.DirectionalExpectedEmotions[obj]);
     }
 
     public void Execute(Person sub, Person obj)
     {
-        var subToObj = (sub, obj);
-        var objToSub = (obj, sub);
-
         float deltaEmotionSub = EstimateDeltaEmotionSub(sub, obj);
 
         sub.Emotion = Mathf.Clamp01(sub.Emotion + deltaEmotionSub);
 
-        SocietyManager.instance.DirectionalEmotions[subToObj] = Mathf.Clamp01(SocietyManager.instance.DirectionalEmotions[subToObj] + deltaEmotionSub * 0.5f);
+        sub.DirectionalEmotions[obj] =
+        Mathf.Clamp01(
+           sub.DirectionalEmotions[obj] + deltaEmotionSub * 0.5f
+        );
 
 
         float deltaEmotionObj = EstimateDeltaEmotionSub(obj, sub);
 
         obj.Emotion = Mathf.Clamp01(obj.Emotion + deltaEmotionObj);
 
-        SocietyManager.instance.DirectionalEmotions[objToSub] = Mathf.Clamp01(SocietyManager.instance.DirectionalEmotions[objToSub] + deltaEmotionObj * 0.5f);
+        obj.DirectionalEmotions[sub] =
+        Mathf.Clamp01(
+            obj.DirectionalEmotions[sub] + deltaEmotionObj * 0.5f
+        );
 
-        SocietyManager.instance.DirectionalExpectedEmotions[subToObj] = Mathf.Clamp01((SocietyManager.instance.DirectionalExpectedEmotions[subToObj] + SocietyManager.instance.DirectionalEmotions[objToSub]) * 0.5f);
 
-        SocietyManager.instance.DirectionalExpectedEmotions[objToSub] = Mathf.Clamp01((SocietyManager.instance.DirectionalExpectedEmotions[objToSub] + SocietyManager.instance.DirectionalEmotions[subToObj]) * 0.5f);
+        sub.DirectionalExpectedEmotions[obj] =
+        Mathf.Clamp01(
+            (sub.DirectionalExpectedEmotions[obj] + obj.DirectionalEmotions[sub]) * 0.5f
+        );
+
+        obj.DirectionalExpectedEmotions[sub] =
+        Mathf.Clamp01(
+            (obj.DirectionalExpectedEmotions[sub] + sub.DirectionalEmotions[obj]) * 0.5f
+        );
     }
 }

@@ -11,20 +11,9 @@ public class SocietyManager : MonoSingleton<SocietyManager>
     {
         for (int i = 0; i < InitialPersonCount; i++)
         {
-            Person pi = Instantiate(PersonPrefab, RealSocietyGO);
+            Person pi = Instantiate(PersonPrefab);
             pi.tempIndex = i;
             RealSociety.Add(pi);
         }
-
-        foreach (Person sub in RealSociety)
-        {
-            foreach (Person obj in RealSociety)
-            {
-                DirectionalEmotions[(sub, obj)] = 0.5f;
-                DirectionalExpectedEmotions[(sub, obj)] = 0.5f;
-            }
-        }
-        Debug.LogFormat("DirectionalEmotions Count: {0}\n DirectionalExpectedEmotions Cound: {1}", DirectionalEmotions.Count, DirectionalExpectedEmotions.Count);
-        Debug.Log(DirectionalExpectedEmotions[(RealSociety[0], RealSociety[1])]);
     }
 }
