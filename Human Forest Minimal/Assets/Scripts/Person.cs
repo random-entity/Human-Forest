@@ -18,6 +18,11 @@ public class Person : MonoBehaviour
         SetTransformToPositionVector();
     }
 
+    public void GetHappiness()
+    {
+        
+    }
+
     private void SetTransformToPositionVector()
     {
         transform.position = new Vector3(Position.x, 1, Position.y);
