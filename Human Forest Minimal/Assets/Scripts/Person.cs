@@ -9,21 +9,26 @@ public class Person : MonoBehaviour
     public float Emotion, Health;
     public Dictionary<Person, float> DirectionalEmotions = new Dictionary<Person, float>();
     public Dictionary<Person, float> DirectionalExpectedEmotions = new Dictionary<Person, float>();
+
     public ValueSystem PersonalValues;
+
     public Vector2 Position;
 
     private void Start()
     {
         isAlive = true;
-        PersonalValues = new ValueSystem();
 
-        Position = new Vector2(Random.Range(-0.5f, 0.5f), Random.Range(-0.5f, 0.5f)) * GameManager.instance.LandSize;
+        Emotion = 0.5f + Random.Range(-0.25f, 0.25f);
+        Health = 0.5f + Random.Range(-0.25f, 0.25f);
         foreach (Person obj in SocietyManager.instance.RealSociety)
         {
-            DirectionalEmotions[obj] = 0.5f;
-            DirectionalExpectedEmotions[obj] = 0.5f;
+            DirectionalEmotions[obj] = Random.Range(0.4f, 0.6f);
+            DirectionalExpectedEmotions[obj] = Random.Range(0.4f, 0.6f);
         }
 
+        PersonalValues = new ValueSystem(true);
+
+        Position = new Vector2(Random.Range(-0.5f, 0.5f), Random.Range(-0.5f, 0.5f)) * GameManager.instance.LandSize;
         SetTransformToPositionVector();
     }
 
@@ -56,14 +61,14 @@ public class Person : MonoBehaviour
                         desireObj = obj;
                     }
 
-                    var cloneConfig = SocietyManager.instance.CloneSociety();
+                    var cloneSocietyConfig = SocietyManager.instance.CloneSociety();
 
-                    Person cloneThis = cloneConfig.Item2.Item1[this];
-                    Person cloneObj = cloneConfig.Item2.Item1[obj];
+                    Person cloneThis = cloneSocietyConfig.Item2.Item1[this];
+                    Person cloneObj = cloneSocietyConfig.Item2.Item1[obj];
 
                     pPAction.Execute(cloneThis, cloneObj);
 
-                    float sumOfHappinessSubjectivePersonal = SocietyManager.instance.GetSumOfHappiness(true, true, cloneThis, cloneConfig.Item1);
+                    float sumOfHappinessSubjectivePersonal = SocietyManager.instance.GetSumOfHappiness(true, true, cloneThis, cloneSocietyConfig.Item1);
 
                     if (maxGood < sumOfHappinessSubjectivePersonal)
                     {
@@ -72,7 +77,7 @@ public class Person : MonoBehaviour
                         goodObj = obj;
                     }
 
-                    float sumOfHappinessObjectiveEthical = SocietyManager.instance.GetSumOfHappiness(false, false, cloneThis, cloneConfig.Item1);
+                    float sumOfHappinessObjectiveEthical = SocietyManager.instance.GetSumOfHappiness(false, false, cloneThis, cloneSocietyConfig.Item1);
 
                     if (maxEthical < sumOfHappinessObjectiveEthical)
                     {
@@ -81,11 +86,12 @@ public class Person : MonoBehaviour
                         ethicalObj = obj;
                     }
 
-                    GameObject.Destroy(cloneConfig.Item3);
+                    GameObject.Destroy(cloneSocietyConfig.Item3);
 
                     Debug.LogFormat(
                         "Subject {0} is Estimating PPAction {1} to Object {2}\nselfDeltaEmotion = {3}\nsumOfHappinessSubjectivePersonal = {4}\nsumOfHappinessObjectiveEthical = {5}",
-                        this.tempIndex, pPAction.tempName, obj.tempIndex, selfDeltaEmotion, sumOfHappinessSubjectivePersonal, sumOfHappinessObjectiveEthical);
+                        this.tempIndex, pPAction.tempName, obj.tempIndex, selfDeltaEmotion, sumOfHappinessSubjectivePersonal, sumOfHappinessObjectiveEthical
+                    );
                 }
             }
         }
