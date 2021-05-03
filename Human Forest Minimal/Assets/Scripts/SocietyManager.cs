@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SocietyManager : MonoSingleton<SocietyManager>
 {
@@ -16,6 +17,7 @@ public class SocietyManager : MonoSingleton<SocietyManager>
             Person pi = Instantiate(PersonPrefab);
             pi.tempIndex = i;
             RealSociety.Add(pi);
+            pi.transform.GetChild(0).GetComponent<Canvas>().gameObject.SetActive(true);
         }
     }
 
