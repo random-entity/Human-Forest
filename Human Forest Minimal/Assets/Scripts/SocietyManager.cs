@@ -27,7 +27,9 @@ public class SocietyManager : MonoSingleton<SocietyManager>
 
         float reputation = 0f;
         float othersEmotion = 0f;
+        
         int aliveCount = 0;
+
         foreach (Person obj in society)
         {
             if (obj.isAlive)
@@ -86,17 +88,17 @@ public class SocietyManager : MonoSingleton<SocietyManager>
         return sum;
     }
 
-    public (List<Person>, (Dictionary<Person, Person>, Dictionary<Person, Person>), GameObject) CloneSociety()
+    public (List<Person> CloneSociety, (Dictionary<Person, Person> Real2CloneDict, Dictionary<Person, Person> Clone2RealDict), GameObject CloneSocietyParentGO) CloneSociety()
     {
         List<Person> cloneSociety = new List<Person>();
         Dictionary<Person, Person> real2Clone = new Dictionary<Person, Person>();
         Dictionary<Person, Person> clone2Real = new Dictionary<Person, Person>();
 
-        var cloneParentGO = new GameObject("CloneSociety");
+        var cloneSocietyParentGO = new GameObject("CloneSociety");
 
         foreach (Person person in RealSociety)
         {
-            Person clone = Instantiate(person, cloneParentGO.transform);
+            Person clone = Instantiate(person, cloneSocietyParentGO.transform);
             cloneSociety.Add(clone);
             real2Clone[person] = clone;
             clone2Real[clone] = person;
@@ -113,6 +115,6 @@ public class SocietyManager : MonoSingleton<SocietyManager>
             }
         }
 
-        return (cloneSociety, (real2Clone, clone2Real), cloneParentGO);
+        return (cloneSociety, (real2Clone, clone2Real), cloneSocietyParentGO);
     }
 }

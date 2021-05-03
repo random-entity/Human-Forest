@@ -63,12 +63,12 @@ public class Person : MonoBehaviour
 
                     var cloneSocietyConfig = SocietyManager.instance.CloneSociety();
 
-                    Person cloneThis = cloneSocietyConfig.Item2.Item1[this];
-                    Person cloneObj = cloneSocietyConfig.Item2.Item1[obj];
+                    Person cloneThis = cloneSocietyConfig.Item2.Real2CloneDict[this];
+                    Person cloneObj = cloneSocietyConfig.Item2.Real2CloneDict[obj];
 
                     pPAction.Execute(cloneThis, cloneObj);
 
-                    float sumOfHappinessSubjectivePersonal = SocietyManager.instance.GetSumOfHappiness(true, true, cloneThis, cloneSocietyConfig.Item1);
+                    float sumOfHappinessSubjectivePersonal = SocietyManager.instance.GetSumOfHappiness(true, true, cloneThis, cloneSocietyConfig.CloneSociety);
 
                     if (maxGood < sumOfHappinessSubjectivePersonal)
                     {
@@ -77,7 +77,7 @@ public class Person : MonoBehaviour
                         goodObj = obj;
                     }
 
-                    float sumOfHappinessObjectiveEthical = SocietyManager.instance.GetSumOfHappiness(false, false, cloneThis, cloneSocietyConfig.Item1);
+                    float sumOfHappinessObjectiveEthical = SocietyManager.instance.GetSumOfHappiness(false, false, cloneThis, cloneSocietyConfig.CloneSociety);
 
                     if (maxEthical < sumOfHappinessObjectiveEthical)
                     {
@@ -86,7 +86,7 @@ public class Person : MonoBehaviour
                         ethicalObj = obj;
                     }
 
-                    GameObject.Destroy(cloneSocietyConfig.Item3);
+                    GameObject.Destroy(cloneSocietyConfig.CloneSocietyParentGO);
 
                     Debug.LogFormat(
                         "Subject {0} is Estimating PPAction {1} to Object {2}\nselfDeltaEmotion = {3}\nsumOfHappinessSubjectivePersonal = {4}\nsumOfHappinessObjectiveEthical = {5}",
