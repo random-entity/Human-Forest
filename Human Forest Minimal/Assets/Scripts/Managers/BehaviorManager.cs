@@ -1,6 +1,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public class BehaviorInformation
+{
+
+}
+
 public class BehaviorManager : MonoSingleton<BehaviorManager>
 {
     [HideInInspector] public List<PPAction> PPActionList;

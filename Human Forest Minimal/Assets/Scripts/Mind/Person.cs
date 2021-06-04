@@ -1,85 +1,16 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
-
-public enum Matter
-{
-    EmotionValence,
-    EmotionArousal,
-    DesiredRequitalEmotionValence,
-    DesiredRequitalEmotionArousal,
-    Mood,
-
-    ExistentialValue,
-    AestheticValue,
-
-    Health,
-    Wealth,
-
-    Generosity,
-
-    Liberty,
-    // ... 가치가 뭐 있을까
-}
-
-public class SV // State & Value
-{
-    public float State;
-    public float Value;
-
-    // public List<BehaviorInformation> ...
-
-    public void Add(SV deltaSV)
-    {
-        State += deltaSV.State;
-        Value += deltaSV.Value;
-    }
-
-    public SV() // default initialization
-    {
-        State = 0.5f;
-        Value = 1f; // 일단 Matter 개수를 모르니 1로...
-    }
-
-    public SV(float state, float value)
-    {
-        State = state;
-        Value = value;
-    }
-}
-
-public class BehaviorInformation
-{
-
-}
-
-public class SVMatrix
-{
-    public Dictionary<Matter, Dictionary<Person, SV>> MP2SV; // (matter) => ((objectPerson) => (state, value))
-
-    public SVMatrix()
-    {
-        MP2SV = new Dictionary<Matter, Dictionary<Person, SV>>();
-
-        foreach (Matter m in Enum.GetValues(typeof(Matter)))
-        {
-            Dictionary<Person, SV> d = new Dictionary<Person, SV>();
-            MP2SV.Add(m, d);
-            foreach (Person q in SocietyManager.instance.RealSociety)
-            {
-                d.Add(q, new SV());
-            }
-        }
-    }
-}
 
 public class Person : MonoBehaviour
 {
     public bool IsAlive;
     public int Index;
 
-    public SVMatrix Mind;
-    
+    public RelationalMatterMatrix Relations;
+    public PersonalMSVMatrix Mind;
+
+
+
 
     public float Emotion;
     public float Health;
