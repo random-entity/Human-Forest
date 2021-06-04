@@ -1,12 +1,89 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum Matter
+{
+    EmotionValence,
+    EmotionArousal,
+    DesiredRequitalEmotionValence,
+    DesiredRequitalEmotionArousal,
+    Mood,
+
+    ExistentialValue,
+    AestheticValue,
+
+    Health,
+    Wealth,
+
+    Generosity,
+
+    Liberty,
+    // ... 가치가 뭐 있을까
+}
+
+public class SV // State & Value
+{
+    public float State;
+    public float Value;
+
+    // public List<BehaviorInformation> ...
+
+    public void Add(SV deltaSV)
+    {
+        State += deltaSV.State;
+        Value += deltaSV.Value;
+    }
+
+    public SV() // default initialization
+    {
+        State = 0.5f;
+        Value = 1f; // 일단 Matter 개수를 모르니 1로...
+    }
+
+    public SV(float state, float value)
+    {
+        State = state;
+        Value = value;
+    }
+}
+
+public class BehaviorInformation
+{
+
+}
+
+public class SVMatrix
+{
+    public Dictionary<Matter, Dictionary<Person, SV>> MP2SV; // (matter) => ((objectPerson) => (state, value))
+
+    public SVMatrix()
+    {
+        MP2SV = new Dictionary<Matter, Dictionary<Person, SV>>();
+
+        foreach (Matter m in Enum.GetValues(typeof(Matter)))
+        {
+            Dictionary<Person, SV> d = new Dictionary<Person, SV>();
+            MP2SV.Add(m, d);
+            foreach (Person q in SocietyManager.instance.RealSociety)
+            {
+                d.Add(q, new SV());
+            }
+        }
+    }
+}
+
 public class Person : MonoBehaviour
 {
-    public bool isAlive;
-    public int tempIndex;
+    public bool IsAlive;
+    public int Index;
 
-    public float Emotion, Health;
+    public SVMatrix Mind;
+    
+
+    public float Emotion;
+    public float Health;
+
     public Dictionary<Person, float> DirectionalEmotions = new Dictionary<Person, float>();
     public Dictionary<Person, float> DirectionalExpectedEmotions = new Dictionary<Person, float>();
 
@@ -16,19 +93,19 @@ public class Person : MonoBehaviour
 
     private void Start()
     {
-        isAlive = true;
+        IsAlive = true;
 
-        Emotion = 0.5f + Random.Range(-0.25f, 0.25f);
-        Health = 0.5f + Random.Range(-0.25f, 0.25f);
+        Emotion = 0.5f + UnityEngine.Random.Range(-0.25f, 0.25f);
+        Health = 0.5f + UnityEngine.Random.Range(-0.25f, 0.25f);
         foreach (Person obj in SocietyManager.instance.RealSociety)
         {
-            DirectionalEmotions[obj] = Random.Range(0.4f, 0.6f);
-            DirectionalExpectedEmotions[obj] = Random.Range(0.4f, 0.6f);
+            DirectionalEmotions[obj] = UnityEngine.Random.Range(0.4f, 0.6f);
+            DirectionalExpectedEmotions[obj] = UnityEngine.Random.Range(0.4f, 0.6f);
         }
 
         PersonalValues = new ValueSystem(true);
 
-        Position = new Vector2(Random.Range(-0.5f, 0.5f), Random.Range(-0.5f, 0.5f)) * GameManager.instance.LandSize;
+        Position = new Vector2(UnityEngine.Random.Range(-0.5f, 0.5f), UnityEngine.Random.Range(-0.5f, 0.5f)) * GameManager.instance.LandSize;
         SetTransformToPositionVector();
     }
 
@@ -90,7 +167,7 @@ public class Person : MonoBehaviour
 
                     Debug.LogFormat(
                         "Subject {0} is Estimating PPAction {1} to Object {2}\nselfDeltaEmotion = {3}\nsumOfHappinessSubjectivePersonal = {4}\nsumOfHappinessObjectiveEthical = {5}",
-                        this.tempIndex, pPAction.tempName, obj.tempIndex, selfDeltaEmotion, sumOfHappinessSubjectivePersonal, sumOfHappinessObjectiveEthical
+                        this.Index, pPAction.tempName, obj.Index, selfDeltaEmotion, sumOfHappinessSubjectivePersonal, sumOfHappinessObjectiveEthical
                     );
                 }
             }

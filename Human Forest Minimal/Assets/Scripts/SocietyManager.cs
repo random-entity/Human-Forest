@@ -15,7 +15,7 @@ public class SocietyManager : MonoSingleton<SocietyManager>
         for (int i = 0; i < InitialPersonCount; i++)
         {
             Person pi = Instantiate(PersonPrefab);
-            pi.tempIndex = i;
+            pi.Index = i;
             RealSociety.Add(pi);
             pi.transform.GetChild(0).GetComponent<Canvas>().gameObject.SetActive(true);
         }
@@ -32,7 +32,7 @@ public class SocietyManager : MonoSingleton<SocietyManager>
 
         foreach (Person obj in society)
         {
-            if (obj.isAlive)
+            if (obj.IsAlive)
             {
                 aliveCount++;
 

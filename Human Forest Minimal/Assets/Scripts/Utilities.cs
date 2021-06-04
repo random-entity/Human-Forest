@@ -14,10 +14,10 @@ public struct float2
 {
     public float x, y;
 
-    public float2(float x, float y)
+    public float2(float _x, float _y)
     {
-        this.x = x;
-        this.y = y;
+        this.x = _x;
+        this.y = _y;
     }
 }
 
