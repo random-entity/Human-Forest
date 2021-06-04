@@ -49,63 +49,175 @@ public enum EvaluativeMatter // State는 따로 없고 Value인 것들
     // => 요게 PersonalMatter.Reputation으로. 
 }
 
-public class StateValuePair // State & Value
+
+public class M2S // Matter => State
 {
-    public float State;
-    public float Value;
+    public Dictionary<Matter, float> Map;
 
-    // public List<BehaviorInformation> ... // 이 SV의 주인 Matter에 영향을 끼친 에피소드들이 뭐 있었는지 저장.
-
-    public void Add(StateValuePair deltaSV)
+    public M2S()
     {
-        State += deltaSV.State;
-        Value += deltaSV.Value;
-    }
-
-    public StateValuePair() // default initialization
-    {
-        State = 0.5f;
-        Value = 1f; // 일단 Matter 개수를 모르니 1로...
-    }
-
-    public StateValuePair(float state, float value)
-    {
-        State = state;
-        Value = value;
-    }
-}
-
-public class PersonalMSVMatrix
-{
-    public Dictionary<Matter, StateValuePair> Matrix;
-
-    public PersonalMSVMatrix()
-    {
-        Matrix = new Dictionary<Matter, StateValuePair>();
+        Map = new Dictionary<Matter, float>();
 
         foreach (Matter m in Enum.GetValues(typeof(Matter)))
         {
-            Matrix.Add(m, new StateValuePair());
+            Map.Add(m, 0.5f);
         }
     }
 }
 
-public class RelationalMatterMatrix
+public class M2V // Matter => Value
 {
-    public Dictionary<RelationalMatter, Dictionary<Person, StateValuePair>> Matrix; // (interpersonal matter) => ((object Person) => (state, value))
+    public Dictionary<Matter, float> Map;
 
-    public RelationalMatterMatrix()
+    public M2V()
     {
-        Matrix = new Dictionary<RelationalMatter, Dictionary<Person, StateValuePair>>();
+        Map = new Dictionary<Matter, float>();
+
+        foreach (Matter m in Enum.GetValues(typeof(Matter)))
+        {
+            Map.Add(m, 1f);
+        }
+    }
+}
+
+public class R2P2S // RelationamMatter => ObjectPerson => State
+{
+    public Dictionary<RelationalMatter, Dictionary<Person, float>> Map;
+
+    public R2P2S()
+    {
+        Map = new Dictionary<RelationalMatter, Dictionary<Person, float>>();
 
         foreach (RelationalMatter r in Enum.GetValues(typeof(RelationalMatter)))
         {
-            Dictionary<Person, StateValuePair> d = new Dictionary<Person, StateValuePair>();
-            Matrix.Add(r, d);
+            Dictionary<Person, float> d = new Dictionary<Person, float>();
+            Map.Add(r, d);
+
             foreach (Person q in SocietyManager.instance.RealSociety)
             {
-                d.Add(q, new StateValuePair());
+                d.Add(q, 0.5f);
             }
         }
     }
 }
+
+public class R2P2V // RelationalMatter => ObjectPerson => Value
+{
+    public Dictionary<RelationalMatter, Dictionary<Person, float>> Map;
+
+    public R2P2V()
+    {
+        Map = new Dictionary<RelationalMatter, Dictionary<Person, float>>();
+
+        foreach (RelationalMatter r in Enum.GetValues(typeof(RelationalMatter)))
+        {
+            Dictionary<Person, float> d = new Dictionary<Person, float>();
+            Map.Add(r, d);
+
+            foreach (Person q in SocietyManager.instance.RealSociety)
+            {
+                d.Add(q, 1f);
+            }
+        }
+    }
+}
+
+public class E2P2V // EvaluativeMatter => Person => Value
+{
+    public Dictionary<EvaluativeMatter, Dictionary<Person, float>> Map;
+
+    public E2P2V()
+    {
+        Map = new Dictionary<EvaluativeMatter, Dictionary<Person, float>>();
+
+        foreach (EvaluativeMatter e in Enum.GetValues(typeof(EvaluativeMatter)))
+        {
+            Dictionary<Person, float> d = new Dictionary<Person, float>();
+            Map.Add(e, d);
+
+            foreach (Person q in SocietyManager.instance.RealSociety)
+            {
+                d.Add(q, 1f);
+            }
+        }
+    }
+}
+
+public class MSV
+{
+    public M2S State;
+    public M2V Value;
+    public R2P2S RState;
+    public R2P2V RValue;
+    public E2P2V EValue;
+
+    public MSV()
+    {
+        State = new M2S();
+        Value = new M2V();
+        RState = new R2P2S();
+        RValue = new R2P2V();
+        EValue = new E2P2V();
+    }
+}
+
+// public class StateValuePair // State & Value
+// {
+//     public float State;
+//     public float Value;
+
+//     // public List<BehaviorInformation> ... // 이 SV의 주인 Matter에 영향을 끼친 에피소드들이 뭐 있었는지 저장.
+
+//     public void Add(StateValuePair deltaSV)
+//     {
+//         State += deltaSV.State;
+//         Value += deltaSV.Value;
+//     }
+
+//     public StateValuePair() // default initialization
+//     {
+//         State = 0.5f;
+//         Value = 1f; // 일단 Matter 개수를 모르니 1로...
+//     }
+
+//     public StateValuePair(float state, float value)
+//     {
+//         State = state;
+//         Value = value;
+//     }
+// }
+
+// public class PersonalMatterMatrix
+// {
+//     public Dictionary<Matter, StateValuePair> Matrix;
+
+//     public PersonalMatterMatrix()
+//     {
+//         Matrix = new Dictionary<Matter, StateValuePair>();
+
+//         foreach (Matter m in Enum.GetValues(typeof(Matter)))
+//         {
+//             Matrix.Add(m, new StateValuePair());
+//         }
+//     }
+// }
+
+// public class RelationalMatterMatrix
+// {
+//     public Dictionary<RelationalMatter, Dictionary<Person, StateValuePair>> Matrix; // (interpersonal matter) => ((object Person) => (state, value))
+
+//     public RelationalMatterMatrix()
+//     {
+//         Matrix = new Dictionary<RelationalMatter, Dictionary<Person, StateValuePair>>();
+
+//         foreach (RelationalMatter r in Enum.GetValues(typeof(RelationalMatter)))
+//         {
+//             Dictionary<Person, StateValuePair> d = new Dictionary<Person, StateValuePair>();
+//             Matrix.Add(r, d);
+//             foreach (Person q in SocietyManager.instance.RealSociety)
+//             {
+//                 d.Add(q, new StateValuePair());
+//             }
+//         }
+//     }
+// }

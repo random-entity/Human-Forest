@@ -1,17 +1,19 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class SocietyManager : MonoSingleton<SocietyManager>
 {
-    public ValueSystem Ethics;
-
     public Person PersonPrefab;
-    public int InitialPersonCount = 16;
-    public List<Person> RealSociety = new List<Person>();
+    public int InitialPersonCount = 12;
+    public List<Person> RealSociety;
+
+    // public ValueSystem Ethics;
+    public EvaluationMethod Ethic;
 
     private void Awake()
     {
+        RealSociety = new List<Person>();
+
         for (int i = 0; i < InitialPersonCount; i++)
         {
             Person pi = Instantiate(PersonPrefab);
@@ -21,13 +23,16 @@ public class SocietyManager : MonoSingleton<SocietyManager>
         }
     }
 
+
+
+
     public float GetHappiness(Person p, ValueSystem valueSystem, List<Person> society)
     {
         float happiness = 0f;
 
         float reputation = 0f;
         float othersEmotion = 0f;
-        
+
         int aliveCount = 0;
 
         foreach (Person obj in society)

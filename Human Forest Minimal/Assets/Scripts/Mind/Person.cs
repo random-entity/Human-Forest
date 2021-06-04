@@ -1,44 +1,45 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Person : MonoBehaviour
 {
     public bool IsAlive;
+
     public int Index;
-
-    public RelationalMatterMatrix Relations;
-    public PersonalMSVMatrix Mind;
-
-
-
-
-    public float Emotion;
-    public float Health;
-
-    public Dictionary<Person, float> DirectionalEmotions = new Dictionary<Person, float>();
-    public Dictionary<Person, float> DirectionalExpectedEmotions = new Dictionary<Person, float>();
-
-    public ValueSystem PersonalValues;
-
     public Vector2 Position;
 
-    private void Start()
+    public MSV Mind;
+
+    private void Awake()
     {
         IsAlive = true;
-
-        Emotion = 0.5f + UnityEngine.Random.Range(-0.25f, 0.25f);
-        Health = 0.5f + UnityEngine.Random.Range(-0.25f, 0.25f);
-        foreach (Person obj in SocietyManager.instance.RealSociety)
-        {
-            DirectionalEmotions[obj] = UnityEngine.Random.Range(0.4f, 0.6f);
-            DirectionalExpectedEmotions[obj] = UnityEngine.Random.Range(0.4f, 0.6f);
-        }
-
-        PersonalValues = new ValueSystem(true);
+        Mind = new MSV();
 
         Position = new Vector2(UnityEngine.Random.Range(-0.5f, 0.5f), UnityEngine.Random.Range(-0.5f, 0.5f)) * GameManager.instance.LandSize;
         SetTransformToPositionVector();
     }
+
+    // public float Emotion;
+    // public float Health;
+
+    // public Dictionary<Person, float> DirectionalEmotions = new Dictionary<Person, float>();
+    // public Dictionary<Person, float> DirectionalExpectedEmotions = new Dictionary<Person, float>();
+
+    // public ValueSystem PersonalValues;
+
+    // private void Start()
+    // {
+
+    //     Emotion = 0.5f + UnityEngine.Random.Range(-0.25f, 0.25f);
+    //     Health = 0.5f + UnityEngine.Random.Range(-0.25f, 0.25f);
+
+    //     foreach (Person obj in SocietyManager.instance.RealSociety)
+    //     {
+    //         DirectionalEmotions[obj] = UnityEngine.Random.Range(0.4f, 0.6f);
+    //         DirectionalExpectedEmotions[obj] = UnityEngine.Random.Range(0.4f, 0.6f);
+    //     }
+
+    //     PersonalValues = new ValueSystem(true);
+    // }
 
     public ((PPAction DesiredPPAction, Person obj), (PPAction PersonallyGoodPPAction, Person obj), (PPAction EthicalAction, Person obj)) GetDesiredAndPersonallyGoodAndEthicalPPAction()
     {
