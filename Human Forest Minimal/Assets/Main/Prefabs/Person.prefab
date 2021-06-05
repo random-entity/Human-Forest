@@ -314,7 +314,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 477cef4046d92bc438d56ed63609d7af, type: 2}
+  - {fileID: 2100000, guid: a5bd3825ef9f0304da6d9760d46971f1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -362,16 +362,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b82c558cad991f45bae8bfcee8e0ac9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isAlive: 1
-  tempIndex: 0
-  Emotion: 0.5
-  Health: 0.5
-  PersonalValues:
-    WeightEmotion: 0.25
-    WeightHealth: 0.25
-    WeightReputation: 0.25
-    WeightKindness: 0.25
-    Liberty: 0.5
+  IsAlive: 0
+  Index: 0
   Position: {x: 0, y: 0}
 --- !u!114 &1535062775
 MonoBehaviour:
