@@ -35,46 +35,46 @@ public class PPAction
         return (x) => (w + b / (x + a));
     }
 
-    public float EstimateDeltaEmotionSub(Person sub, Person obj)
-    {
-        return deltaEmotionSub(sub.DirectionalEmotions[obj]);
-    }
+    // public float EstimateDeltaEmotionSub(Person sub, Person obj)
+    // {
+    //     return deltaEmotionSub(sub.DirectionalEmotions[obj]);
+    // }
 
-    public float EstimateDeltaEmotionObj(Person sub, Person obj)
-    {
-        return deltaEmotionObj(sub.DirectionalExpectedEmotions[obj]);
-    }
+    // public float EstimateDeltaEmotionObj(Person sub, Person obj)
+    // {
+    //     return deltaEmotionObj(sub.DirectionalExpectedEmotions[obj]);
+    // }
 
-    public void Execute(Person sub, Person obj)
-    {
-        float deltaEmotionSub = EstimateDeltaEmotionSub(sub, obj);
+    // public void Execute(Person sub, Person obj)
+    // {
+    //     float deltaEmotionSub = EstimateDeltaEmotionSub(sub, obj);
 
-        sub.Emotion = Mathf.Clamp01(sub.Emotion + deltaEmotionSub);
+    //     sub.Emotion = Mathf.Clamp01(sub.Emotion + deltaEmotionSub);
 
-        sub.DirectionalEmotions[obj] =
-        Mathf.Clamp01(
-           sub.DirectionalEmotions[obj] + deltaEmotionSub * 0.5f
-        );
-
-
-        float deltaEmotionObj = EstimateDeltaEmotionSub(obj, sub);
-
-        obj.Emotion = Mathf.Clamp01(obj.Emotion + deltaEmotionObj);
-
-        obj.DirectionalEmotions[sub] =
-        Mathf.Clamp01(
-            obj.DirectionalEmotions[sub] + deltaEmotionObj * 0.5f
-        );
+    //     sub.DirectionalEmotions[obj] =
+    //     Mathf.Clamp01(
+    //        sub.DirectionalEmotions[obj] + deltaEmotionSub * 0.5f
+    //     );
 
 
-        sub.DirectionalExpectedEmotions[obj] =
-        Mathf.Clamp01(
-            (sub.DirectionalExpectedEmotions[obj] + obj.DirectionalEmotions[sub]) * 0.5f
-        );
+    //     float deltaEmotionObj = EstimateDeltaEmotionSub(obj, sub);
 
-        obj.DirectionalExpectedEmotions[sub] =
-        Mathf.Clamp01(
-            (obj.DirectionalExpectedEmotions[sub] + sub.DirectionalEmotions[obj]) * 0.5f
-        );
-    }
+    //     obj.Emotion = Mathf.Clamp01(obj.Emotion + deltaEmotionObj);
+
+    //     obj.DirectionalEmotions[sub] =
+    //     Mathf.Clamp01(
+    //         obj.DirectionalEmotions[sub] + deltaEmotionObj * 0.5f
+    //     );
+
+
+    //     sub.DirectionalExpectedEmotions[obj] =
+    //     Mathf.Clamp01(
+    //         (sub.DirectionalExpectedEmotions[obj] + obj.DirectionalEmotions[sub]) * 0.5f
+    //     );
+
+    //     obj.DirectionalExpectedEmotions[sub] =
+    //     Mathf.Clamp01(
+    //         (obj.DirectionalExpectedEmotions[sub] + sub.DirectionalEmotions[obj]) * 0.5f
+    //     );
+    // }
 }

@@ -41,72 +41,72 @@ public class Person : MonoBehaviour
     //     PersonalValues = new ValueSystem(true);
     // }
 
-    public ((PPAction DesiredPPAction, Person obj), (PPAction PersonallyGoodPPAction, Person obj), (PPAction EthicalAction, Person obj)) GetDesiredAndPersonallyGoodAndEthicalPPAction()
-    {
-        PPAction desire = BehaviorManager.instance.Idle;
-        Person desireObj = this;
-        float maxDesire = Mathf.NegativeInfinity;
+    // public ((PPAction DesiredPPAction, Person obj), (PPAction PersonallyGoodPPAction, Person obj), (PPAction EthicalAction, Person obj)) GetDesiredAndPersonallyGoodAndEthicalPPAction()
+    // {
+    //     PPAction desire = BehaviorManager.instance.Idle;
+    //     Person desireObj = this;
+    //     float maxDesire = Mathf.NegativeInfinity;
 
-        PPAction good = BehaviorManager.instance.Idle;
-        Person goodObj = this;
-        float maxGood = Mathf.NegativeInfinity;
+    //     PPAction good = BehaviorManager.instance.Idle;
+    //     Person goodObj = this;
+    //     float maxGood = Mathf.NegativeInfinity;
 
-        PPAction ethical = BehaviorManager.instance.Idle;
-        Person ethicalObj = this;
-        float maxEthical = Mathf.NegativeInfinity;
+    //     PPAction ethical = BehaviorManager.instance.Idle;
+    //     Person ethicalObj = this;
+    //     float maxEthical = Mathf.NegativeInfinity;
 
-        foreach (PPAction pPAction in BehaviorManager.instance.PPActionList)
-        {
-            foreach (Person obj in SocietyManager.instance.RealSociety)
-            {
-                if (obj != this)
-                {
-                    float selfDeltaEmotion = pPAction.EstimateDeltaEmotionSub(this, obj);
+    //     foreach (PPAction pPAction in BehaviorManager.instance.PPActionList)
+    //     {
+    //         foreach (Person obj in SocietyManager.instance.RealSociety)
+    //         {
+    //             if (obj != this)
+    //             {
+    //                 float selfDeltaEmotion = pPAction.EstimateDeltaEmotionSub(this, obj);
 
-                    if (maxDesire < selfDeltaEmotion)
-                    {
-                        maxDesire = selfDeltaEmotion;
-                        desire = pPAction;
-                        desireObj = obj;
-                    }
+    //                 if (maxDesire < selfDeltaEmotion)
+    //                 {
+    //                     maxDesire = selfDeltaEmotion;
+    //                     desire = pPAction;
+    //                     desireObj = obj;
+    //                 }
 
-                    var cloneSocietyConfig = SocietyManager.instance.CloneSociety();
+    //                 var cloneSocietyConfig = SocietyManager.instance.CloneSociety();
 
-                    Person cloneThis = cloneSocietyConfig.Item2.Real2CloneDict[this];
-                    Person cloneObj = cloneSocietyConfig.Item2.Real2CloneDict[obj];
+    //                 Person cloneThis = cloneSocietyConfig.Item2.Real2CloneDict[this];
+    //                 Person cloneObj = cloneSocietyConfig.Item2.Real2CloneDict[obj];
 
-                    pPAction.Execute(cloneThis, cloneObj);
+    //                 pPAction.Execute(cloneThis, cloneObj);
 
-                    float sumOfHappinessSubjectivePersonal = SocietyManager.instance.GetSumOfHappiness(true, true, cloneThis, cloneSocietyConfig.CloneSociety);
+    //                 float sumOfHappinessSubjectivePersonal = SocietyManager.instance.GetSumOfHappiness(true, true, cloneThis, cloneSocietyConfig.CloneSociety);
 
-                    if (maxGood < sumOfHappinessSubjectivePersonal)
-                    {
-                        maxGood = sumOfHappinessSubjectivePersonal;
-                        good = pPAction;
-                        goodObj = obj;
-                    }
+    //                 if (maxGood < sumOfHappinessSubjectivePersonal)
+    //                 {
+    //                     maxGood = sumOfHappinessSubjectivePersonal;
+    //                     good = pPAction;
+    //                     goodObj = obj;
+    //                 }
 
-                    float sumOfHappinessObjectiveEthical = SocietyManager.instance.GetSumOfHappiness(false, false, cloneThis, cloneSocietyConfig.CloneSociety);
+    //                 float sumOfHappinessObjectiveEthical = SocietyManager.instance.GetSumOfHappiness(false, false, cloneThis, cloneSocietyConfig.CloneSociety);
 
-                    if (maxEthical < sumOfHappinessObjectiveEthical)
-                    {
-                        maxEthical = sumOfHappinessObjectiveEthical;
-                        ethical = pPAction;
-                        ethicalObj = obj;
-                    }
+    //                 if (maxEthical < sumOfHappinessObjectiveEthical)
+    //                 {
+    //                     maxEthical = sumOfHappinessObjectiveEthical;
+    //                     ethical = pPAction;
+    //                     ethicalObj = obj;
+    //                 }
 
-                    GameObject.Destroy(cloneSocietyConfig.CloneSocietyParentGO);
+    //                 GameObject.Destroy(cloneSocietyConfig.CloneSocietyParentGO);
 
-                    Debug.LogFormat(
-                        "Subject {0} is Estimating PPAction {1} to Object {2}\nselfDeltaEmotion = {3}\nsumOfHappinessSubjectivePersonal = {4}\nsumOfHappinessObjectiveEthical = {5}",
-                        this.Index, pPAction.tempName, obj.Index, selfDeltaEmotion, sumOfHappinessSubjectivePersonal, sumOfHappinessObjectiveEthical
-                    );
-                }
-            }
-        }
+    //                 Debug.LogFormat(
+    //                     "Subject {0} is Estimating PPAction {1} to Object {2}\nselfDeltaEmotion = {3}\nsumOfHappinessSubjectivePersonal = {4}\nsumOfHappinessObjectiveEthical = {5}",
+    //                     this.Index, pPAction.tempName, obj.Index, selfDeltaEmotion, sumOfHappinessSubjectivePersonal, sumOfHappinessObjectiveEthical
+    //                 );
+    //             }
+    //         }
+    //     }
 
-        return ((desire, desireObj), (good, goodObj), (ethical, ethicalObj));
-    }
+    //     return ((desire, desireObj), (good, goodObj), (ethical, ethicalObj));
+    // }
 
     private void SetTransformToPositionVector()
     {
