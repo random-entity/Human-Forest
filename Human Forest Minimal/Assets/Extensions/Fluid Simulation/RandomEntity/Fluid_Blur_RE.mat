@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Fluid_RE
-  m_Shader: {fileID: -6465566751694194690, guid: dc90d456264b0dc438088ada387237e6, type: 3}
+  m_Name: Fluid_Blur_RE
+  m_Shader: {fileID: -6465566751694194690, guid: 57d90e73a3d5af8458368608d4c4d5d2, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 1
@@ -91,8 +91,9 @@ Material:
     m_Floats:
     - PixelSnap: 0
     - _AlphaClip: 0
-    - _AlphaCutoff: 0.1
+    - _AlphaCutoff: 0.01
     - _Blend: 0
+    - _BlurAmount: 0.67
     - _BumpScale: 1
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
@@ -117,7 +118,7 @@ Material:
     - _SpecularHighlights: 1
     - _SrcBlend: 5
     - _Surface: 1
-    - _Thickness: 0.1
+    - _Thickness: 0.06
     - _WorkflowMode: 1
     - _ZWrite: 0
     m_Colors:
