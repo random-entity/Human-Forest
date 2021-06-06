@@ -93,7 +93,7 @@ Material:
     - _AlphaClip: 0
     - _AlphaCutoff: 0.01
     - _Blend: 0
-    - _BlurAmount: 0.67
+    - _BlurAmount: 10
     - _BumpScale: 1
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
