@@ -810,9 +810,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 454957216}
+  - component: {fileID: 454957217}
   - component: {fileID: 454957215}
   - component: {fileID: 454957214}
-  - component: {fileID: 454957217}
   m_Layer: 0
   m_Name: FluidCamera
   m_TagString: Untagged
@@ -921,8 +921,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7462449f31a3194894ec40db2c09abd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  iterations: 5
-  blurSpread: 0.5
+  iterations: 3
+  blurSpread: 0.6
   blurShader: {fileID: 4800000, guid: cd9d32a42147e9447bed4a4f20d5a4d6, type: 3}
 --- !u!1001 &461134147
 PrefabInstance:
