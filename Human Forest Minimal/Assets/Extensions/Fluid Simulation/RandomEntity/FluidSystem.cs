@@ -8,7 +8,6 @@ public class FluidSystem : MonoBehaviour
     [SerializeField] private List<(float, float, float)> XWHList; // (x = 왼쪽아래꼭지점의 x좌표) 이건 [0, 1]^3 기준.
     private List<Transform> RectList;
     [SerializeField] private Transform RectPrefab;
-    // public List<Color> Colors;
 
     ObjectPooler ObjectPooler;
 
@@ -24,7 +23,9 @@ public class FluidSystem : MonoBehaviour
         RectList = new List<Transform>();
         for (int i = 0; i < count; i++)
         {
-            RectList.Add(Instantiate(RectPrefab));
+            Transform rect_i = Instantiate(RectPrefab);
+            rect_i.gameObject.SetActive(true);
+            RectList.Add(rect_i);
         }
 
         XWHList = new List<(float, float, float)>();
