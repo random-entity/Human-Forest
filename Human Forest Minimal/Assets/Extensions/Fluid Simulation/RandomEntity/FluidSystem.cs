@@ -8,10 +8,14 @@ public class FluidSystem : MonoBehaviour
     [SerializeField] private List<(float, float, float)> XWHList; // (x = 왼쪽아래꼭지점의 x좌표) 이건 [0, 1]^3 기준.
     private List<Transform> RectList;
     [SerializeField] private Transform RectPrefab;
-    [SerializeField] private GameObject FluidParticle;
+    // public List<Color> Colors;
+
+    ObjectPooler ObjectPooler;
 
     private void Awake()
     {
+        ObjectPooler = ObjectPooler.instance;
+
         count = SVList.Count;
         CheckSVListEmpty();
 
@@ -91,10 +95,5 @@ public class FluidSystem : MonoBehaviour
     {
         rect.localScale = XWH2Scale(xwh);
         rect.position = XWH2Position(xwh);
-    }
-
-    private void SpawnFluid()
-    {
-
     }
 }
