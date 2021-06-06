@@ -1,4 +1,4 @@
-Shader "VueCode/UnlitMod"
+Shader "Fluid/UnlitMod"
 {
 	Properties
 	{

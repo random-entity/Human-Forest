@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: VueCodeFluid
+  m_Name: Fluid_VC
   m_Shader: {fileID: 4800000, guid: ca311f27eade17b4e9310f7a34370dad, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
@@ -57,7 +57,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - _BumpScale: 1
-    - _Cutoff: 0.5
+    - _Cutoff: 0.059
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _GlossMapScale: 1
@@ -70,13 +70,13 @@ Material:
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
-    - _Stroke: 0.1
-    - _Stroke2: 0.1
+    - _Stroke: 0
+    - _Stroke2: 0
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
     - _Color: {r: 0.9037957, g: 1, b: 0, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _StrokeColor: {r: 1, g: 1, b: 1, a: 1}
-    - _StrokeColor2: {r: 1, g: 1, b: 1, a: 1}
+    - _StrokeColor: {r: 1, g: 0, b: 0, a: 1}
+    - _StrokeColor2: {r: 0.20064259, g: 1, b: 0, a: 1}
   m_BuildTextureStacks: []
