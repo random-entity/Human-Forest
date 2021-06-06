@@ -22,6 +22,18 @@ public struct float2
 }
 
 [System.Serializable]
+public struct Float2
+{
+    public float x, y;
+
+    public Float2(float _x, float _y)
+    {
+        this.x = _x;
+        this.y = _y;
+    }
+}
+
+[System.Serializable]
 public class f_0_1_inf
 {
     public float f_0, f_1, f_inf;

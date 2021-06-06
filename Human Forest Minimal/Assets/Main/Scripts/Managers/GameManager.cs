@@ -7,6 +7,7 @@ public class GameManager : MonoSingleton<GameManager>
 
     public override void Init()
     {
+        // Set land size.
         Land.transform.localScale = new Vector3(LandSize * 0.1f, 1f, LandSize * 0.1f);
     }
 }
