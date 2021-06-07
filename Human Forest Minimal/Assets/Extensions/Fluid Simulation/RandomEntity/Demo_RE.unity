@@ -4124,13 +4124,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 467093350}
-  m_Layer: 0
-  m_Name: Barriers
+  m_Layer: 6
+  m_Name: FluidBarriers
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &467093350
 Transform:
   m_ObjectHideFlags: 0
@@ -8267,14 +8267,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SVList:
-  - x: 0.3
+  - x: 0.55
     y: 10
   - x: 0.4
     y: 20
-  - x: 0.2
+  - x: 0.9
     y: 30
-  - x: 0.5
-    y: 40
   FrameBottomLeftPosition: {x: -5, y: -5, z: 0}
   FrameWidthHeight: {x: 10, y: 10, z: 0}
   RectTemplatePrefab: {fileID: 1299687542}
@@ -8285,7 +8283,7 @@ MonoBehaviour:
   - {fileID: 34461788}
   - {fileID: 585216456}
   - {fileID: 1440232615}
-  propellerSpeed: 512
+  propellerSpeed: 0
   FluidParticlePrefab: {fileID: 3322807078589243654, guid: b070197b3bbe7db46bc48c1c7ec64b83, type: 3}
   FluidParticlesParent: {fileID: 1043337428}
 --- !u!1001 &1009006020
@@ -10565,7 +10563,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1290741894
 Transform:
   m_ObjectHideFlags: 0
