@@ -2139,7 +2139,7 @@ MonoBehaviour:
   PoolList:
   - tag: Fluid
     prefab: {fileID: 3322807078589243654, guid: b070197b3bbe7db46bc48c1c7ec64b83, type: 3}
-    size: 200
+    size: 1600
 --- !u!4 &198739604
 Transform:
   m_ObjectHideFlags: 0
@@ -7826,8 +7826,8 @@ MonoBehaviour:
   RectPrefab: {fileID: 1299687542}
   FluidParticlePrefab: {fileID: 3322807078589243654, guid: b070197b3bbe7db46bc48c1c7ec64b83, type: 3}
   particleDiameter: 0
-  particleDiameterNormalizedX: 0
-  particleDiameterNormalizedY: 0
+  particleDNormX: 0
+  particleDNormY: 0
 --- !u!1001 &1009006020
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -17005,7 +17005,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4939134097035876455}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -18.8, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4939134097240553723}

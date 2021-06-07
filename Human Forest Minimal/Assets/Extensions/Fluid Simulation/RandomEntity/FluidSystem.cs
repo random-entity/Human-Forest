@@ -10,14 +10,14 @@ public class FluidSystem : MonoBehaviour
     private List<Transform> RectList;
     [SerializeField] private Transform RectPrefab;
     [SerializeField] private GameObject FluidParticlePrefab; // CircleCollider2D Radius 알려고.
-    [SerializeField] private float particleDiameter, particleDiameterNormalizedX, particleDiameterNormalizedY;
+    [SerializeField] private float particleDiameter, particleDNormX, particleDNormY;
     ObjectPooler ObjectPooler;
 
     private void Awake()
     {
         particleDiameter = FluidParticlePrefab.transform.localScale.x * FluidParticlePrefab.GetComponent<CircleCollider2D>().radius * 2f;
-        particleDiameterNormalizedX = particleDiameter / FrameWidthHeight.x;
-        particleDiameterNormalizedY = particleDiameter / FrameWidthHeight.y;
+        particleDNormX = particleDiameter / FrameWidthHeight.x;
+        particleDNormY = particleDiameter / FrameWidthHeight.y;
 
         ObjectPooler = ObjectPooler.instance;
 
@@ -53,12 +53,11 @@ public class FluidSystem : MonoBehaviour
             float w = xywh_i.Item3;
             float h = xywh_i.Item4;
 
-            for (float px = x; px < x + w; px += particleDiameterNormalizedX)
+            for (float px = x; px + particleDNormX < x + w; px += particleDNormX)
             {
-                for (float py = y; py < y + h; py += particleDiameterNormalizedY)
+                for (float py = y; py + particleDNormY < y + h; py += particleDNormY)
                 {
-                    Debug.LogFormat("{0}, {1}, {2}, {3}", px, py, particleDiameterNormalizedX, particleDiameterNormalizedY);
-                    ObjectPooler.SpawnFromPool("Fluid", XYWH2Position((px, py, particleDiameterNormalizedX, particleDiameterNormalizedY)));
+                    ObjectPooler.SpawnFromPool("Fluid", XYWH2Position((px, py, particleDNormX, particleDNormY)));
                 }
             }
         }
