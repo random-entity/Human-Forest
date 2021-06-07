@@ -3401,7 +3401,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &289113739
 Transform:
   m_ObjectHideFlags: 0
@@ -9812,8 +9812,10 @@ MonoBehaviour:
   - x: 0.55
     y: 10
   - x: 0.4
+    y: 40
+  - x: 0.25
     y: 20
-  - x: 0.9
+  - x: 0.8
     y: 30
   FrameBottomLeftPosition: {x: -5, y: -5, z: 0}
   FrameWidthHeight: {x: 10, y: 10, z: 0}
@@ -12594,7 +12596,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1290741894
 Transform:
   m_ObjectHideFlags: 0
