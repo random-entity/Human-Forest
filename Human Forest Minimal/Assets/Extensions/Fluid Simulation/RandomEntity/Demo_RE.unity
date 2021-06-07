@@ -6834,7 +6834,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &660121606
 Transform:
   m_ObjectHideFlags: 0
@@ -9821,12 +9821,7 @@ MonoBehaviour:
   RectTemplateParent: {fileID: 289113739}
   BarrierPrefab: {fileID: 505758979}
   BarrierParent: {fileID: 467093350}
-  propellerGroup:
-  - {fileID: 34461788}
-  - {fileID: 120252935}
-  - {fileID: 605123403}
-  - {fileID: 129738776}
-  - {fileID: 1480074295}
+  propellerParent: {fileID: 1290741894}
   propellerSpeed: 1024
   FluidParticlePrefab: {fileID: 3322807078589243654, guid: b070197b3bbe7db46bc48c1c7ec64b83, type: 3}
   FluidParticlesParent: {fileID: 1043337428}
@@ -12592,7 +12587,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1290741894
 Transform:
   m_ObjectHideFlags: 0

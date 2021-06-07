@@ -16,7 +16,7 @@ public class FluidSystem : MonoBehaviour
     [SerializeField] private Transform BarrierPrefab;
     [SerializeField] private Transform BarrierParent;
 
-    [SerializeField] private List<Transform> propellerGroup;
+    [SerializeField] private Transform propellerParent;
     [SerializeField] private float propellerSpeed;
 
     [SerializeField] private GameObject FluidParticlePrefab; // CircleCollider2D Radius 알려고.
@@ -68,7 +68,7 @@ public class FluidSystem : MonoBehaviour
     private void RunPropeller()
     {
         int i = 0;
-        foreach (Transform propeller in propellerGroup)
+        foreach (Transform propeller in propellerParent.transform)
         {
             i++;
             float direction = i % 2 == 0 ? -1f : 1f;
