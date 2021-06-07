@@ -7,12 +7,22 @@ public class FluidSystem : MonoBehaviour
     private float count; // Runtime 동안 이 값이 바뀔 일은 없겠지.
     [SerializeField] private List<(float x, float y, float w, float h)> XYWHList; // (xy = 왼쪽아래꼭지점의 x좌표) 이건 [0, 1]^3 기준.
     [SerializeField] private Vector3 FrameBottomLeftPosition, FrameWidthHeight;
+
     private List<Transform> RectList;
     [SerializeField] private Transform RectTemplatePrefab;
+    [SerializeField] private Transform RectTemplateParent;
+
     private List<Transform> BarrierList;
     [SerializeField] private Transform BarrierPrefab;
+    [SerializeField] private Transform BarrierParent;
+
+    [SerializeField] private List<Transform> propellerGroup;
+    [SerializeField] private float propellerSpeed;
+
     [SerializeField] private GameObject FluidParticlePrefab; // CircleCollider2D Radius 알려고.
-    [SerializeField] private float particleDiameter, particleDNormX, particleDNormY;
+    private float particleDiameter, particleDNormX, particleDNormY;
+    [SerializeField] private Transform FluidParticlesParent;
+
     ObjectPooler ObjectPooler;
 
     private void Awake()
@@ -30,13 +40,13 @@ public class FluidSystem : MonoBehaviour
         BarrierList = new List<Transform>();
         for (int i = 0; i < count; i++)
         {
-            Transform rect_i = Instantiate(RectTemplatePrefab);
+            Transform rect_i = Instantiate(RectTemplatePrefab, RectTemplateParent);
             rect_i.gameObject.SetActive(true);
             RectList.Add(rect_i);
 
             if (i == count - 1) break;
 
-            Transform b_i = Instantiate(BarrierPrefab);
+            Transform b_i = Instantiate(BarrierPrefab, BarrierParent);
             b_i.gameObject.SetActive(true);
             BarrierList.Add(b_i);
         }
@@ -45,12 +55,28 @@ public class FluidSystem : MonoBehaviour
         NormalizeValues();
         UpdateXYWHList();
         SetBarrierFromSVList();
+    }
 
-        SpawnFluidParticles();
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Alpha1)) SpawnFluidParticles();
+        if (Input.GetKeyDown(KeyCode.Alpha2)) ObjectPooler.instance.DeactivateAll("Fluid");
+
+        RunPropeller();
+    }
+
+    private void RunPropeller()
+    {
+        foreach (Transform propeller in propellerGroup)
+        {
+            propeller.transform.RotateAround(propeller.transform.position, Vector3.forward, propellerSpeed * Time.deltaTime);
+        }
     }
 
     private void SpawnFluidParticles()
     {
+        ObjectPooler.instance.DeactivateAll("Fluid");
+
         for (int i = 0; i < count; i++)
         {
             var xywh_i = XYWHList[i];
@@ -64,7 +90,7 @@ public class FluidSystem : MonoBehaviour
             {
                 for (float py = y; py + particleDNormY < 1.15f * (y + h); py += particleDNormY)
                 {
-                    ObjectPooler.SpawnFromPool("Fluid", XYWH2Position((px, py, particleDNormX, particleDNormY)));
+                    ObjectPooler.SpawnFromPool("Fluid", XYWH2Position((px, py, particleDNormX, particleDNormY)), FluidParticlesParent);
                 }
             }
         }

@@ -34,7 +34,7 @@ public class ObjectPooler : MonoSingleton<ObjectPooler>
         }
     }
 
-    public GameObject SpawnFromPool(string tag, Vector3 spawnPosition)
+    public GameObject SpawnFromPool(string tag, Vector3 spawnPosition, Transform parent)
     {
         if (!PoolDictionary.ContainsKey(tag))
         {
@@ -46,6 +46,7 @@ public class ObjectPooler : MonoSingleton<ObjectPooler>
 
         objectToSpawn.SetActive(true);
         objectToSpawn.transform.position = spawnPosition; // ObjectPooler에서 위치는 기본적으로 해줄게! 당연히 그래야지~
+        objectToSpawn.transform.SetParent(parent);
 
         IPooledObject pooledObj = objectToSpawn.GetComponent<IPooledObject>();
         if (pooledObj != null)
@@ -56,5 +57,25 @@ public class ObjectPooler : MonoSingleton<ObjectPooler>
         PoolDictionary[tag].Enqueue(objectToSpawn);
 
         return objectToSpawn;
+    }
+
+    public void DeactivateAll(string tag)
+    {
+        if (!PoolDictionary.ContainsKey(tag))
+        {
+            Debug.LogWarning("Pool with tag " + tag + " doesn't exist");
+        }
+        else
+        {
+            Queue<GameObject> queue = PoolDictionary[tag];
+            for (int i = 0; i < queue.Count; i++)
+            {
+                GameObject obj = queue.Dequeue();
+
+                if (obj.activeInHierarchy) obj.SetActive(false);
+
+                queue.Enqueue(obj);
+            }
+        }
     }
 }
