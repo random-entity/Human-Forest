@@ -91,10 +91,10 @@ Material:
     m_Floats:
     - PixelSnap: 0
     - _AlphaClip: 0
-    - _AlphaCutoff: 108.3
+    - _AlphaCutoff: 221.5
     - _BCutoff: 234.8
     - _Blend: 0
-    - _BlurAmount: 2.71
+    - _BlurAmount: 11.83
     - _BumpScale: 1
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0

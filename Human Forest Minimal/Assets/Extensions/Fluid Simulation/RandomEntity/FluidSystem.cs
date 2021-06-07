@@ -67,9 +67,12 @@ public class FluidSystem : MonoBehaviour
 
     private void RunPropeller()
     {
+        int i = 0;
         foreach (Transform propeller in propellerGroup)
         {
-            propeller.transform.RotateAround(propeller.transform.position, Vector3.forward, propellerSpeed * Time.deltaTime);
+            i++;
+            float direction = i % 2 == 0 ? -1f : 1f;
+            propeller.transform.RotateAround(propeller.transform.position, Vector3.forward, direction * propellerSpeed * Time.deltaTime);
         }
     }
 
