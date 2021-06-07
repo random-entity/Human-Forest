@@ -34,7 +34,7 @@ public class ObjectPooler : MonoSingleton<ObjectPooler>
         }
     }
 
-    public GameObject SpawnFromPool(string tag, Vector3 spawnPosition, Transform parent)
+    public GameObject SpawnFromPool(string tag, Vector3 spawnPosition, Transform parent, Color color)
     {
         if (!PoolDictionary.ContainsKey(tag))
         {
@@ -45,6 +45,7 @@ public class ObjectPooler : MonoSingleton<ObjectPooler>
         GameObject objectToSpawn = PoolDictionary[tag].Dequeue();
 
         objectToSpawn.SetActive(true);
+        objectToSpawn.GetComponent<SpriteRenderer>().color = color;
         objectToSpawn.transform.position = spawnPosition; // ObjectPooler에서 위치는 기본적으로 해줄게! 당연히 그래야지~
         objectToSpawn.transform.SetParent(parent);
 

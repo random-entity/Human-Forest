@@ -23,6 +23,9 @@ public class FluidSystem : MonoBehaviour
     private float particleDiameter, particleDNormX, particleDNormY;
     [SerializeField] private Transform FluidParticlesParent;
 
+    // [SerializeField] private ScriptableObject Swatch;
+    public List<Color> Swatch;
+
     ObjectPooler ObjectPooler;
 
     private void Awake()
@@ -89,11 +92,13 @@ public class FluidSystem : MonoBehaviour
             float w = xywh_i.w;
             float h = xywh_i.h;
 
+            Color color = Swatch[i];
+
             for (float px = x; px + particleDNormX < x + w; px += particleDNormX)
             {
                 for (float py = y; py + particleDNormY < 1.15f * (y + h); py += particleDNormY)
                 {
-                    ObjectPooler.SpawnFromPool("Fluid", XYWH2Position((px, py, particleDNormX, particleDNormY)), FluidParticlesParent);
+                    ObjectPooler.SpawnFromPool("Fluid", XYWH2Position((px, py, particleDNormX, particleDNormY)), FluidParticlesParent, color);
                 }
             }
         }
