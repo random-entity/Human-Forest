@@ -45,6 +45,8 @@ public class FluidSystem : MonoBehaviour
         {
             Transform rect_i = Instantiate(RectTemplatePrefab, RectTemplateParent);
             rect_i.gameObject.SetActive(true);
+            Color color_i = Swatch[i];
+            rect_i.GetComponent<SpriteRenderer>().color = new Color(color_i.r, color_i.g, color_i.b, 0.5f);
             RectList.Add(rect_i);
 
             if (i == count - 1) break;
@@ -64,6 +66,9 @@ public class FluidSystem : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Alpha1)) SpawnFluidParticles();
         if (Input.GetKeyDown(KeyCode.Alpha2)) ObjectPooler.instance.DeactivateAll("Fluid");
+        if (Input.GetKeyDown(KeyCode.Alpha3)) RectTemplateParent.gameObject.SetActive(!RectTemplateParent.gameObject.activeInHierarchy);
+        if (Input.GetKeyDown(KeyCode.Alpha4)) BarrierParent.gameObject.SetActive(!BarrierParent.gameObject.activeInHierarchy);
+        if (Input.GetKeyDown(KeyCode.Alpha5)) propellerParent.gameObject.SetActive(!propellerParent.gameObject.activeInHierarchy);
 
         RunPropeller();
     }
