@@ -2137,9 +2137,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PoolList:
-  - tag: 
-    prefab: {fileID: 0}
-    size: 0
+  - tag: Fluid
+    prefab: {fileID: 3322807078589243654, guid: b070197b3bbe7db46bc48c1c7ec64b83, type: 3}
+    size: 1600
 --- !u!4 &198739604
 Transform:
   m_ObjectHideFlags: 0
@@ -5199,7 +5199,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &660121606
 Transform:
   m_ObjectHideFlags: 0
@@ -7821,7 +7821,13 @@ MonoBehaviour:
     y: 30
   - x: 0.8
     y: 40
+  FrameBottomLeftPosition: {x: -5, y: -5, z: 0}
+  FrameWidthHeight: {x: 10, y: 10, z: 0}
   RectPrefab: {fileID: 1299687542}
+  FluidParticlePrefab: {fileID: 3322807078589243654, guid: b070197b3bbe7db46bc48c1c7ec64b83, type: 3}
+  particleDiameter: 0
+  particleDiameterNormalizedX: 0
+  particleDiameterNormalizedY: 0
 --- !u!1001 &1009006020
 PrefabInstance:
   m_ObjectHideFlags: 0
