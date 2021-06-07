@@ -5,10 +5,12 @@ public class FluidSystem : MonoBehaviour
 {
     public List<CFloat2> SVList; // (x = State, y = Value) Pair
     private float count; // Runtime 동안 이 값이 바뀔 일은 없겠지.
-    [SerializeField] private List<(float, float, float, float)> XYWHList; // (xy = 왼쪽아래꼭지점의 x좌표) 이건 [0, 1]^3 기준.
+    [SerializeField] private List<(float x, float y, float w, float h)> XYWHList; // (xy = 왼쪽아래꼭지점의 x좌표) 이건 [0, 1]^3 기준.
     [SerializeField] private Vector3 FrameBottomLeftPosition, FrameWidthHeight;
     private List<Transform> RectList;
-    [SerializeField] private Transform RectPrefab;
+    [SerializeField] private Transform RectTemplatePrefab;
+    private List<Transform> BarrierList;
+    [SerializeField] private Transform BarrierPrefab;
     [SerializeField] private GameObject FluidParticlePrefab; // CircleCollider2D Radius 알려고.
     [SerializeField] private float particleDiameter, particleDNormX, particleDNormY;
     ObjectPooler ObjectPooler;
@@ -25,19 +27,24 @@ public class FluidSystem : MonoBehaviour
         CheckSVListEmpty();
 
         RectList = new List<Transform>();
+        BarrierList = new List<Transform>();
         for (int i = 0; i < count; i++)
         {
-            Transform rect_i = Instantiate(RectPrefab);
+            Transform rect_i = Instantiate(RectTemplatePrefab);
             rect_i.gameObject.SetActive(true);
             RectList.Add(rect_i);
+
+            if (i == count - 1) break;
+
+            Transform b_i = Instantiate(BarrierPrefab);
+            b_i.gameObject.SetActive(true);
+            BarrierList.Add(b_i);
         }
 
         XYWHList = new List<(float, float, float, float)>();
-
         NormalizeValues();
         UpdateXYWHList();
-
-        RectPrefab.gameObject.SetActive(false);
+        SetBarrierFromSVList();
 
         SpawnFluidParticles();
     }
@@ -48,14 +55,14 @@ public class FluidSystem : MonoBehaviour
         {
             var xywh_i = XYWHList[i];
 
-            float x = xywh_i.Item1;
-            float y = xywh_i.Item2;
-            float w = xywh_i.Item3;
-            float h = xywh_i.Item4;
+            float x = xywh_i.x;
+            float y = xywh_i.y;
+            float w = xywh_i.w;
+            float h = xywh_i.h;
 
             for (float px = x; px + particleDNormX < x + w; px += particleDNormX)
             {
-                for (float py = y; py + particleDNormY < y + h; py += particleDNormY)
+                for (float py = y; py + particleDNormY < 1.15f * (y + h); py += particleDNormY)
                 {
                     ObjectPooler.SpawnFromPool("Fluid", XYWH2Position((px, py, particleDNormX, particleDNormY)));
                 }
@@ -74,6 +81,14 @@ public class FluidSystem : MonoBehaviour
             XYWHList.Add((x, 0f, SVList[i].y, SVList[i].x));
             MatchTransformToXYWH(RectList[i], XYWHList[i]);
             x += SVList[i].y;
+        }
+    }
+
+    private void SetBarrierFromSVList()
+    {
+        for (int i = 0; i < count - 1; i++)
+        {
+            BarrierList[i].transform.position = new Vector3(FrameBottomLeftPosition.x + FrameWidthHeight.x * XYWHList[i + 1].x, 0f, 0f);
         }
     }
 
