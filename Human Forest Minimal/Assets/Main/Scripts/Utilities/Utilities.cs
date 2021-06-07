@@ -22,11 +22,11 @@ public struct float2
 }
 
 [System.Serializable]
-public struct Float2
+public class CFloat2
 {
     public float x, y;
 
-    public Float2(float _x, float _y)
+    public CFloat2(float _x, float _y)
     {
         this.x = _x;
         this.y = _y;

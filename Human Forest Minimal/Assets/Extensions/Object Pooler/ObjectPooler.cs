@@ -4,14 +4,14 @@ using UnityEngine;
 public class ObjectPooler : MonoSingleton<ObjectPooler>
 {
     [System.Serializable]
-    public class Pool
+    public class ObjectPool
     {
         public string tag;
         public GameObject prefab;
         public int size;
     }
 
-    public List<Pool> Pools;
+    public List<ObjectPool> PoolList;
 
     public Dictionary<string, Queue<GameObject>> PoolDictionary;
 
@@ -19,7 +19,7 @@ public class ObjectPooler : MonoSingleton<ObjectPooler>
     {
         PoolDictionary = new Dictionary<string, Queue<GameObject>>();
 
-        foreach (Pool pool in Pools)
+        foreach (ObjectPool pool in PoolList)
         {
             Queue<GameObject> objectPool = new Queue<GameObject>();
 
