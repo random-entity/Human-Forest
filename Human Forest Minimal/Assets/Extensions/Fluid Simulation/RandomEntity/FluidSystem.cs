@@ -9,9 +9,10 @@ public class FluidSystem : MonoBehaviour
 
     [SerializeField] private GameObject FluidParticlePrefab; // CircleCollider2D Radius 알려고.
     private float particleDiameter, particleDNormX, particleDNormY;
+    private const float halfSqrt3 = 0.86602540378f;
     [SerializeField] private Transform FluidParticlesParent;
 
-    [SerializeField] private List<(float x, float y, float w, float h)> XYWHList; // (xy = 왼쪽아래꼭지점의 x좌표) 이건 [0, 1]^3 기준.
+    [SerializeField] private List<(float x, float y, float w, float h)> XYWHList; // (xy = 왼쪽아래꼭지점의 x좌표) 이건 [0, 1]^3 기준(normalized).
     [SerializeField] private Vector3 FrameBottomLeftPosition, FrameWidthHeight;
 
     private List<Transform> RectList;
@@ -93,6 +94,9 @@ public class FluidSystem : MonoBehaviour
     {
         ObjectPooler.instance.DeactivateAll("Fluid");
 
+        float rnx = particleDNormX * 0.5f; // radius, normalized, x방향
+        float rny = particleDNormY * 0.5f; // radius, normalized, y방향
+
         for (int i = 0; i < count; i++)
         {
             var xywh_i = XYWHList[i];
@@ -104,12 +108,15 @@ public class FluidSystem : MonoBehaviour
 
             Color color = Swatch[i];
 
-            for (float px = x; px + particleDNormX < x + w; px += particleDNormX)
+            bool even = true;
+            for (float py = y; py < (y + h); py += halfSqrt3 * particleDNormY)
             {
-                for (float py = y; py + particleDNormY < (y + h); py += particleDNormY)
+                for (float px = x + (even ? 0f : particleDNormX); px + particleDNormX < x + w; px += particleDNormX)
                 {
                     ObjectPooler.SpawnFromPool("Fluid", XYWH2Position((px, py, particleDNormX, particleDNormY)), FluidParticlesParent, color, 1f);
                 }
+
+                even = !even;
             }
         }
     }
