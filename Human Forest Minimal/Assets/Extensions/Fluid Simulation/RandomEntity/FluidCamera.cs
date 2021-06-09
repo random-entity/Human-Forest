@@ -11,6 +11,7 @@ public class FluidCamera : MonoBehaviour
     {
         output = new RenderTexture(256, 256, 8, RenderTextureFormat.ARGB32);
         output.Create();
+        GetComponent<Camera>().targetTexture = output;
 
         quad.GetComponent<MeshRenderer>().material.mainTexture = output;
     }
