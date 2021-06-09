@@ -4,7 +4,13 @@ using UnityEngine;
 public class FluidSystem : MonoBehaviour
 {
     public List<CFloat2> SVList; // (x = State, y = Value) Pair
+
     private float count; // Runtime 동안 이 값이 바뀔 일은 없겠지.
+    
+    [SerializeField] private GameObject FluidParticlePrefab; // CircleCollider2D Radius 알려고.
+    private float particleDiameter, particleDNormX, particleDNormY;
+    [SerializeField] private Transform FluidParticlesParent;
+    
     [SerializeField] private List<(float x, float y, float w, float h)> XYWHList; // (xy = 왼쪽아래꼭지점의 x좌표) 이건 [0, 1]^3 기준.
     [SerializeField] private Vector3 FrameBottomLeftPosition, FrameWidthHeight;
 
@@ -18,10 +24,6 @@ public class FluidSystem : MonoBehaviour
 
     [SerializeField] private Transform propellerParent;
     [SerializeField] private float propellerSpeed;
-
-    [SerializeField] private GameObject FluidParticlePrefab; // CircleCollider2D Radius 알려고.
-    private float particleDiameter, particleDNormX, particleDNormY;
-    [SerializeField] private Transform FluidParticlesParent;
 
     // [SerializeField] private ScriptableObject Swatch;
     public List<Color> Swatch;
