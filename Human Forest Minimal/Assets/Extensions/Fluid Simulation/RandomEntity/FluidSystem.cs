@@ -106,9 +106,9 @@ public class FluidSystem : MonoBehaviour
 
             for (float px = x; px + particleDNormX < x + w; px += particleDNormX)
             {
-                for (float py = y; py + particleDNormY < 1.15f * (y + h); py += particleDNormY)
+                for (float py = y; py + particleDNormY < (y + h); py += particleDNormY)
                 {
-                    ObjectPooler.SpawnFromPool("Fluid", XYWH2Position((px, py, particleDNormX, particleDNormY)), FluidParticlesParent, color, 10f * i + 1f);
+                    ObjectPooler.SpawnFromPool("Fluid", XYWH2Position((px, py, particleDNormX, particleDNormY)), FluidParticlesParent, color, 1f);
                 }
             }
         }
