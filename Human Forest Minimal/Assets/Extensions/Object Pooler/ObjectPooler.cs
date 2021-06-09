@@ -15,6 +15,8 @@ public class ObjectPooler : MonoSingleton<ObjectPooler>
 
     public Dictionary<string, Queue<GameObject>> PoolDictionary;
 
+    [SerializeField] private Transform initialParent;
+
     public override void Init()
     {
         PoolDictionary = new Dictionary<string, Queue<GameObject>>();
@@ -25,7 +27,7 @@ public class ObjectPooler : MonoSingleton<ObjectPooler>
 
             for (int i = 0; i < pool.size; i++)
             {
-                GameObject obj = Instantiate(pool.prefab);
+                GameObject obj = Instantiate(pool.prefab, initialParent);
                 obj.SetActive(false);
                 objectPool.Enqueue(obj);
             }
