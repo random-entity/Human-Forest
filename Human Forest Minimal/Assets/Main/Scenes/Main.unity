@@ -671,6 +671,7 @@ GameObject:
   - component: {fileID: 2065345330}
   - component: {fileID: 2065345331}
   - component: {fileID: 2065345332}
+  - component: {fileID: 2065345333}
   m_Layer: 0
   m_Name: TotalManager
   m_TagString: Untagged
@@ -718,9 +719,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3bc7b1419af2d774b92c7ed4b884a743, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PersonPrefab: {fileID: 5444046423477402851, guid: 99b4770ee3838f441a110d03275d2201, type: 3}
-  InitialPersonCount: 12
-  RealSociety: []
 --- !u!114 &2065345331
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -796,3 +794,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a5f2f1f7fd0e004ea3abb26d285e12f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2065345333
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2065345327}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bee078ad4ce1ae84d8cc41f8d843109f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PersonPrefab: {fileID: 5444046423477402851, guid: 99b4770ee3838f441a110d03275d2201, type: 3}
+  InitialPersonCount: 12
+  RealSociety: []
+  RealAndImagesSociety: []

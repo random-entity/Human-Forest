@@ -9,6 +9,7 @@ using UnityEngine;
 /// Override <code>Init()</code> method instead of using <code>Awake()</code>
 /// from this class.
 /// </summary>
+
 public abstract class MonoSingleton<T> : MonoBehaviour where T : MonoSingleton<T>
 {
     private static T m_Instance = null;
@@ -70,7 +71,6 @@ public abstract class MonoSingleton<T> : MonoBehaviour where T : MonoSingleton<T
             m_Instance.Init();
         }
     }
-
 
     /// <summary>
     /// This function is called when the instance is used the first time

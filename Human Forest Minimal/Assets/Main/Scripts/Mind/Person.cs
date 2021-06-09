@@ -1,22 +1,26 @@
 using UnityEngine;
 
-public class Person : MonoBehaviour
+public class Person : MonoBehaviour, Agent
 {
-    public bool IsAlive;
-
-    public int Index;
     public Vector2 Position;
-
-    public MSV Mind;
 
     private void Awake()
     {
-        IsAlive = true;
-        Mind = new MSV();
-
         Position = new Vector2(UnityEngine.Random.Range(-0.5f, 0.5f), UnityEngine.Random.Range(-0.5f, 0.5f)) * GameManager.instance.LandSize;
         SetTransformToPositionVector();
     }
+
+    private void SetTransformToPositionVector()
+    {
+        transform.position = new Vector3(Position.x, 1, Position.y);
+    }
+}
+    
+    // public bool IsAlive;
+
+    // public int Index;
+
+    // public MSV Mind;
 
     // public float Emotion;
     // public float Health;
@@ -107,9 +111,3 @@ public class Person : MonoBehaviour
 
     //     return ((desire, desireObj), (good, goodObj), (ethical, ethicalObj));
     // }
-
-    private void SetTransformToPositionVector()
-    {
-        transform.position = new Vector3(Position.x, 1, Position.y);
-    }
-}

@@ -51,131 +51,131 @@ public enum EvaluativeMatter // State는 따로 없고 Value인 것들
     // => 요게 PersonalMatter.Reputation으로. 
 }
 
-public class M2S // Matter => State
-{
-    public Dictionary<Matter, float> Map;
-
-    public M2S()
-    {
-        Map = new Dictionary<Matter, float>();
-
-        foreach (Matter m in Enum.GetValues(typeof(Matter)))
-        {
-            Map.Add(m, 0.5f);
-        }
-    }
-}
-
-public class M2V // Matter => Value
-{
-    public Dictionary<Matter, float> Map;
-
-    public M2V()
-    {
-        Map = new Dictionary<Matter, float>();
-
-        foreach (Matter m in Enum.GetValues(typeof(Matter)))
-        {
-            Map.Add(m, 1f);
-        }
-    }
-}
-
-// public abstract class T2Float<T>
+// public class M2S // Matter => State
 // {
-//     public Dictionary<T, float> Map;
+//     public Dictionary<Matter, float> Map;
 
-//     public T2Float()
+//     public M2S()
 //     {
-//         Map = new Dictionary<T, float>();
+//         Map = new Dictionary<Matter, float>();
 
-//         foreach (T m in Enum.GetValues(typeof(T)))
+//         foreach (Matter m in Enum.GetValues(typeof(Matter)))
+//         {
+//             Map.Add(m, 0.5f);
+//         }
+//     }
+// }
+
+// public class M2V // Matter => Value
+// {
+//     public Dictionary<Matter, float> Map;
+
+//     public M2V()
+//     {
+//         Map = new Dictionary<Matter, float>();
+
+//         foreach (Matter m in Enum.GetValues(typeof(Matter)))
 //         {
 //             Map.Add(m, 1f);
 //         }
 //     }
 // }
 
-public class R2P2S // RelationamMatter => ObjectPerson => State
-{
-    public Dictionary<RelationalMatter, Dictionary<Person, float>> Map;
+// // public abstract class T2Float<T>
+// // {
+// //     public Dictionary<T, float> Map;
 
-    public R2P2S()
-    {
-        Map = new Dictionary<RelationalMatter, Dictionary<Person, float>>();
+// //     public T2Float()
+// //     {
+// //         Map = new Dictionary<T, float>();
 
-        foreach (RelationalMatter r in Enum.GetValues(typeof(RelationalMatter)))
-        {
-            Dictionary<Person, float> d = new Dictionary<Person, float>();
-            Map.Add(r, d);
+// //         foreach (T m in Enum.GetValues(typeof(T)))
+// //         {
+// //             Map.Add(m, 1f);
+// //         }
+// //     }
+// // }
 
-            foreach (Person q in SocietyManager.instance.RealSociety)
-            {
-                d.Add(q, 0.5f);
-            }
-        }
-    }
-}
+// public class R2P2S // RelationamMatter => ObjectPerson => State
+// {
+//     public Dictionary<RelationalMatter, Dictionary<Person, float>> Map;
 
-public class R2P2V // RelationalMatter => ObjectPerson => Value
-{
-    public Dictionary<RelationalMatter, Dictionary<Person, float>> Map;
+//     public R2P2S()
+//     {
+//         Map = new Dictionary<RelationalMatter, Dictionary<Person, float>>();
 
-    public R2P2V()
-    {
-        Map = new Dictionary<RelationalMatter, Dictionary<Person, float>>();
+//         foreach (RelationalMatter r in Enum.GetValues(typeof(RelationalMatter)))
+//         {
+//             Dictionary<Person, float> d = new Dictionary<Person, float>();
+//             Map.Add(r, d);
 
-        foreach (RelationalMatter r in Enum.GetValues(typeof(RelationalMatter)))
-        {
-            Dictionary<Person, float> d = new Dictionary<Person, float>();
-            Map.Add(r, d);
+//             foreach (Person q in SocietyManager.instance.RealSociety)
+//             {
+//                 d.Add(q, 0.5f);
+//             }
+//         }
+//     }
+// }
 
-            foreach (Person q in SocietyManager.instance.RealSociety)
-            {
-                d.Add(q, 1f);
-            }
-        }
-    }
-}
+// public class R2P2V // RelationalMatter => ObjectPerson => Value
+// {
+//     public Dictionary<RelationalMatter, Dictionary<Person, float>> Map;
 
-public class E2P2V // EvaluativeMatter => Person => Value
-{
-    public Dictionary<EvaluativeMatter, Dictionary<Person, float>> Map;
+//     public R2P2V()
+//     {
+//         Map = new Dictionary<RelationalMatter, Dictionary<Person, float>>();
 
-    public E2P2V()
-    {
-        Map = new Dictionary<EvaluativeMatter, Dictionary<Person, float>>();
+//         foreach (RelationalMatter r in Enum.GetValues(typeof(RelationalMatter)))
+//         {
+//             Dictionary<Person, float> d = new Dictionary<Person, float>();
+//             Map.Add(r, d);
 
-        foreach (EvaluativeMatter e in Enum.GetValues(typeof(EvaluativeMatter)))
-        {
-            Dictionary<Person, float> d = new Dictionary<Person, float>();
-            Map.Add(e, d);
+//             foreach (Person q in SocietyManager.instance.RealSociety)
+//             {
+//                 d.Add(q, 1f);
+//             }
+//         }
+//     }
+// }
 
-            foreach (Person q in SocietyManager.instance.RealSociety)
-            {
-                d.Add(q, 1f);
-            }
-        }
-    }
-}
+// public class E2P2V // EvaluativeMatter => Person => Value
+// {
+//     public Dictionary<EvaluativeMatter, Dictionary<Person, float>> Map;
 
-public class MSV
-{
-    public M2S State;
-    public M2V Value;
-    public R2P2S RState;
-    public R2P2V RValue;
-    public E2P2V EValue;
+//     public E2P2V()
+//     {
+//         Map = new Dictionary<EvaluativeMatter, Dictionary<Person, float>>();
 
-    public MSV()
-    {
-        State = new M2S();
-        Value = new M2V();
-        RState = new R2P2S();
-        RValue = new R2P2V();
-        EValue = new E2P2V();
-    }
-}
+//         foreach (EvaluativeMatter e in Enum.GetValues(typeof(EvaluativeMatter)))
+//         {
+//             Dictionary<Person, float> d = new Dictionary<Person, float>();
+//             Map.Add(e, d);
+
+//             foreach (Person q in SocietyManager.instance.RealSociety)
+//             {
+//                 d.Add(q, 1f);
+//             }
+//         }
+//     }
+// }
+
+// public class MSV
+// {
+//     public M2S State;
+//     public M2V Value;
+//     public R2P2S RState;
+//     public R2P2V RValue;
+//     public E2P2V EValue;
+
+//     public MSV()
+//     {
+//         State = new M2S();
+//         Value = new M2V();
+//         RState = new R2P2S();
+//         RValue = new R2P2V();
+//         EValue = new E2P2V();
+//     }
+// }
 
 // public class StateValuePair // State & Value
 // {
