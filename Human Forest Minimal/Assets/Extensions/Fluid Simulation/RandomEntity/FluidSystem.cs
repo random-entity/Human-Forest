@@ -6,17 +6,18 @@ public class FluidSystem : MonoBehaviour
     public List<CFloat2> SVList; // (x = State, y = Value) Pair
 
     private float count; // Runtime 동안 이 값이 바뀔 일은 없겠지.
-    
+
     [SerializeField] private GameObject FluidParticlePrefab; // CircleCollider2D Radius 알려고.
     private float particleDiameter, particleDNormX, particleDNormY;
     [SerializeField] private Transform FluidParticlesParent;
-    
+
     [SerializeField] private List<(float x, float y, float w, float h)> XYWHList; // (xy = 왼쪽아래꼭지점의 x좌표) 이건 [0, 1]^3 기준.
     [SerializeField] private Vector3 FrameBottomLeftPosition, FrameWidthHeight;
 
     private List<Transform> RectList;
     [SerializeField] private Transform RectTemplatePrefab;
     [SerializeField] private Transform RectTemplateParent;
+    private Transform RectForWeightedMean;
 
     private List<Transform> BarrierList;
     [SerializeField] private Transform BarrierPrefab;
@@ -57,6 +58,7 @@ public class FluidSystem : MonoBehaviour
             b_i.gameObject.SetActive(true);
             BarrierList.Add(b_i);
         }
+        RectForWeightedMean = Instantiate(RectTemplatePrefab, RectTemplateParent);
 
         XYWHList = new List<(float, float, float, float)>();
         NormalizeValues();
@@ -69,8 +71,9 @@ public class FluidSystem : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha1)) SpawnFluidParticles();
         if (Input.GetKeyDown(KeyCode.Alpha2)) ObjectPooler.instance.DeactivateAll("Fluid");
         if (Input.GetKeyDown(KeyCode.Alpha3)) RectTemplateParent.gameObject.SetActive(!RectTemplateParent.gameObject.activeInHierarchy);
-        if (Input.GetKeyDown(KeyCode.Alpha4)) BarrierParent.gameObject.SetActive(!BarrierParent.gameObject.activeInHierarchy);
-        if (Input.GetKeyDown(KeyCode.Alpha5)) propellerParent.gameObject.SetActive(!propellerParent.gameObject.activeInHierarchy);
+        if (Input.GetKeyDown(KeyCode.Alpha4)) RectForWeightedMean.gameObject.SetActive(!RectForWeightedMean.gameObject.activeInHierarchy);
+        if (Input.GetKeyDown(KeyCode.Alpha5)) BarrierParent.gameObject.SetActive(!BarrierParent.gameObject.activeInHierarchy);
+        if (Input.GetKeyDown(KeyCode.Alpha6)) propellerParent.gameObject.SetActive(!propellerParent.gameObject.activeInHierarchy);
 
         RunPropeller();
     }
@@ -105,7 +108,7 @@ public class FluidSystem : MonoBehaviour
             {
                 for (float py = y; py + particleDNormY < 1.15f * (y + h); py += particleDNormY)
                 {
-                    ObjectPooler.SpawnFromPool("Fluid", XYWH2Position((px, py, particleDNormX, particleDNormY)), FluidParticlesParent, color);
+                    ObjectPooler.SpawnFromPool("Fluid", XYWH2Position((px, py, particleDNormX, particleDNormY)), FluidParticlesParent, color, 10f * i + 1f);
                 }
             }
         }
@@ -123,6 +126,8 @@ public class FluidSystem : MonoBehaviour
             MatchTransformToXYWH(RectList[i], XYWHList[i]);
             x += SVList[i].y;
         }
+
+        MatchTransformToXYWH(RectForWeightedMean, (0f, 0f, 1f, GetWeightedMeans()));
     }
 
     private void SetBarrierFromSVList()
@@ -167,6 +172,19 @@ public class FluidSystem : MonoBehaviour
             }
         }
     }
+
+    private float GetWeightedMeans()
+    {
+        NormalizeValues();
+
+        float m = 0f;
+        for (int i = 0; i < count; i++)
+        {
+            m += SVList[i].y * SVList[i].x;
+        }
+        return m;
+    }
+
     #endregion
 
     #region XWH2Vector3

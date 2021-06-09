@@ -34,7 +34,7 @@ public class ObjectPooler : MonoSingleton<ObjectPooler>
         }
     }
 
-    public GameObject SpawnFromPool(string tag, Vector3 spawnPosition, Transform parent, Color color)
+    public GameObject SpawnFromPool(string tag, Vector3 spawnPosition, Transform parent, Color color, float mass)
     {
         if (!PoolDictionary.ContainsKey(tag))
         {
@@ -46,14 +46,9 @@ public class ObjectPooler : MonoSingleton<ObjectPooler>
 
         objectToSpawn.SetActive(true);
         objectToSpawn.GetComponent<SpriteRenderer>().color = color;
+        objectToSpawn.GetComponent<Rigidbody2D>().mass = mass;
         objectToSpawn.transform.position = spawnPosition; // ObjectPooler에서 위치는 기본적으로 해줄게! 당연히 그래야지~
         objectToSpawn.transform.SetParent(parent);
-
-        IPooledObject pooledObj = objectToSpawn.GetComponent<IPooledObject>();
-        if (pooledObj != null)
-        {
-            pooledObj.OnObjectSpawn();
-        }
 
         PoolDictionary[tag].Enqueue(objectToSpawn);
 
