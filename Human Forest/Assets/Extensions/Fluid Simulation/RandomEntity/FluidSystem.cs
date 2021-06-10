@@ -13,7 +13,8 @@ public class FluidSystem : MonoBehaviour
     [SerializeField] private Transform FluidParticlesParent;
 
     [SerializeField] private List<(float x, float y, float w, float h)> XYWHList; // (xy = 왼쪽아래꼭지점의 x좌표) 이건 [0, 1]^3 기준(normalized).
-    [SerializeField] private Vector3 FrameBottomLeftPosition, FrameWidthHeight;
+    [SerializeField] private Transform FrameBottomLeft, FrameTopRight;
+    private Vector3 FrameBottomLeftPosition, FrameWidthHeight;
 
     private List<Transform> RectList;
     [SerializeField] private Transform RectTemplatePrefab;
@@ -27,21 +28,23 @@ public class FluidSystem : MonoBehaviour
     [SerializeField] private Transform propellerParent;
     [SerializeField] private float propellerSpeed;
 
-    // [SerializeField] private ScriptableObject Swatch;
     public List<Color> Swatch;
 
-    ObjectPooler ObjectPooler;
+    ObjectPooler objectPooler;
 
     private void Awake()
     {
+        count = SVList.Count;
+        CheckSVListEmpty();
+
+        FrameBottomLeftPosition = FrameBottomLeft.position;
+        FrameWidthHeight = FrameTopRight.position - FrameBottomLeft.position;
+
         particleDiameter = FluidParticlePrefab.transform.localScale.x * FluidParticlePrefab.GetComponent<CircleCollider2D>().radius * 2f;
         particleDNormX = particleDiameter / FrameWidthHeight.x;
         particleDNormY = particleDiameter / FrameWidthHeight.y;
 
-        ObjectPooler = ObjectPooler.instance;
-
-        count = SVList.Count;
-        CheckSVListEmpty();
+        objectPooler = ObjectPooler.instance;
 
         RectList = new List<Transform>();
         BarrierList = new List<Transform>();
@@ -70,7 +73,7 @@ public class FluidSystem : MonoBehaviour
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Alpha1)) SpawnFluidParticles();
-        if (Input.GetKeyDown(KeyCode.Alpha2)) ObjectPooler.instance.DeactivateAll("Fluid");
+        if (Input.GetKeyDown(KeyCode.Alpha2)) objectPooler.DeactivateAll("Fluid");
         if (Input.GetKeyDown(KeyCode.Alpha3)) RectTemplateParent.gameObject.SetActive(!RectTemplateParent.gameObject.activeInHierarchy);
         if (Input.GetKeyDown(KeyCode.Alpha4)) RectForWeightedMean.gameObject.SetActive(!RectForWeightedMean.gameObject.activeInHierarchy);
         if (Input.GetKeyDown(KeyCode.Alpha5)) BarrierParent.gameObject.SetActive(!BarrierParent.gameObject.activeInHierarchy);
@@ -92,7 +95,7 @@ public class FluidSystem : MonoBehaviour
 
     private void SpawnFluidParticles()
     {
-        ObjectPooler.instance.DeactivateAll("Fluid");
+        objectPooler.DeactivateAll("Fluid");
 
         float rnx = particleDNormX * 0.5f; // radius, normalized, x방향
         float rny = particleDNormY * 0.5f; // radius, normalized, y방향
@@ -113,7 +116,7 @@ public class FluidSystem : MonoBehaviour
             {
                 for (float px = x + (even ? 0f : particleDNormX); px + particleDNormX < x + w; px += particleDNormX)
                 {
-                    ObjectPooler.SpawnFromPool("Fluid", XYWH2Position((px, py, particleDNormX, particleDNormY)), FluidParticlesParent, color, 1f);
+                    objectPooler.SpawnFromPool("Fluid", XYWH2Position((px, py, particleDNormX, particleDNormY)), FluidParticlesParent, color, 1f);
                 }
 
                 even = !even;

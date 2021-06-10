@@ -17,13 +17,18 @@ public class HumanForest : MonoSingleton<HumanForest>
     ** RealPerson p가 RealPerson q에게 갖는 RelationalMatter 그런 건 허용하지 않는다는 이야기.
     ** 그런 것을 포함한 모든 것은 RealPerson p의 ImageSociety 속에서만 일어나게끔 하는 것이 덜 복잡하다.
     */
-    Dictionary<Person, Dictionary<Person, Dictionary<Person, Dictionary<RelationalMatter, float>>>> PQRrM2State; // PQRrM2S[p][q][r][rm] = p.Image(q)가 p.Image(r)에게 갖는 rm의 state.
-    Dictionary<Person, Dictionary<Person, Dictionary<Person, Dictionary<RelationalMatter, float>>>> PQRrM2Value; // PQRrM2S[p][q][r][rm] = p.Image(q)가 p.Image(r)에게 갖는 rm의 value.
+    Dictionary<Person, Dictionary<Person, Dictionary<Person, Dictionary<Relation, float>>>> PQRrM2State; // PQRrM2S[p][q][r][rm] = p.Image(q)가 p.Image(r)에게 갖는 rm의 state.
+    Dictionary<Person, Dictionary<Person, Dictionary<Person, Dictionary<Relation, float>>>> PQRrM2Value; // PQRrM2S[p][q][r][rm] = p.Image(q)가 p.Image(r)에게 갖는 rm의 value.
 
     Dictionary<Person, Dictionary<Matter, float>> PM2State; // RealOrImagePerson p => M2Float (Matter m => float state). p의 s 함수.
     Dictionary<Person, Dictionary<Matter, float>> PM2Value; // RealOrImagePerson p => M2Float (Matter m => float state). p의 sigma 함수.
 
     Dictionary<Person, Dictionary<Person, float>> PQ2C; // RealPerson p => (RealPerson q => float consideration). p의 c 함수.
+
+    #region Relation-Dependent Matters' State 계산
+    
+
+    #endregion
 
     #region Utility 계산
     public float Utility(Dictionary<Matter, float> s, Dictionary<Matter, float> sigma) // SSigma2Float U = (M2Float s) => (M2Float sigma) => (float u).
@@ -162,27 +167,27 @@ public class HumanForest : MonoSingleton<HumanForest>
             PM2Value.Add(p, m2v);
         }
 
-        PQRrM2State = new Dictionary<Person, Dictionary<Person, Dictionary<Person, Dictionary<RelationalMatter, float>>>>();
-        PQRrM2Value = new Dictionary<Person, Dictionary<Person, Dictionary<Person, Dictionary<RelationalMatter, float>>>>();
+        PQRrM2State = new Dictionary<Person, Dictionary<Person, Dictionary<Person, Dictionary<Relation, float>>>>();
+        PQRrM2Value = new Dictionary<Person, Dictionary<Person, Dictionary<Person, Dictionary<Relation, float>>>>();
 
         foreach (Person p in RealSociety)
         {
-            Dictionary<Person, Dictionary<Person, Dictionary<RelationalMatter, float>>> qRrM2State = new Dictionary<Person, Dictionary<Person, Dictionary<RelationalMatter, float>>>();
-            Dictionary<Person, Dictionary<Person, Dictionary<RelationalMatter, float>>> qRrM2Value = new Dictionary<Person, Dictionary<Person, Dictionary<RelationalMatter, float>>>();
+            Dictionary<Person, Dictionary<Person, Dictionary<Relation, float>>> qRrM2State = new Dictionary<Person, Dictionary<Person, Dictionary<Relation, float>>>();
+            Dictionary<Person, Dictionary<Person, Dictionary<Relation, float>>> qRrM2Value = new Dictionary<Person, Dictionary<Person, Dictionary<Relation, float>>>();
 
             foreach (Person q in RealSociety)
             {
                 Person psImageOfQ = PsImageOfQs[p][q];
-                Dictionary<Person, Dictionary<RelationalMatter, float>> rrM2State = new Dictionary<Person, Dictionary<RelationalMatter, float>>();
-                Dictionary<Person, Dictionary<RelationalMatter, float>> rrM2Value = new Dictionary<Person, Dictionary<RelationalMatter, float>>();
+                Dictionary<Person, Dictionary<Relation, float>> rrM2State = new Dictionary<Person, Dictionary<Relation, float>>();
+                Dictionary<Person, Dictionary<Relation, float>> rrM2Value = new Dictionary<Person, Dictionary<Relation, float>>();
 
                 foreach (Person r in RealSociety)
                 {
                     Person psImageOfR = PsImageOfQs[p][r];
-                    Dictionary<RelationalMatter, float> rM2State = new Dictionary<RelationalMatter, float>();
-                    Dictionary<RelationalMatter, float> rM2Value = new Dictionary<RelationalMatter, float>();
+                    Dictionary<Relation, float> rM2State = new Dictionary<Relation, float>();
+                    Dictionary<Relation, float> rM2Value = new Dictionary<Relation, float>();
 
-                    foreach (RelationalMatter rm in Enum.GetValues(typeof(RelationalMatter)))
+                    foreach (Relation rm in Enum.GetValues(typeof(Relation)))
                     {
                         rM2State.Add(rm, 0.5f);
                         rM2Value.Add(rm, 1f);
