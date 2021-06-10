@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class FluidSystem : MonoBehaviour
 {
-    public List<CFloat2> SVList; // (x = State, y = Value) Pair
+    public List<cloat2> SVList; // (x = State, y = Value) Pair
 
     private float count; // Runtime 동안 이 값이 바뀔 일은 없겠지.
 
@@ -161,7 +161,7 @@ public class FluidSystem : MonoBehaviour
 
         float sum = 0;
 
-        foreach (CFloat2 sv in SVList)
+        foreach (cloat2 sv in SVList)
         {
             sum += sv.y;
         }
@@ -175,7 +175,7 @@ public class FluidSystem : MonoBehaviour
         {
             for (int i = 0; i < count; i++)
             {
-                SVList[i] = new CFloat2(SVList[i].x, SVList[i].y / sum);
+                SVList[i] = new cloat2(SVList[i].x, SVList[i].y / sum);
             }
         }
     }

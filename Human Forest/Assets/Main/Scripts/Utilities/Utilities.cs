@@ -10,11 +10,11 @@ public struct PersonPair
 }
 
 [System.Serializable]
-public struct float2
+public struct sloat2
 {
     public float x, y;
 
-    public float2(float _x, float _y)
+    public sloat2(float _x, float _y)
     {
         this.x = _x;
         this.y = _y;
@@ -22,11 +22,11 @@ public struct float2
 }
 
 [System.Serializable]
-public class CFloat2
+public class cloat2
 {
     public float x, y;
 
-    public CFloat2(float _x, float _y)
+    public cloat2(float _x, float _y)
     {
         this.x = _x;
         this.y = _y;

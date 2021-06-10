@@ -2091,8 +2091,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 3855020890750938401}
-  m_RootOrder: 7
+  m_Father: {fileID: 3855020891118305229}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &3855020890510905649
 SpriteRenderer:
@@ -2188,7 +2188,7 @@ Transform:
   - {fileID: 3855020890451207292}
   - {fileID: 3855020890036663881}
   m_Father: {fileID: 3855020890750938401}
-  m_RootOrder: 8
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3855020890535860660
 GameObject:
@@ -2941,9 +2941,7 @@ Transform:
   - {fileID: 3855020890833774994}
   - {fileID: 8211361028701462816}
   - {fileID: 3855020891276328480}
-  - {fileID: 3855020891369782341}
   - {fileID: 3855020891118305229}
-  - {fileID: 3855020890510905648}
   - {fileID: 3855020890517688768}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -3542,9 +3540,10 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 3855020890510905648}
   m_Father: {fileID: 3855020890750938401}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3855020891121290950
 GameObject:
@@ -4008,7 +4007,8 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 3855020891369782341}
   m_Father: {fileID: 3855020890750938401}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4150,8 +4150,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.1, y: 14, z: 1}
   m_Children: []
-  m_Father: {fileID: 3855020890750938401}
-  m_RootOrder: 5
+  m_Father: {fileID: 3855020891276328480}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &3855020891369782340
 SpriteRenderer:
@@ -4476,7 +4476,6 @@ GameObject:
   - component: {fileID: 8211361028427055549}
   - component: {fileID: 8211361028427055550}
   - component: {fileID: 8211361028427055551}
-  - component: {fileID: 8211361028427055537}
   m_Layer: 6
   m_Name: FluidFramePart
   m_TagString: Untagged
@@ -4575,27 +4574,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!50 &8211361028427055537
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8211361028427055536}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 6200000, guid: 32e6e55e9be61c54aabfb0b12c182348, type: 2}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!1 &8211361028605428564
 GameObject:
   m_ObjectHideFlags: 0
@@ -4607,7 +4585,6 @@ GameObject:
   - component: {fileID: 8211361028605428561}
   - component: {fileID: 8211361028605428562}
   - component: {fileID: 8211361028605428563}
-  - component: {fileID: 8211361028605428565}
   m_Layer: 6
   m_Name: FluidFramePart (1)
   m_TagString: Untagged
@@ -4706,27 +4683,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!50 &8211361028605428565
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8211361028605428564}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 6200000, guid: 32e6e55e9be61c54aabfb0b12c182348, type: 2}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!1 &8211361028701462817
 GameObject:
   m_ObjectHideFlags: 0
@@ -4772,7 +4728,6 @@ GameObject:
   - component: {fileID: 8211361028743114163}
   - component: {fileID: 8211361028743114164}
   - component: {fileID: 8211361028743114165}
-  - component: {fileID: 8211361028743114167}
   m_Layer: 6
   m_Name: FluidFramePart (3)
   m_TagString: Untagged
@@ -4871,27 +4826,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!50 &8211361028743114167
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8211361028743114166}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 6200000, guid: 32e6e55e9be61c54aabfb0b12c182348, type: 2}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!1 &8211361029982944347
 GameObject:
   m_ObjectHideFlags: 0
@@ -4903,7 +4837,6 @@ GameObject:
   - component: {fileID: 8211361029982944344}
   - component: {fileID: 8211361029982944345}
   - component: {fileID: 8211361029982944346}
-  - component: {fileID: 8211361029982944358}
   m_Layer: 6
   m_Name: FluidFramePart (2)
   m_TagString: Untagged
@@ -5002,24 +4935,3 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!50 &8211361029982944358
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8211361029982944347}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 6200000, guid: 32e6e55e9be61c54aabfb0b12c182348, type: 2}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0

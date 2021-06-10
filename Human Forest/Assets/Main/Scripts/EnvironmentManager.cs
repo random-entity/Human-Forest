@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class GameManager : MonoSingleton<GameManager>
+public class EnvironmentManager : MonoSingleton<EnvironmentManager>
 {
     public GameObject Land;
     public float LandSize;

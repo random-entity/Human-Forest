@@ -608,6 +608,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 436378860, guid: 99b4770ee3838f441a110d03275d2201, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5444046423477402872, guid: 99b4770ee3838f441a110d03275d2201, type: 3}
       propertyPath: m_Name
       value: Person
@@ -782,7 +786,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2065345328}
   - component: {fileID: 2065345329}
-  - component: {fileID: 2065345330}
   - component: {fileID: 2065345331}
   - component: {fileID: 2065345332}
   - component: {fileID: 2065345333}
@@ -821,18 +824,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Land: {fileID: 318912730}
   LandSize: 100
---- !u!114 &2065345330
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2065345327}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3bc7b1419af2d774b92c7ed4b884a743, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &2065345331
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -924,3 +915,4 @@ MonoBehaviour:
   InitialPersonCount: 12
   RealSociety: []
   RealAndImagesSociety: []
+  imagePersonMaterial: {fileID: 2100000, guid: 47b5391ba899dce4186e5d6e878a42a0, type: 2}
