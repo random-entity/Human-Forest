@@ -1,25 +1,6 @@
 using System;
 using System.Collections.Generic;
-
-public class History : MonoSingleton<History>
-{
-    public static List<Episode> history;
-}
-
-public class Episode
-{
-
-}
-
-public interface Agent
-{
-
-}
-
-public class God : Agent
-{
-
-}
+using UnityEngine;
 
 public class HumanForest : MonoSingleton<HumanForest>
 {
@@ -27,10 +8,15 @@ public class HumanForest : MonoSingleton<HumanForest>
     public int InitialPersonCount = 12;
     public List<Person> RealSociety;
 
-    Dictionary<Person, Dictionary<Person, Person>> PsImageOfQs; // ImageMatrix[p][q] = RealPerson p => RealPerson q => ImagePerson p.Im(q).
+    Dictionary<Person, Dictionary<Person, Person>> PsImageOfQs; // ImageMatrix[p][q] = RealPerson p => RealPerson q => ImagePerson p.Image(q).
     public List<Person> RealAndImagesSociety; // 초기화 때를 위해 편의상 전체에 대한 레퍼런스 남겨놓으려고.
+    [SerializeField] private Material imagePersonMaterial;
 
-    // RelationalMatter에 대한 state와 value는 ImagePerson끼리만 가질 수 있다. (물론 p.Image(p)는 자기 자신, ImagePerson이지만 RealPerson.)
+    /*
+    ** RelationalMatter에 대한 state와 value는 ImagePerson끼리만 가질 수 있다. (물론 p.Image(p)는 자기 자신, ImagePerson이지만 RealPerson.)
+    ** RealPerson p가 RealPerson q에게 갖는 RelationalMatter 그런 건 허용하지 않는다는 이야기.
+    ** 그런 것을 포함한 모든 것은 RealPerson p의 ImageSociety 속에서만 일어나게끔 하는 것이 덜 복잡하다.
+    */
     Dictionary<Person, Dictionary<Person, Dictionary<Person, Dictionary<RelationalMatter, float>>>> PQRrM2State; // PQRrM2S[p][q][r][rm] = p.Image(q)가 p.Image(r)에게 갖는 rm의 state.
     Dictionary<Person, Dictionary<Person, Dictionary<Person, Dictionary<RelationalMatter, float>>>> PQRrM2Value; // PQRrM2S[p][q][r][rm] = p.Image(q)가 p.Image(r)에게 갖는 rm의 value.
 
@@ -39,6 +25,7 @@ public class HumanForest : MonoSingleton<HumanForest>
 
     Dictionary<Person, Dictionary<Person, float>> PQ2C; // RealPerson p => (RealPerson q => float consideration). p의 c 함수.
 
+    #region Utility 계산
     public float Utility(Dictionary<Matter, float> s, Dictionary<Matter, float> sigma) // SSigma2Float U = (M2Float s) => (M2Float sigma) => (float u).
     {
         float u = 0f;
@@ -52,12 +39,19 @@ public class HumanForest : MonoSingleton<HumanForest>
         return u;
     }
 
-    public float Utility(Person evaluator, Person target) // RealPerson evaluator의 ImagePerson image[target]의 Utility
+    public float Utility(Person evaluator, Person target) // RealPerson evaluator의 이미지 속 ImagePerson image[target]의 Utility
     {
         Person image = PsImageOfQs[evaluator][target];
         return Utility(PM2State[image], PM2Value[image]);
     }
 
+    public float Utility(Person selfEvaluator) // p가 스스로의 Utility를 계산할 때
+    {
+        return Utility(selfEvaluator, selfEvaluator); // p의 이미지 속 image[p] = (RealPerson) p니까.
+    }
+    #endregion
+
+    #region Total Utility 계산
     public float TotalUtility(Dictionary<Person, float> c) // 실제 인간들이 갖고 있는 정확한 값을 가지고 주어진 c 함수로 계산할 때.
     {
         float t = 0f;
@@ -86,7 +80,9 @@ public class HumanForest : MonoSingleton<HumanForest>
     {
         return TotalUtility(evaluator, PQ2C[evaluator]);
     }
+    #endregion
 
+    #region initialization
     public override void Init()
     {
         RealSociety = new List<Person>();
@@ -112,11 +108,31 @@ public class HumanForest : MonoSingleton<HumanForest>
                 else
                 {
                     Person psImageOfQ = Instantiate(q);
+                    psImageOfQ.gameObject.GetComponent<MeshRenderer>().material = imagePersonMaterial;
                     PsImage.Add(q, psImageOfQ);
                 }
             }
 
             PsImageOfQs.Add(p, PsImage);
+        }
+
+        foreach (Person p in RealSociety)
+        {
+            float angle = 0f;
+
+            foreach (Person q in RealSociety)
+            {
+                angle += Mathf.PI * 2f / 12f;
+
+                if (q != p)
+                {
+                    Transform imageTransform = PsImageOfQs[p][q].transform;
+
+                    imageTransform.position = p.transform.position + new Vector3(Mathf.Cos(angle), 2f, Mathf.Sin(angle));
+                    imageTransform.localScale = p.transform.localScale * 0.25f;
+                    imageTransform.SetParent(p.transform);
+                }
+            }
         }
 
         RealAndImagesSociety = new List<Person>();
@@ -184,4 +200,5 @@ public class HumanForest : MonoSingleton<HumanForest>
             PQRrM2Value.Add(p, qRrM2State);
         }
     }
+    #endregion
 }

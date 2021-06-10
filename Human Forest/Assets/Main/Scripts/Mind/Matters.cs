@@ -1,9 +1,9 @@
 public enum Matter
 {
-    Test1, Test2,
-
+    //    Test1, Test2,
     // 정서
     EmotionValence,
+
     // EmotionArousal,
     // Mood,
 
@@ -38,10 +38,7 @@ public enum RelationalMatter // 상상은 여기에 들어가지 않는다. 상�
     // // => Desired와 Expected의 곱이 PersonalMatter.SocialAffinity로.
 
     // // ... 가치가 뭐뭐 있을까
-}
-
-public enum EvaluativeMatter // State는 따로 없고 Value인 것들
-{
+    
     // Evaluative
     ExistentialValue, // 패배감, 자괴감, 자신감, 내가 가치 있는 사람인가. // Fulfillment와 합체. // Existence, // 저 사람의 존재 가치.
     // AestheticValue, // 저 사람의 미적 가치. 

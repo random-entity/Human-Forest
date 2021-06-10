@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Person : MonoBehaviour, Agent
+public class Person : MonoBehaviour
 {
     public Vector2 Position;
 
