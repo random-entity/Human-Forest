@@ -5,6 +5,7 @@ using UnityEngine;
 public class HumanForest : MonoSingleton<HumanForest>
 {
     public Person PersonPrefab;
+    [SerializeField] private Transform PersonsParent;
     public int InitialPersonCount = 12;
     public List<Person> RealSociety;
 
@@ -26,7 +27,7 @@ public class HumanForest : MonoSingleton<HumanForest>
     Dictionary<Person, Dictionary<Person, float>> PQ2C; // RealPerson p => (RealPerson q => float consideration). p의 c 함수.
 
     #region Relation-Dependent Matters' State 계산
-    
+
 
     #endregion
 
@@ -96,6 +97,8 @@ public class HumanForest : MonoSingleton<HumanForest>
         {
             Person pi = Instantiate(PersonPrefab);
             RealSociety.Add(pi);
+
+            pi.transform.SetParent(PersonsParent);
         }
 
         PsImageOfQs = new Dictionary<Person, Dictionary<Person, Person>>();
