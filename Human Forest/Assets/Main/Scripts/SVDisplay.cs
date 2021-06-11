@@ -14,7 +14,7 @@ public class SVDisplay : MonoBehaviour
     private int count;
 
     [SerializeField] private List<(float x, float y, float w, float h)> NormXYWHList; // (xy = 왼쪽아래꼭지점의 x좌표) 이건 [0, 1]^3 기준(normalized).
-    [SerializeField] private Transform BorderBottomLeft, BorderTopRight;
+    public Transform BorderBottomLeft, BorderTopRight;
     private Vector3 BorderBottomLeftPosition, BorderWidthHeight;
 
     private List<Transform> RectList;

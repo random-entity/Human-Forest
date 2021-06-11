@@ -6,13 +6,14 @@ public class GUIManager : MonoBehaviour
 {
     private HumanForest humanForest;
 
-    [SerializeField] private Transform svDisplayPrefab;
+    [SerializeField] private Transform SVDisplayPrefab;
     private Dictionary<Person, SVDisplay> svDisplays; // RealOrImagePerson p => Quad for displaying U(p)
     private List<Person> realAndImageSociety;
 
     [SerializeField] private Transform GUIBoard;
     private Vector3 boardCenter;
     private float boardWidth, boardHeight;
+    private float svDisplayWidth = 1f;
     [SerializeField] private float padding = 1f;
 
     private void Start()
@@ -29,19 +30,28 @@ public class GUIManager : MonoBehaviour
         int index = 0;
         foreach (Person p in realAndImageSociety)
         {
-            Transform svTransform = Instantiate(svDisplayPrefab);
+            Transform svTransform = Instantiate(SVDisplayPrefab);
             svDisplays.Add(p, svTransform.GetComponent<SVDisplay>());
 
             svTransform.position = norm22V3(index / 12f, 0f, -1f);
             svTransform.SetParent(GUIBoard);
 
+            SetSVListSize(p);
             UpdateSVList(p);
 
             index++;
         }
     }
 
-    private void UpdateSVList(Person p)
+    private void SetSVListSize(Person p)
+    {
+        SVDisplay svd = svDisplays[p];
+
+        svd.BorderBottomLeft.position = svd.transform.position - new Vector3(0.5f * svDisplayWidth, 0.5f * svDisplayWidth, 0f);
+        svd.BorderTopRight.position = svd.transform.position + new Vector3(0.5f * svDisplayWidth, 0.5f * svDisplayWidth, 0f);
+    }
+
+    private void UpdateSVList(Person p) // cloat2는 레퍼런스 타입이니까 Initialization 때 한 번만 불러도 충분하다는 희망이 있다.
     {
         SVDisplay svd = svDisplays[p];
 
@@ -51,11 +61,10 @@ public class GUIManager : MonoBehaviour
         {
             // float s = humanForest.PM2State[p][m];
             // float v = humanForest.PM2Value[p][m];
-            // psv.Add(new cloat2(s, v));
+            psv.Add(humanForest.PM2SV[p][m]);
         }
 
         svd.SVList = psv;
-
     }
 
     private Vector3 norm22V3(float x, float y, float worldV3z)

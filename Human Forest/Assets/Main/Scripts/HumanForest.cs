@@ -13,6 +13,12 @@ public class HumanForest : MonoSingleton<HumanForest>
     public List<Person> RealAndImagesSociety; // 초기화 때를 위해 편의상 전체에 대한 레퍼런스 남겨놓으려고.
     [SerializeField] private Material imagePersonMaterial;
 
+    // 히힝
+    private float rand()
+    {
+        return UnityEngine.Random.Range(0.1f, 0.9f);
+    }
+
     /*
     ** RelationalMatter에 대한 state와 value는 ImagePerson끼리만 가질 수 있다. (물론 p.Image(p)는 자기 자신, ImagePerson이지만 RealPerson.)
     ** RealPerson p가 RealPerson q에게 갖는 RelationalMatter 그런 건 허용하지 않는다는 이야기.
@@ -201,7 +207,7 @@ public class HumanForest : MonoSingleton<HumanForest>
             {
                 // m2s.Add(m, 0.5f);
                 // m2v.Add(m, 1f);
-                m2sv.Add(m, new cloat2(0.5f, 1f));
+                m2sv.Add(m, new cloat2(rand(), rand()));
             }
 
             // PM2State.Add(p, m2s);
@@ -236,7 +242,7 @@ public class HumanForest : MonoSingleton<HumanForest>
                     {
                         // rM2State.Add(rm, 0.5f);
                         // rM2Value.Add(rm, 1f);
-                        rM2SV.Add(rm, new cloat2(0.5f, 1f));
+                        rM2SV.Add(rm, new cloat2(rand(), rand()));
                     }
 
                     // rrM2State.Add(r, rM2State);

@@ -3,6 +3,7 @@ using System.Linq;
 
 public enum Matter
 {
+    Test1, Test2, Test3, 
     EmotionValence,
     Reputation,
     #region landfill

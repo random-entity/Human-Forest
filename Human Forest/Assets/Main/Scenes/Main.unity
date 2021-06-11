@@ -923,7 +923,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc3d5956adedac644a7b9579767953d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Quad_U_p_prefab: {fileID: 880546003852195227, guid: d797bc947a23b0342b0732d1c8d5b8b5, type: 3}
+  SVDisplayPrefab: {fileID: 8315080173735098901, guid: 494f0be7622fc8e41b5b81aaf81bd1bd, type: 3}
   GUIBoard: {fileID: 1583583379}
   padding: 1
 --- !u!1 &1778564984
