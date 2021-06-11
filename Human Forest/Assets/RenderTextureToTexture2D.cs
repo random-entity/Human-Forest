@@ -10,6 +10,6 @@ public class RenderTextureToTexture2D : MonoBehaviour
 
     private void Update()
     {
-        GetComponent<SpriteRenderer>().sprite = Sprite.Create(Utilities.toTexture2D(FluidRenderTexture), rect, pivot);
+        GetComponent<SpriteRenderer>().sprite = Sprite.Create(Extensions.toTexture2D(FluidRenderTexture), rect, pivot);
     }
 }

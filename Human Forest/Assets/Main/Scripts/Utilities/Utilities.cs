@@ -1,6 +1,7 @@
+using System.Collections.Generic;
 using UnityEngine;
 
-public static class Utilities
+public static class Extensions
 {
     public static Texture2D toTexture2D(RenderTexture rTex)
     {
@@ -10,6 +11,26 @@ public static class Utilities
         tex.ReadPixels(new Rect(0, 0, rTex.width, rTex.height), 0, 0);
         tex.Apply();
         return tex;
+    }
+
+    public static Dictionary<T, float> SplitDictionary<T>(Dictionary<T, cloat2> original, bool xTrueYFalse)
+    {
+        Dictionary<T, float> split = new Dictionary<T, float>();
+
+        foreach (T key in original.Keys)
+        {
+            cloat2 sv = original[key];
+            if (xTrueYFalse)
+            {
+                split.Add(key, sv.x);
+            }
+            else
+            {
+                split.Add(key, sv.y);
+            }
+        }
+
+        return split;
     }
 }
 
