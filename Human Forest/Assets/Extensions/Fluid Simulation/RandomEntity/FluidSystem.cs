@@ -6,6 +6,12 @@ public class FluidSystem : MonoBehaviour
     public List<cloat2> SVList; // (x = State, y = Value) Pair
 
     private float count; // Runtime 동안 이 값이 바뀔 일은 없겠지.
+                         // 바뀔 수 있겠네.
+
+    private void OnSVListUpdate()
+    {
+
+    } // 업데이트 하는 측이 갖고 있는 event에 subscribe 시켜야 됨.
 
     [SerializeField] private GameObject FluidParticlePrefab; // CircleCollider2D Radius 알려고.
     private float particleDiameter, particleDNormX, particleDNormY;
