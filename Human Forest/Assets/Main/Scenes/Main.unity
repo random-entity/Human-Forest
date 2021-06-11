@@ -704,6 +704,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseCameras: []
+--- !u!114 &1422156132 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3855020890750938414, guid: 2256c2467e97aa542a5b24a89025e365, type: 3}
+  m_PrefabInstance: {fileID: 1224575900}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c476c010376aacf41913621ff719715d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1466606961
 GameObject:
   m_ObjectHideFlags: 0
@@ -1342,14 +1353,14 @@ MonoBehaviour:
   RectPrefab: {fileID: 2887093211117138937}
   RectParent: {fileID: 2887093212665093380}
   Swatch:
-  - {r: 1, g: 0, b: 0, a: 0}
-  - {r: 1, g: 0.60045624, b: 0, a: 0}
-  - {r: 0.9926069, g: 1, b: 0, a: 0}
-  - {r: 0.18567729, g: 1, b: 0, a: 0}
-  - {r: 0, g: 1, b: 0.736706, a: 0}
-  - {r: 0, g: 0.6293888, b: 1, a: 0}
-  - {r: 0.59720945, g: 0, b: 1, a: 0}
-  alpha: 1
+  - {r: 1, g: 0, b: 0, a: 1}
+  - {r: 1, g: 0.60045624, b: 0, a: 1}
+  - {r: 0.9926069, g: 1, b: 0, a: 1}
+  - {r: 0.18567729, g: 1, b: 0, a: 1}
+  - {r: 0, g: 1, b: 0.736706, a: 1}
+  - {r: 0, g: 0.6293888, b: 1, a: 1}
+  - {r: 0.59720945, g: 0, b: 1, a: 1}
+  fluidSystem: {fileID: 1422156132}
 --- !u!4 &2887093212665093380
 Transform:
   m_ObjectHideFlags: 0

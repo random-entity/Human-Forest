@@ -13,6 +13,11 @@ public static class Utilities
     }
 }
 
+public static class Const
+{
+    public const int MaxSVListCount = 15;
+}
+
 public struct PersonPair
 {
     Person Subject, Object;

@@ -3,119 +3,91 @@ using UnityEngine;
 
 public class FluidSystem : MonoBehaviour
 {
-    public List<cloat2> SVList; // (x = State, y = Value) Pair
-
-    private float count; // Runtime 동안 이 값이 바뀔 일은 없겠지.
-                         // 바뀔 수 있겠네.
-
-    private void OnSVListUpdate()
-    {
-
-    } // 업데이트 하는 측이 갖고 있는 event에 subscribe 시켜야 됨.
-
-    [SerializeField] private GameObject FluidParticlePrefab; // CircleCollider2D Radius 알려고.
-    private float particleDiameter, particleDNormX, particleDNormY;
-    private const float halfSqrt3 = 0.86602540378f;
+    // Particle에 대한 것들.
     [SerializeField] private Transform FluidParticlesParent;
+    [SerializeField] private GameObject FluidParticlePrefab; // CircleCollider2D Radius 알려고.
+    private float particleDiameter;
+    private const float halfSqrt3 = 0.86602540378f;
 
-    [SerializeField] private List<(float x, float y, float w, float h)> XYWHList; // (xy = 왼쪽아래꼭지점의 x좌표) 이건 [0, 1]^3 기준(normalized).
-    [SerializeField] private Transform FrameBottomLeft, FrameTopRight;
+    // Fluid Frame에 대한 것들.
+    [SerializeField] private Transform FluidSystemOrigin; // 기준점 알려고.
     private Vector3 FrameBottomLeftPosition, FrameWidthHeight;
+    [SerializeField] private Transform fluidFrameParent, fluidFramePartPrefab;
+    private Dictionary<int, Transform> fluidFrameParts;
 
-    private List<Transform> RectList;
-    [SerializeField] private Transform RectTemplatePrefab;
-    [SerializeField] private Transform RectTemplateParent;
-    private Transform RectForWeightedMean;
-
+    // Fluid Barrier들.
     private List<Transform> BarrierList;
     [SerializeField] private Transform BarrierPrefab;
     [SerializeField] private Transform BarrierParent;
 
+    // 프로펠러.
     [SerializeField] private Transform propellerParent;
     [SerializeField] private float propellerSpeed;
 
-    public List<Color> Swatch;
-
+    // 가장 중요한 ObjectPooler instance caching.
     ObjectPooler objectPooler;
 
     private void Awake()
     {
-        count = SVList.Count;
-        CheckSVListEmpty();
-
-        FrameBottomLeftPosition = FrameBottomLeft.position;
-        FrameWidthHeight = FrameTopRight.position - FrameBottomLeft.position;
-
-        particleDiameter = FluidParticlePrefab.transform.localScale.x * FluidParticlePrefab.GetComponent<CircleCollider2D>().radius * 2f;
-        particleDNormX = particleDiameter / FrameWidthHeight.x;
-        particleDNormY = particleDiameter / FrameWidthHeight.y;
-
         objectPooler = ObjectPooler.instance;
 
-        RectList = new List<Transform>();
-        BarrierList = new List<Transform>();
-        for (int i = 0; i < count; i++)
+        particleDiameter = FluidParticlePrefab.transform.localScale.x * FluidParticlePrefab.GetComponent<CircleCollider2D>().radius * 2f;
+
+        // 처음에만 10 x 10 틀로 하드코딩해. 나중엔 config에서 받아. 변수 갖고 있을 필요 없잖아.
+        FrameBottomLeftPosition = FluidSystemOrigin.position - new Vector3(10f, 10f, 0f);
+        FrameWidthHeight = new Vector3(10f, 10f, 0f);
+
+        fluidFrameParts = new Dictionary<int, Transform>();
+        for (int i = 0; i < 4; i++)
         {
-            Transform rect_i = Instantiate(RectTemplatePrefab, RectTemplateParent);
-            rect_i.gameObject.SetActive(true);
-            Color color_i = Swatch[i];
-            rect_i.GetComponent<SpriteRenderer>().color = new Color(color_i.r, color_i.g, color_i.b, 0.5f);
-            RectList.Add(rect_i);
+            Transform part = Instantiate(fluidFramePartPrefab, fluidFrameParent);
+            fluidFrameParts.Add(i, part); // 0 = left, 1 = right, 2 = bottom, 3 = top
+            part.gameObject.SetActive(true);
+        }
+        BuildFluidFrame(10f, 10f);
 
-            if (i == count - 1) break;
-
+        BarrierList = new List<Transform>();
+        for (int i = 0; i < Const.MaxSVListCount; i++)
+        {
             Transform b_i = Instantiate(BarrierPrefab, BarrierParent);
             b_i.gameObject.SetActive(true);
             BarrierList.Add(b_i);
         }
-        RectForWeightedMean = Instantiate(RectTemplatePrefab, RectTemplateParent);
-
-        XYWHList = new List<(float, float, float, float)>();
-        NormalizeValues();
-        UpdateXYWHList();
-        SetBarrierFromSVList();
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha1)) SpawnFluidParticles();
         if (Input.GetKeyDown(KeyCode.Alpha2)) objectPooler.DeactivateAll("Fluid");
-        if (Input.GetKeyDown(KeyCode.Alpha3)) RectTemplateParent.gameObject.SetActive(!RectTemplateParent.gameObject.activeInHierarchy);
-        if (Input.GetKeyDown(KeyCode.Alpha4)) RectForWeightedMean.gameObject.SetActive(!RectForWeightedMean.gameObject.activeInHierarchy);
         if (Input.GetKeyDown(KeyCode.Alpha5)) BarrierParent.gameObject.SetActive(!BarrierParent.gameObject.activeInHierarchy);
         if (Input.GetKeyDown(KeyCode.Alpha6)) propellerParent.gameObject.SetActive(!propellerParent.gameObject.activeInHierarchy);
 
         RunPropeller();
     }
 
-    private void RunPropeller()
+    public void SpawnFluidParticles(FluidSpawnConfig config)
     {
-        int i = 0;
-        foreach (Transform propeller in propellerParent.transform)
-        {
-            i++;
-            float direction = i % 2 == 0 ? -1f : 1f;
-            propeller.transform.RotateAround(propeller.transform.position, Vector3.forward, direction * propellerSpeed * Time.deltaTime);
-        }
-    }
+        OnUpdateConfig(config);
 
-    private void SpawnFluidParticles()
-    {
         objectPooler.DeactivateAll("Fluid");
+
+        float particleDNormX = particleDiameter / config.frameWidth;
+        float particleDNormY = particleDiameter / config.frameHeight;
 
         float rnx = particleDNormX * 0.5f; // radius, normalized, x방향
         float rny = particleDNormY * 0.5f; // radius, normalized, y방향
 
-        for (int i = 0; i < count; i++)
+        for (int i = 0; i < config.NormXYWHList.Count; i++)
         {
-            var xywh_i = XYWHList[i];
+            var xywh_i = config.NormXYWHList[i];
 
             float x = xywh_i.x;
             float y = xywh_i.y;
             float w = xywh_i.w;
             float h = xywh_i.h;
 
-            Color color = Swatch[i];
+            Color color;
+            if (i < config.Swatch.Count) color = config.Swatch[i];
+            else color = Color.black;
 
             bool even = true;
             for (float py = y; py < (y + h); py += halfSqrt3 * particleDNormY)
@@ -130,78 +102,59 @@ public class FluidSystem : MonoBehaviour
         }
     }
 
-    private void UpdateXYWHList()
+    #region config 받으면 업데이트해야 하는 것들.
+    // 통합
+    private void OnUpdateConfig(FluidSpawnConfig config)
     {
-        XYWHList.Clear();
-
-        float x = 0;
-
-        for (int i = 0; i < count; i++)
-        {
-            XYWHList.Add((x, 0f, SVList[i].y, SVList[i].x));
-            MatchTransformToXYWH(RectList[i], XYWHList[i]);
-            x += SVList[i].y;
-        }
-
-        MatchTransformToXYWH(RectForWeightedMean, (0f, 0f, 1f, GetWeightedMeans()));
+        UpdateFrameSize(config);
+        BuildFluidFrame(config.frameWidth, config.frameHeight);
+        UpdateBarriers(config);
     }
 
-    private void SetBarrierFromSVList()
+    private void UpdateBarriers(FluidSpawnConfig config)
     {
-        for (int i = 0; i < count - 1; i++)
-        {
-            MatchTransformToXYWH(BarrierList[i], (XYWHList[i+1].x, XYWHList[i+1].y, 0.01f, 1f));
-            // BarrierList[i].transform.position = new Vector3(FrameBottomLeftPosition.x + FrameWidthHeight.x * XYWHList[i + 1].x, 0f, 0f);
-        }
-    }
+        var XYWHList = config.NormXYWHList;
 
-    #region Housekeeping
-    private void CheckSVListEmpty()
-    {
-        if (count == 0)
+        for (int i = 0; i < Const.MaxSVListCount; i++)
         {
-            Debug.LogWarning("SVList.Count == 0");
-            return;
-        }
-    }
+            var b_i = BarrierList[i];
 
-    private void NormalizeValues()
-    {
-        CheckSVListEmpty();
-
-        float sum = 0;
-
-        foreach (cloat2 sv in SVList)
-        {
-            sum += sv.y;
-        }
-
-        if (sum <= 0)
-        {
-            Debug.LogWarning("sum of values <= 0");
-            return;
-        }
-        else
-        {
-            for (int i = 0; i < count; i++)
+            if (i < config.NormXYWHList.Count - 1)
             {
-                SVList[i] = new cloat2(SVList[i].x, SVList[i].y / sum);
+                b_i.gameObject.SetActive(true);
+                MatchTransformToXYWH(b_i, (XYWHList[i + 1].x, XYWHList[i + 1].y, 0.01f, 1f));
+            }
+            else
+            {
+                b_i.gameObject.SetActive(false);
             }
         }
     }
 
-    private float GetWeightedMeans()
+    private void UpdateFrameSize(FluidSpawnConfig config)
     {
-        NormalizeValues();
-
-        float m = 0f;
-        for (int i = 0; i < count; i++)
-        {
-            m += SVList[i].y * SVList[i].x;
-        }
-        return m;
+        FrameBottomLeftPosition = FluidSystemOrigin.position - new Vector3(config.frameWidth * 0.5f, config.frameHeight * 0.5f, 0f);
+        FrameWidthHeight = new Vector3(config.frameWidth, config.frameHeight, 0f);
     }
 
+    private void BuildFluidFrame(float fluidFrameWidth, float fluidFrameHeight)
+    {
+        var left = fluidFrameParts[0];
+        left.localPosition = new Vector3(-fluidFrameWidth * 0.5f - 1, 0f, 0f);
+        left.localScale = new Vector3(2f, fluidFrameHeight + 4f, 1f);
+
+        var right = fluidFrameParts[1];
+        right.localPosition = new Vector3(fluidFrameWidth * 0.5f + 1, 0f, 0f);
+        right.localScale = new Vector3(2f, fluidFrameHeight + 4f, 1f);
+
+        var bottom = fluidFrameParts[2];
+        bottom.localPosition = new Vector3(0f, -fluidFrameHeight * 0.5f - 1, 0f);
+        bottom.localScale = new Vector3(fluidFrameWidth + 4f, 2f, 1f);
+
+        var top = fluidFrameParts[3];
+        top.localPosition = new Vector3(0f, fluidFrameHeight * 0.5f + 1, 0f);
+        top.localScale = new Vector3(fluidFrameWidth + 4f, 2f, 1f);
+    }
     #endregion
 
     #region XWH2Vector3
@@ -219,6 +172,17 @@ public class FluidSystem : MonoBehaviour
     {
         t.localScale = XYWH2Scale(xywh);
         t.position = XYWH2Position(xywh);
+    }
+
+    private void RunPropeller()
+    {
+        int i = 0;
+        foreach (Transform propeller in propellerParent.transform)
+        {
+            i++;
+            float direction = i % 2 == 0 ? -1f : 1f;
+            propeller.transform.RotateAround(propeller.transform.position, Vector3.forward, direction * propellerSpeed * Time.deltaTime);
+        }
     }
     #endregion
 }
