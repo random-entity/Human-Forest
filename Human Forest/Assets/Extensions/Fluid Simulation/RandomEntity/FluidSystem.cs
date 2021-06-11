@@ -150,7 +150,8 @@ public class FluidSystem : MonoBehaviour
     {
         for (int i = 0; i < count - 1; i++)
         {
-            BarrierList[i].transform.position = new Vector3(FrameBottomLeftPosition.x + FrameWidthHeight.x * XYWHList[i + 1].x, 0f, 0f);
+            MatchTransformToXYWH(BarrierList[i], (XYWHList[i+1].x, XYWHList[i+1].y, 0.01f, 1f));
+            // BarrierList[i].transform.position = new Vector3(FrameBottomLeftPosition.x + FrameWidthHeight.x * XYWHList[i + 1].x, 0f, 0f);
         }
     }
 
