@@ -6,13 +6,22 @@ public class CameraManager : MonoSingleton<CameraManager>
 
     public override void Init()
     {
+        if (cameras.Length > 0)
+        {
+
+        }
+        else
+        {
+            Debug.Log("No cameras registered to CameraManager");
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    private void IO(int camIndex)
     {
-        // if (Input.GetKeyDown(KeyCode.Q)) cam1.gameObject.SetActive(!cam1.gameObject.activeInHierarchy);
-        // if (Input.GetKeyDown(KeyCode.W)) cam2.gameObject.SetActive(!cam2.gameObject.activeInHierarchy);
-        // if (Input.GetKeyDown(KeyCode.E)) cam3.gameObject.SetActive(!cam3.gameObject.activeInHierarchy);
+        for (int i = 0; i < cameras.Length; i++)
+        {
+            if (i == camIndex) cameras[i].gameObject.SetActive(true);
+            else cameras[i].gameObject.SetActive(false);
+        }
     }
 }

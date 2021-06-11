@@ -28,6 +28,7 @@ public class GUIManager : MonoBehaviour
             Transform quad = Instantiate(Quad_U_p_prefab);
             P2Quad_U.Add(p, quad);
             quad.position = norm22V3(index / 12f, 0f, -1f);
+            quad.SetParent(GUIBoard);
 
             index++;
         }
