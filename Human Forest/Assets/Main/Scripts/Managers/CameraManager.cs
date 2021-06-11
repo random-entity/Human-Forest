@@ -2,11 +2,11 @@ using UnityEngine;
 
 public class CameraManager : MonoSingleton<CameraManager>
 {
-    [SerializeField] private Camera[] cameras;
+    [SerializeField] private Camera[] baseCameras;
 
     public override void Init()
     {
-        if (cameras.Length > 0)
+        if (baseCameras.Length > 0)
         {
 
         }
@@ -18,10 +18,10 @@ public class CameraManager : MonoSingleton<CameraManager>
 
     private void IO(int camIndex)
     {
-        for (int i = 0; i < cameras.Length; i++)
+        for (int i = 0; i < baseCameras.Length; i++)
         {
-            if (i == camIndex) cameras[i].gameObject.SetActive(true);
-            else cameras[i].gameObject.SetActive(false);
+            if (i == camIndex) baseCameras[i].gameObject.SetActive(true);
+            else baseCameras[i].gameObject.SetActive(false);
         }
     }
 }
