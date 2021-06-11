@@ -10,6 +10,9 @@ public struct FluidSpawnConfig
 
 public class SVDisplay : MonoBehaviour
 {
+    // 여기에서 OnClick 이벤트 발생시키자.
+    // 테두리도 만들자.
+
     public List<cloat2> SVList; // (x = State, y = Value) Pair
     private int count;
 
@@ -63,13 +66,13 @@ public class SVDisplay : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha1)) fluidSystem.SpawnFluidParticles(new FluidSpawnConfig
-        {
-            NormXYWHList = NormXYWHList,
-            Swatch = Swatch,
-            frameWidth = 10f,
-            frameHeight = 10f
-        });
+        // if (Input.GetKeyDown(KeyCode.Alpha1)) fluidSystem.SpawnFluidParticles(new FluidSpawnConfig
+        // {
+        //     NormXYWHList = NormXYWHList,
+        //     Swatch = Swatch,
+        //     frameWidth = 10f,
+        //     frameHeight = 10f
+        // });
         if (Input.GetKeyDown(KeyCode.Alpha3)) RectParent.gameObject.SetActive(!RectParent.gameObject.activeInHierarchy);
         if (Input.GetKeyDown(KeyCode.Alpha4)) RectForWeightedMean.gameObject.SetActive(!RectForWeightedMean.gameObject.activeInHierarchy);
 

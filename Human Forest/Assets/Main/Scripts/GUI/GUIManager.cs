@@ -32,9 +32,12 @@ public class GUIManager : MonoBehaviour
         {
             Transform svTransform = Instantiate(SVDisplayPrefab);
             svDisplays.Add(p, svTransform.GetComponent<SVDisplay>());
+            svTransform.gameObject.name = "SVDisp(" + p.gameObject.name + ")";
 
-            svTransform.position = norm22V3(index / 12f, 0f, -1f);
+            svTransform.position = normXY2V3((float)(index % humanForest.InitialPersonCount + 0.5f) / (float)humanForest.InitialPersonCount, 0f, -1f);
             svTransform.SetParent(GUIBoard);
+
+            if (!p.IsReal) svTransform.gameObject.SetActive(false);
 
             SetSVListSize(p);
             UpdateSVList(p);
@@ -67,7 +70,7 @@ public class GUIManager : MonoBehaviour
         svd.SVList = psv;
     }
 
-    private Vector3 norm22V3(float x, float y, float worldV3z)
+    private Vector3 normXY2V3(float x, float y, float worldV3z)
     {
         float vx = Mathf.Lerp(boardCenter.x - boardWidth * 0.5f + padding, boardCenter.x + boardWidth * 0.5f - padding, x);
         float vy = Mathf.Lerp(boardCenter.y, boardCenter.y + boardHeight * 0.5f - padding, y);

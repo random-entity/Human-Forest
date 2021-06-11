@@ -8,17 +8,43 @@ public class HumanForest : MonoSingleton<HumanForest>
     [SerializeField] private Transform PersonsParent;
     public int InitialPersonCount = 12;
     public List<Person> RealSociety;
+    public List<string> PersonNames;
 
     public Dictionary<Person, Dictionary<Person, Person>> PsImageOfQs; // ImageMatrix[p][q] = RealPerson p => RealPerson q => ImagePerson p.Image(q).
     public List<Person> RealAndImagesSociety; // 초기화 때를 위해 편의상 전체에 대한 레퍼런스 남겨놓으려고.
     [SerializeField] private Material imagePersonMaterial;
 
+    #region Utilities
     // 히힝
     private float rand()
     {
-        return UnityEngine.Random.Range(0.1f, 0.9f);
+        return UnityEngine.Random.Range(0.01f, 0.99f);
     }
 
+    private int randInt()
+    {
+        return UnityEngine.Random.Range(0, InitialPersonCount);
+    }
+
+    private List<string> getRandomNames()
+    {
+        string[] names = PersonalInformations.Names;
+
+        List<string> chosenNames = new List<string>();
+
+        while (chosenNames.Count < InitialPersonCount)
+        {
+            int choice = randInt();
+            string name = names[choice];
+
+            if (!chosenNames.Contains(name)) chosenNames.Add(name);
+        }
+
+        return chosenNames;
+    }
+    #endregion
+
+    #region 관계망 data structuring
     /*
     ** RelationalMatter에 대한 state와 value는 ImagePerson끼리만 가질 수 있다. (물론 p.Image(p)는 자기 자신, ImagePerson이지만 RealPerson.)
     ** RealPerson p가 RealPerson q에게 갖는 RelationalMatter 그런 건 허용하지 않는다는 이야기.
@@ -39,6 +65,7 @@ public class HumanForest : MonoSingleton<HumanForest>
     // => Utility 함수의 오버로드를 만들면 되는 거 아니야?
     public Dictionary<Person, Dictionary<Matter, cloat2>> PM2SV;
     public Dictionary<Person, Dictionary<Person, Dictionary<Person, Dictionary<Relation, cloat2>>>> PQRrM2SV;
+    #endregion
 
     #region Relation-Dependent Matters' State 계산
 
@@ -133,6 +160,10 @@ public class HumanForest : MonoSingleton<HumanForest>
     #region initialization
     public override void Init()
     {
+        #region 이름 정하기 게임
+        PersonNames = getRandomNames();
+        #endregion
+
         RealSociety = new List<Person>();
 
         for (int i = 0; i < InitialPersonCount; i++)
@@ -141,6 +172,9 @@ public class HumanForest : MonoSingleton<HumanForest>
             RealSociety.Add(pi);
 
             pi.transform.SetParent(PersonsParent);
+            pi.gameObject.name = "[P" + i + "]" + PersonNames[i];
+
+            pi.SetIsRealAndImageHolder(true, pi);
         }
 
         PsImageOfQs = new Dictionary<Person, Dictionary<Person, Person>>();
@@ -159,7 +193,10 @@ public class HumanForest : MonoSingleton<HumanForest>
                 {
                     Person psImageOfQ = Instantiate(q);
                     psImageOfQ.gameObject.GetComponent<MeshRenderer>().material = imagePersonMaterial;
+                    psImageOfQ.gameObject.name = p.gameObject.name + "'s Image of " + q.gameObject.name;
                     PsImage.Add(q, psImageOfQ);
+
+                    psImageOfQ.SetIsRealAndImageHolder(false, p);
                 }
             }
 
