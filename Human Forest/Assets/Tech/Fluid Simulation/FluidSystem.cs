@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FluidSystem : MonoBehaviour
+public class FluidSystem : MonoSingleton<FluidSystem>
 {
     // Particle에 대한 것들.
     [SerializeField] private Transform FluidParticlesParent;
@@ -27,7 +27,7 @@ public class FluidSystem : MonoBehaviour
     // 가장 중요한 ObjectPooler instance caching.
     ObjectPooler objectPooler;
 
-    private void Awake()
+    public override void Init()
     {
         objectPooler = ObjectPooler.instance;
 

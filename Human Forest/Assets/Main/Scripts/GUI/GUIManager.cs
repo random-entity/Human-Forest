@@ -1,11 +1,13 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class GUIManager : MonoBehaviour
 {
-    [SerializeField] private Transform Quad_U_p_prefab;
-    private Dictionary<Person, Transform> P2Quad_U; // RealOrImagePerson p => Quad for displaying U(p)
+    private HumanForest humanForest;
+
+    [SerializeField] private Transform svDisplayPrefab;
+    private Dictionary<Person, SVDisplay> svDisplays; // RealOrImagePerson p => Quad for displaying U(p)
     private List<Person> realAndImageSociety;
 
     [SerializeField] private Transform GUIBoard;
@@ -15,23 +17,45 @@ public class GUIManager : MonoBehaviour
 
     private void Start()
     {
+        humanForest = HumanForest.instance;
+
         boardCenter = GUIBoard.position;
         boardWidth = GUIBoard.localScale.x;
         boardHeight = GUIBoard.localScale.y;
 
         realAndImageSociety = HumanForest.instance.RealAndImagesSociety;
-        P2Quad_U = new Dictionary<Person, Transform>();
+        svDisplays = new Dictionary<Person, SVDisplay>();
 
         int index = 0;
         foreach (Person p in realAndImageSociety)
         {
-            Transform quad = Instantiate(Quad_U_p_prefab);
-            P2Quad_U.Add(p, quad);
-            quad.position = norm22V3(index / 12f, 0f, -1f);
-            quad.SetParent(GUIBoard);
+            Transform svTransform = Instantiate(svDisplayPrefab);
+            svDisplays.Add(p, svTransform.GetComponent<SVDisplay>());
+
+            svTransform.position = norm22V3(index / 12f, 0f, -1f);
+            svTransform.SetParent(GUIBoard);
+
+            UpdateSVList(p);
 
             index++;
         }
+    }
+
+    private void UpdateSVList(Person p)
+    {
+        SVDisplay svd = svDisplays[p];
+
+        List<cloat2> psv = new List<cloat2>();
+
+        foreach (Matter m in Enum.GetValues(typeof(Matter)))
+        {
+            // float s = humanForest.PM2State[p][m];
+            // float v = humanForest.PM2Value[p][m];
+            // psv.Add(new cloat2(s, v));
+        }
+
+        svd.SVList = psv;
+
     }
 
     private Vector3 norm22V3(float x, float y, float worldV3z)

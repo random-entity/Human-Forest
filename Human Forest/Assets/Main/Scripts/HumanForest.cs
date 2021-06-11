@@ -9,7 +9,7 @@ public class HumanForest : MonoSingleton<HumanForest>
     public int InitialPersonCount = 12;
     public List<Person> RealSociety;
 
-    Dictionary<Person, Dictionary<Person, Person>> PsImageOfQs; // ImageMatrix[p][q] = RealPerson p => RealPerson q => ImagePerson p.Image(q).
+    public Dictionary<Person, Dictionary<Person, Person>> PsImageOfQs; // ImageMatrix[p][q] = RealPerson p => RealPerson q => ImagePerson p.Image(q).
     public List<Person> RealAndImagesSociety; // 초기화 때를 위해 편의상 전체에 대한 레퍼런스 남겨놓으려고.
     [SerializeField] private Material imagePersonMaterial;
 
@@ -18,16 +18,23 @@ public class HumanForest : MonoSingleton<HumanForest>
     ** RealPerson p가 RealPerson q에게 갖는 RelationalMatter 그런 건 허용하지 않는다는 이야기.
     ** 그런 것을 포함한 모든 것은 RealPerson p의 ImageSociety 속에서만 일어나게끔 하는 것이 덜 복잡하다.
     */
-    Dictionary<Person, Dictionary<Person, Dictionary<Person, Dictionary<Relation, float>>>> PQRrM2State; // PQRrM2S[p][q][r][rm] = p.Image(q)가 p.Image(r)에게 갖는 rm의 state.
-    Dictionary<Person, Dictionary<Person, Dictionary<Person, Dictionary<Relation, float>>>> PQRrM2Value; // PQRrM2S[p][q][r][rm] = p.Image(q)가 p.Image(r)에게 갖는 rm의 value.
 
-    Dictionary<Person, Dictionary<Matter, float>> PM2State; // RealOrImagePerson p => M2Float (Matter m => float state). p의 s 함수.
-    Dictionary<Person, Dictionary<Matter, float>> PM2Value; // RealOrImagePerson p => M2Float (Matter m => float state). p의 sigma 함수.
+    public Dictionary<Person, Dictionary<Person, Dictionary<Person, Dictionary<Relation, float>>>> PQRrM2State; // PQRrM2S[p][q][r][rm] = p.Image(q)가 p.Image(r)에게 갖는 rm의 state.
+    public Dictionary<Person, Dictionary<Person, Dictionary<Person, Dictionary<Relation, float>>>> PQRrM2Value; // PQRrM2S[p][q][r][rm] = p.Image(q)가 p.Image(r)에게 갖는 rm의 value.
 
-    Dictionary<Person, Dictionary<Person, float>> PQ2C; // RealPerson p => (RealPerson q => float consideration). p의 c 함수.
+    public Dictionary<Person, Dictionary<Matter, float>> PM2State; // RealOrImagePerson p => M2Float (Matter m => float state). p의 s 함수.
+    public Dictionary<Person, Dictionary<Matter, float>> PM2Value; // RealOrImagePerson p => M2Float (Matter m => float state). p의 sigma 함수.
+
+    public Dictionary<Person, Dictionary<Person, float>> PQ2C; // RealPerson p => (RealPerson q => float consideration). p의 c 함수.
+
+    // 이렇게 실수쌍으로 묶어서 해버리면 안 될까? 그러면 값 바뀔 때마다 SVList를 SVDisplay한테 일일이 주지 않아도 되는 거 아니야? 클래스라 레퍼런스 타입이니까 처음 한 번만 레퍼런스 붙여주면 되니까?
+    // 이렇게 하면 왜 안 되냐면:
+    // s 함수와 sigma 함수가 따로 놀아야 할 때(state는 사람에서 가져오고 sigma는 윤리에서 가져오고 등)가 있어서 Utility 함수에 s와 sigma 따로 넣게 되어 있는데 그럴 때 어려움.
+    // => Utility 함수의 오버로드를 만들면 되는 거 아니야?
+    public Dictionary<Person, Dictionary<Matter, cloat2>> PM2SV;
+    public Dictionary<Person, Dictionary<Person, Dictionary<Person, Dictionary<Relation, cloat2>>>> PQRrM2SV;
 
     #region Relation-Dependent Matters' State 계산
-
 
     #endregion
 

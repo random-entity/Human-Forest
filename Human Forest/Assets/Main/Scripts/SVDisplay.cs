@@ -24,10 +24,12 @@ public class SVDisplay : MonoBehaviour
 
     public List<Color> Swatch;
 
-    [SerializeField] private FluidSystem fluidSystem;
+    private FluidSystem fluidSystem;
 
     private void Awake()
     {
+        fluidSystem = FluidSystem.instance;
+        
         UpdateSVListCount();
 
         RectList = new List<Transform>();
