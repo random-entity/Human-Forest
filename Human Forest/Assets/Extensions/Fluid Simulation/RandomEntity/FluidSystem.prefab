@@ -69,7 +69,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3855020889503316926}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Propeller (8)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -210,7 +210,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3855020889533474922}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Propeller (6)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -569,7 +569,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3855020889683962275}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Propeller (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -742,7 +742,7 @@ Camera:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3855020889713489999}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
   m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
@@ -822,7 +822,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87dc5697283daf84db4281aedcccfc40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  displayQuad: {fileID: 3855020890233291239}
+  output: {fileID: 0}
+  quad: {fileID: 3855020890233291239}
 --- !u!1 &3855020889888077423
 GameObject:
   m_ObjectHideFlags: 0
@@ -1486,7 +1487,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3855020890036663881}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Propeller (14)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1518,7 +1519,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3855020890130929700}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Propeller (7)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1550,7 +1551,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3855020890195713393}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Propeller (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1693,7 +1694,7 @@ GameObject:
   - component: {fileID: 3855020890233291236}
   - component: {fileID: 3855020890233291235}
   - component: {fileID: 3855020890233291234}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: QuadForFluidRenderTexture
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2099,7 +2100,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3855020890451207292}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Propeller (13)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2132,7 +2133,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3855020890510905648}
   - component: {fileID: 3855020890510905649}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: RectTemplatePrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2213,7 +2214,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3855020890517688768}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: PropellerGroup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2585,7 +2586,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3855020890558792456}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Propeller (9)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2944,7 +2945,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3855020890735215441}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Propeller (11)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3300,7 +3301,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3855020890936445453}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Propeller (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3441,7 +3442,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3855020891005344061}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Propeller (10)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3582,7 +3583,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3855020891118305229}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: RectTemplate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4298,7 +4299,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3855020891438489882}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Propeller
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4330,7 +4331,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3855020891479003486}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Propeller (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4362,7 +4363,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3855020891486393153}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Propeller (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4394,7 +4395,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3855020891534067903}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Propeller (12)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4459,7 +4460,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.5019608, g: 0.5019608, b: 0.5019608, a: 0}
+  m_BackGroundColor: {r: 0.21635813, g: 0.22760668, b: 0.24528301, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -4480,7 +4481,7 @@ Camera:
   m_Depth: 1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 55
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
