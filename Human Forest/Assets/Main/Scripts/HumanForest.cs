@@ -27,8 +27,7 @@ public class HumanForest : MonoSingleton<HumanForest>
     Dictionary<Person, Dictionary<Person, float>> PQ2C; // RealPerson p => (RealPerson q => float consideration). p의 c 함수.
 
     #region Relation-Dependent Matters' State 계산
-
-
+    // matter들과 relation들의 관계를 확정하는 것이 우선.
     #endregion
 
     #region Utility 계산

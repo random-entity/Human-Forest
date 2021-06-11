@@ -3,7 +3,7 @@ using UnityEngine;
 public class FluidCamera : MonoBehaviour
 {
     public RenderTexture output;
-    [SerializeField] private GameObject quad;
+    [SerializeField] private GameObject displayQuad;
 
     private void Awake()
     {
@@ -11,6 +11,6 @@ public class FluidCamera : MonoBehaviour
         output.Create();
         GetComponent<Camera>().targetTexture = output;
 
-        quad.GetComponent<MeshRenderer>().material.mainTexture = output;
+        displayQuad.GetComponent<MeshRenderer>().material.mainTexture = output;
     }
 }
