@@ -40,7 +40,7 @@ public class ObjectPooler : MonoSingleton<ObjectPooler>
     {
         if (!PoolDictionary.ContainsKey(tag))
         {
-            Debug.LogWarning("Pool with tag " + tag + " doesn't exist");
+            Debug.LogWarning("[ObjectPooler] Pool with tag " + tag + " doesn't exist.");
             return null;
         }
 
@@ -61,7 +61,7 @@ public class ObjectPooler : MonoSingleton<ObjectPooler>
     {
         if (!PoolDictionary.ContainsKey(tag))
         {
-            Debug.LogWarning("Pool with tag " + tag + " doesn't exist");
+            Debug.LogWarning("[ObjectPooler] Pool with tag " + tag + " doesn't exist");
         }
         else
         {

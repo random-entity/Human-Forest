@@ -12,7 +12,7 @@ public class CameraManager : MonoSingleton<CameraManager>
         }
         else
         {
-            Debug.Log("No cameras registered to CameraManager");
+            Debug.LogWarning("[CameraManager] No cameras registered to CameraManager");
         }
     }
 

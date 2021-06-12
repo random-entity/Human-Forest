@@ -92,7 +92,7 @@ public class SVDisplay : MonoBehaviour // SVDisplay.SVListëŠ” SVDisplayManagerì—
 
         if (count == 0)
         {
-            Debug.LogWarning("SVList.Count == 0");
+            Debug.LogWarning("[SVDisplay] SVList.Count == 0");
         }
     }
 
@@ -107,7 +107,7 @@ public class SVDisplay : MonoBehaviour // SVDisplay.SVListëŠ” SVDisplayManagerì—
 
         if (sum <= 0)
         {
-            Debug.LogWarning("sum of values <= 0");
+            Debug.LogWarning("[SVDisplay] sum of values <= 0");
             return;
         }
         else

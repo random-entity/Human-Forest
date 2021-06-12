@@ -25,15 +25,15 @@ public abstract class MonoSingleton<T> : MonoBehaviour where T : MonoSingleton<T
                 // Object not found, we create a temporary one
                 if (m_Instance == null)
                 {
-                    Debug.LogWarning("No instance of " + typeof(T).ToString() + ", a temporary one is created.");
+                    Debug.LogWarning("[MonoSingleton] No instance of " + typeof(T).ToString() + ", a temporary one is created.");
 
                     isTemporaryInstance = true;
-                    m_Instance = new GameObject("Temp Instance of " + typeof(T).ToString(), typeof(T)).GetComponent<T>();
+                    m_Instance = new GameObject("[MonoSingleton] Temp Instance of " + typeof(T).ToString(), typeof(T)).GetComponent<T>();
 
                     // Problem during the creation, this should not happen
                     if (m_Instance == null)
                     {
-                        Debug.LogError("Problem during the creation of " + typeof(T).ToString());
+                        Debug.LogError("[MonoSingleton] Problem during the creation of " + typeof(T).ToString());
                     }
                 }
                 if (!_isInitialized)
@@ -60,7 +60,7 @@ public abstract class MonoSingleton<T> : MonoBehaviour where T : MonoSingleton<T
         }
         else if (m_Instance != this)
         {
-            Debug.LogError("Another instance of " + GetType() + " is already exist! Destroying self...");
+            Debug.LogError("[MonoSingleton] Another instance of " + GetType() + " is already exist! Destroying self...");
             DestroyImmediate(this);
             return;
         }

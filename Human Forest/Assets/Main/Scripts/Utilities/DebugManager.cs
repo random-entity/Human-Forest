@@ -26,9 +26,5 @@ public class DebugManager : MonoBehaviour
 
             EventManager.InvokeOnUpdatePM2SV();
         }
-        if (Input.GetKeyDown(KeyCode.S))
-        {
-            Debug.Log(sVDisplayManager.SVDisplays_U_p[hf.RealAndImagesSociety[0]].SVList[0] == hf.PM2SV[hf.RealAndImagesSociety[0]][Matter.Test1]);
-        }
     }
 }
