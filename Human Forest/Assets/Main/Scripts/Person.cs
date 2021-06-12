@@ -5,6 +5,7 @@ public class Person : MonoBehaviour
     public Vector2 Position;
     public bool IsReal; // private set 하다가 stack overflow 떴으나 왜인지 몰라서 일단 public으로.
     public Person ImageHolder;
+    public bool IsGod = false;
 
     private void Awake()
     {

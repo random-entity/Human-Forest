@@ -22,7 +22,7 @@ public class SVDisplay : MonoBehaviour // SVDisplay.SVList는 SVDisplayManager�
     private List<Transform> RectList;
     [SerializeField] private Transform RectPrefab;
     [SerializeField] private Transform RectParent;
-    private Transform RectForWeightedMean;
+    public Transform RectForWeightedMean;
 
     public List<Color> Swatch;
 
@@ -56,12 +56,10 @@ public class SVDisplay : MonoBehaviour // SVDisplay.SVList는 SVDisplayManager�
         OnUpdateSVList();
     }
 
-    private void Update()
-    {
-        // OnUpdateSVList();는 performance를 위해 EventManager.OnUpdatePM2SV가 일어났을 때만 부릅시다.
-
-        if (Input.GetKeyDown(KeyCode.W)) RectForWeightedMean.gameObject.SetActive(!RectForWeightedMean.gameObject.activeInHierarchy); // W for weighted mean
-    }
+    // private void Update()
+    // {
+    //     OnUpdateSVList(); //는 performance를 위해 EventManager.OnUpdatePM2SV가 일어났을 때만 부릅시다.
+    // }
 
     #region Event Subscription
     private void OnEnable()

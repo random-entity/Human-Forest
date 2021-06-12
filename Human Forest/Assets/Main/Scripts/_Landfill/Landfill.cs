@@ -17,10 +17,10 @@ public interface Agent
 
 }
 
-public class God : Agent
-{
+// public class God : Agent
+// {
 
-}
+// }
 
 public enum Species
 {
