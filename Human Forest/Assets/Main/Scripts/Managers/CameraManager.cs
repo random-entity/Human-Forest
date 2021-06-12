@@ -8,7 +8,7 @@ public class CameraManager : MonoSingleton<CameraManager>
     {
         if (baseCameras.Length > 0)
         {
-
+            IO(0);
         }
         else
         {

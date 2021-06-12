@@ -18,7 +18,7 @@ public class HumanForest : MonoSingleton<HumanForest>
     // 히힝
     private float rand()
     {
-        return UnityEngine.Random.Range(0.01f, 0.99f);
+        return UnityEngine.Random.Range(0.1f, 0.9f);
     }
 
     private int randInt()

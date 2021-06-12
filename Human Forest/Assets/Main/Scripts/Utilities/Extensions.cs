@@ -82,9 +82,9 @@ public class cloat2
     public void addClamp(float dx, float dy)
     {
         x += dx;
-        x = Mathf.Clamp(x, 0f, 1f);
+        x = Mathf.Clamp(x, 0.001f, 1f);
         y += dy;
-        y = Mathf.Clamp(y, 0f, 1f);
+        y = Mathf.Clamp(y, 0.001f, 1f);
     }
 }
 

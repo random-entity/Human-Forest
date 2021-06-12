@@ -216,7 +216,7 @@ GameObject:
   - component: {fileID: 8315080173735098901}
   - component: {fileID: 8315080173735098903}
   m_Layer: 7
-  m_Name: SVDisplay
+  m_Name: SVDisplay_U_p
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
