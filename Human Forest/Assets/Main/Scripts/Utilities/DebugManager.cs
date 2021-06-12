@@ -4,6 +4,7 @@ using UnityEngine;
 public class DebugManager : MonoBehaviour
 {
     HumanForest hf;
+    public SVDisplayManager sVDisplayManager;
 
     private void Awake()
     {
@@ -14,41 +15,20 @@ public class DebugManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.A))
         {
-            Debug.Log("a");
-
             var pm2sv = hf.PM2SV;
             foreach (Person p in hf.RealSociety)
             {
                 foreach (Matter m in Enum.GetValues(typeof(Matter)))
                 {
-                    cloat2 sv = pm2sv[p][m];
-                    // Debug.Log(sv.x);
-                    // Debug.Log(sv.y);
-
-                    sv.addClamp(UnityEngine.Random.Range(-0.5f, 0.5f), UnityEngine.Random.Range(-0.5f, 0.5f));
-                    // Debug.Log(sv.x);
-                    // Debug.Log(sv.y);
-
-                    Debug.Log("debugmanager:" + sv.x);
+                    pm2sv[p][m].addClamp(UnityEngine.Random.Range(-0.5f, 0.5f), UnityEngine.Random.Range(-0.5f, 0.5f));
                 }
             }
 
-            // EventManager.OnUpdatePM2SV();
-            // EventManager.InvokeOnUpdatePM2SV();
+            EventManager.InvokeOnUpdatePM2SV();
+        }
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            Debug.Log(sVDisplayManager.SVDisplays_U_p[hf.RealAndImagesSociety[0]].SVList[0] == hf.PM2SV[hf.RealAndImagesSociety[0]][Matter.Test1]);
         }
     }
-
-
-    // private void OnEnable()
-    // {
-    //     EventManager.OnUpdatePM2SV += DebugManager_OnUpdatePM2SV;
-    // }
-    // private void OnDisable()
-    // {
-    //     EventManager.OnUpdatePM2SV -= DebugManager_OnUpdatePM2SV;
-    // }
-    // private void DebugManager_OnUpdatePM2SV()
-    // {
-    //     throw new NotImplementedException();
-    // }
 }

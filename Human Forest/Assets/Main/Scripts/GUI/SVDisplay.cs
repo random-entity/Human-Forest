@@ -8,11 +8,8 @@ public struct FluidSpawnConfig
     public List<Color> Swatch;
 }
 
-public class SVDisplay : MonoBehaviour
+public class SVDisplay : MonoBehaviour // SVDisplay.SVList는 SVDisplayManager에 의해 hf.PM2SV[p][m]과 동일 reference의 cloat2 객체로 설정되게 되므로 이 레퍼런스를 건드리지 맙시다. NormalizeValues 할 때 new cloat 만들어서 대체하는 등.
 {
-    // 여기에서 OnClick 이벤트 발생시키자.
-    // 테두리도 만들자.
-
     #region field declarations
     public List<cloat2> SVList; // (x = State, y = Value) Pair
     private int count;
@@ -61,33 +58,20 @@ public class SVDisplay : MonoBehaviour
 
     private void Update()
     {
-        #region Debug
-        // if (Input.GetKeyDown(KeyCode.Alpha1)) fluidSystem.SpawnFluidParticles(new FluidSpawnConfig
-        // {
-        //     NormXYWHList = NormXYWHList,
-        //     Swatch = Swatch,
-        //     frameWidth = 10f,
-        //     frameHeight = 10f
-        // });
-        if (Input.GetKeyDown(KeyCode.Alpha3)) OnUpdateSVList();
-        if (Input.GetKeyDown(KeyCode.Alpha4)) RectForWeightedMean.gameObject.SetActive(!RectForWeightedMean.gameObject.activeInHierarchy);
-        #endregion
-        // if (Input.GetKeyDown(KeyCode.T))
-        // {
-        //     OnUpdateSVList();
-        // }
-        //
+        // OnUpdateSVList();는 performance를 위해 EventManager.OnUpdatePM2SV가 일어났을 때만 부릅시다.
+
+        if (Input.GetKeyDown(KeyCode.W)) RectForWeightedMean.gameObject.SetActive(!RectForWeightedMean.gameObject.activeInHierarchy); // W for weighted mean
     }
 
     #region Event Subscription
-    // private void OnEnable()
-    // {
-    //     EventManager.OnUpdatePM2SV += OnUpdateSVList;
-    // }
-    // private void OnDisable()
-    // {
-    //     EventManager.OnUpdatePM2SV -= OnUpdateSVList;
-    // }
+    private void OnEnable()
+    {
+        EventManager.OnUpdatePM2SV += OnUpdateSVList;
+    }
+    private void OnDisable()
+    {
+        EventManager.OnUpdatePM2SV -= OnUpdateSVList;
+    }
     #endregion
 
     #region OnUpdateSVList
@@ -130,7 +114,7 @@ public class SVDisplay : MonoBehaviour
         {
             for (int i = 0; i < count; i++)
             {
-                SVList[i] = new cloat2(SVList[i].x, SVList[i].y / sum);
+                SVList[i].y /= sum;
             }
         }
     }

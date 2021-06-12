@@ -248,6 +248,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a5f2f1f7fd0e004ea3abb26d285e12f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sVDisplayManager: {fileID: 1583583380}
 --- !u!4 &481141983
 Transform:
   m_ObjectHideFlags: 0
@@ -970,9 +971,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc3d5956adedac644a7b9579767953d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SVDisplayPrefab: {fileID: 8315080173735098901, guid: 494f0be7622fc8e41b5b81aaf81bd1bd, type: 3}
   SVBoard: {fileID: 1583583379}
   padding: 1
+  SVDisplayPrefab: {fileID: 8315080173735098901, guid: 494f0be7622fc8e41b5b81aaf81bd1bd, type: 3}
 --- !u!1 &1778564984
 GameObject:
   m_ObjectHideFlags: 0
