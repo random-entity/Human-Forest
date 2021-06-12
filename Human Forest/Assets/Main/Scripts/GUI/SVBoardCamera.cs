@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TotalGUICamera : MonoBehaviour
+public class SVBoardCamera : MonoBehaviour
 {
     private Vector3 touchStart;
     private Camera gUICamera;

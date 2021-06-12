@@ -47,7 +47,7 @@ MonoBehaviour:
   PoolList:
   - tag: Fluid
     prefab: {fileID: 3322807078589243654, guid: b070197b3bbe7db46bc48c1c7ec64b83, type: 3}
-    size: 3200
+    size: 4800
   initialParent: {fileID: 5429011016463859721}
 --- !u!1 &2595201548931063322
 GameObject:

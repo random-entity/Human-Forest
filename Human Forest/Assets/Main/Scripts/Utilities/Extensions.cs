@@ -72,6 +72,20 @@ public class cloat2
         this.x = _x;
         this.y = _y;
     }
+
+    public void add(float dx, float dy)
+    {
+        x += dx;
+        y += dy;
+    }
+
+    public void addClamp(float dx, float dy)
+    {
+        x += dx;
+        x = Mathf.Clamp(x, 0f, 1f);
+        y += dy;
+        y = Mathf.Clamp(y, 0f, 1f);
+    }
 }
 
 [System.Serializable]

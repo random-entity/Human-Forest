@@ -13,10 +13,12 @@ public class SVDisplay : MonoBehaviour
     // 여기에서 OnClick 이벤트 발생시키자.
     // 테두리도 만들자.
 
+    #region field declarations
     public List<cloat2> SVList; // (x = State, y = Value) Pair
     private int count;
 
     [SerializeField] private List<(float x, float y, float w, float h)> NormXYWHList; // (xy = 왼쪽아래꼭지점의 x좌표) 이건 [0, 1]^3 기준(normalized).
+
     public Transform BorderBottomLeft, BorderTopRight;
     private Vector3 BorderBottomLeftPosition, BorderWidthHeight;
 
@@ -28,12 +30,11 @@ public class SVDisplay : MonoBehaviour
     public List<Color> Swatch;
 
     private FluidSystem fluidSystem;
+    #endregion
 
     private void Awake()
     {
         fluidSystem = FluidSystem.instance;
-        
-        UpdateSVListCount();
 
         RectList = new List<Transform>();
         for (int i = 0; i < Const.MaxSVListCount; i++)
@@ -51,21 +52,16 @@ public class SVDisplay : MonoBehaviour
         RectForWeightedMean = Instantiate(RectPrefab, RectParent);
 
         NormXYWHList = new List<(float, float, float, float)>();
-
-        OnSVListUpdate();
     }
 
-    private void OnSVListUpdate()
+    private void Start()
     {
-        UpdateSVListCount();
-        NormalizeValues();
-        UpdateXYWHList();
-        UpdateRectList();
-        UpdateBorder();
+        OnUpdateSVList();
     }
 
     private void Update()
     {
+        #region Debug
         // if (Input.GetKeyDown(KeyCode.Alpha1)) fluidSystem.SpawnFluidParticles(new FluidSpawnConfig
         // {
         //     NormXYWHList = NormXYWHList,
@@ -73,27 +69,51 @@ public class SVDisplay : MonoBehaviour
         //     frameWidth = 10f,
         //     frameHeight = 10f
         // });
-        if (Input.GetKeyDown(KeyCode.Alpha3)) RectParent.gameObject.SetActive(!RectParent.gameObject.activeInHierarchy);
+        if (Input.GetKeyDown(KeyCode.Alpha3)) OnUpdateSVList();
         if (Input.GetKeyDown(KeyCode.Alpha4)) RectForWeightedMean.gameObject.SetActive(!RectForWeightedMean.gameObject.activeInHierarchy);
-
-        OnSVListUpdate();
+        #endregion
+        // if (Input.GetKeyDown(KeyCode.T))
+        // {
+        //     OnUpdateSVList();
+        // }
+        //
     }
 
-    #region Housekeeping
+    #region Event Subscription
+    // private void OnEnable()
+    // {
+    //     EventManager.OnUpdatePM2SV += OnUpdateSVList;
+    // }
+    // private void OnDisable()
+    // {
+    //     EventManager.OnUpdatePM2SV -= OnUpdateSVList;
+    // }
+    #endregion
+
+    #region OnUpdateSVList
+    private void OnUpdateSVList()
+    {
+        UpdateSVListCount();
+        NormalizeValues();
+        UpdateXYWHList();
+        UpdateRectList();
+        UpdateBorder();
+        UpdateWeightedMeans();
+        MatchRectListTransformToXYWH();
+    }
+
     private void UpdateSVListCount()
     {
+        count = SVList.Count;
+
         if (count == 0)
         {
             Debug.LogWarning("SVList.Count == 0");
         }
-
-        count = SVList.Count;
     }
 
-    private void NormalizeValues()
+    private void NormalizeValues() // UpdateSVListCount를 먼저 하세요
     {
-        UpdateSVListCount();
-
         float sum = 0;
 
         foreach (cloat2 sv in SVList)
@@ -115,7 +135,7 @@ public class SVDisplay : MonoBehaviour
         }
     }
 
-    private void UpdateXYWHList()
+    private void UpdateXYWHList() // NormalizeValues를 먼저 하세요. 
     {
         NormXYWHList.Clear();
 
@@ -124,11 +144,18 @@ public class SVDisplay : MonoBehaviour
         for (int i = 0; i < count; i++)
         {
             NormXYWHList.Add((x, 0f, SVList[i].y, SVList[i].x));
-            MatchTransformToXYWH(RectList[i], NormXYWHList[i]);
             x += SVList[i].y;
         }
+    }
 
-        MatchTransformToXYWH(RectForWeightedMean, (0f, 0f, 1f, GetWeightedMeans()));
+    private void MatchRectListTransformToXYWH() // UpdateRectList와 UpdateBorder를 한 후에 하세요.
+    {
+        for (int i = 0; i < count; i++)
+        {
+            MatchTransformToXYWH(RectList[i], NormXYWHList[i]);
+        }
+
+        MatchTransformToXYWH(RectForWeightedMean, (0f, 0f, 1f, UpdateWeightedMeans()));
     }
 
     private void UpdateRectList()
@@ -145,10 +172,8 @@ public class SVDisplay : MonoBehaviour
         BorderWidthHeight = BorderTopRight.position - BorderBottomLeft.position;
     }
 
-    private float GetWeightedMeans()
+    private float UpdateWeightedMeans() //NormalizeValues를 먼저 하세요.
     {
-        NormalizeValues();
-
         float m = 0f;
         for (int i = 0; i < count; i++)
         {
@@ -156,6 +181,7 @@ public class SVDisplay : MonoBehaviour
         }
         return m;
     }
+    #endregion
 
     #region XWH2Vector3
     private Vector3 XYWH2Position((float x, float y, float w, float h) xywh)
@@ -173,6 +199,5 @@ public class SVDisplay : MonoBehaviour
         t.localScale = XYWH2Scale(xywh);
         t.position = XYWH2Position(xywh);
     }
-    #endregion
     #endregion
 }
