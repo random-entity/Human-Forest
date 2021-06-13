@@ -12,10 +12,13 @@ public static class Extensions
         tex.Apply();
         return tex;
     }
+}
 
-    public static Dictionary<T, float> SplitDictionary<T>(Dictionary<T, cloat2> original, bool xTrueYFalse)
+public static class DictExt
+{
+    public static Dictionary<T, cloat> SplitDictionary<T>(Dictionary<T, cloat2> original, bool xTrueYFalse)
     {
-        Dictionary<T, float> split = new Dictionary<T, float>();
+        Dictionary<T, cloat> split = new Dictionary<T, cloat>();
 
         foreach (T key in original.Keys)
         {
@@ -31,6 +34,18 @@ public static class Extensions
         }
 
         return split;
+    }
+
+    public static Dictionary<T, cloat2> MergeDictionary<T>(Dictionary<T, cloat> s, Dictionary<T, cloat> sigma) // s와 sigma는 같은 Keys를 갖고 있어야 합니다.
+    {
+        Dictionary<T, cloat2> merged = new Dictionary<T, cloat2>();
+
+        foreach (T key in s.Keys)
+        {
+            cloat2 sv = new cloat2(s[key], sigma[key]);
+        }
+
+        return merged;
     }
 }
 
@@ -50,53 +65,79 @@ public struct PersonPair
     }
 }
 
-[System.Serializable]
-public struct sloat2
-{
-    public float x, y;
+// [System.Serializable]
+// public struct sloat2
+// {
+//     public float x, y;
 
-    public sloat2(float _x, float _y)
-    {
-        this.x = _x;
-        this.y = _y;
-    }
-}
+//     public sloat2(float _x, float _y)
+//     {
+//         this.x = _x;
+//         this.y = _y;
+//     }
+// }
 
 [System.Serializable]
 public class cloat2
 {
-    public float x, y;
+    public cloat x, y;
 
     public cloat2(float _x, float _y)
     {
-        this.x = _x;
-        this.y = _y;
+        x = new cloat(_x);
+        y = new cloat(_y);
+    }
+
+    public cloat2(cloat _x, cloat _y)
+    {
+        x = _x;
+        y = _y;
     }
 
     public void add(float dx, float dy)
     {
-        x += dx;
-        y += dy;
+        x.add(dx);
+        y.add(dy);
     }
 
     public void addClamp(float dx, float dy)
     {
-        x += dx;
-        x = Mathf.Clamp(x, 0.001f, 1f);
-        y += dy;
-        y = Mathf.Clamp(y, 0.001f, 1f);
+        add(dx, dy);
+        x.addClamp(0f);
+        y.addClamp(0f);
     }
 }
 
-[System.Serializable]
-public class f_0_1_inf
+public class cloat
 {
-    public float f_0, f_1, f_inf;
+    public float f;
 
-    public f_0_1_inf(float f_0, float f_1, float f_inf)
+    public cloat(float _f)
     {
-        this.f_0 = f_0;
-        this.f_1 = f_1;
-        this.f_inf = f_inf;
+        f = _f;
+    }
+
+    public void add(float df)
+    {
+        f += df;
+    }
+
+    public void addClamp(float df)
+    {
+        add(df);
+        f = Mathf.Clamp(f, 0.001f, 1f);
     }
 }
+
+// [System.Serializable]
+// public class f_0_1_inf
+// {
+//     public float f_0, f_1, f_inf;
+
+//     public f_0_1_inf(float f_0, float f_1, float f_inf)
+//     {
+//         this.f_0 = f_0;
+//         this.f_1 = f_1;
+//         this.f_inf = f_inf;
+//     }
+// }

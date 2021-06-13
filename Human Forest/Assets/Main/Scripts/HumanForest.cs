@@ -50,21 +50,19 @@ public class HumanForest : MonoSingleton<HumanForest>
     ** RealPerson p가 RealPerson q에게 갖는 RelationalMatter 그런 건 허용하지 않는다는 이야기.
     ** 그런 것을 포함한 모든 것은 RealPerson p의 ImageSociety 속에서만 일어나게끔 하는 것이 덜 복잡하다.
     */
-
-    // public Dictionary<Person, Dictionary<Person, Dictionary<Person, Dictionary<Relation, float>>>> PQRrM2State; // PQRrM2S[p][q][r][rm] = p.Image(q)가 p.Image(r)에게 갖는 rm의 state.
-    // public Dictionary<Person, Dictionary<Person, Dictionary<Person, Dictionary<Relation, float>>>> PQRrM2Value; // PQRrM2S[p][q][r][rm] = p.Image(q)가 p.Image(r)에게 갖는 rm의 value.
-
-    // public Dictionary<Person, Dictionary<Matter, float>> PM2State; // RealOrImagePerson p => M2Float (Matter m => float state). p의 s 함수.
-    // public Dictionary<Person, Dictionary<Matter, float>> PM2Value; // RealOrImagePerson p => M2Float (Matter m => float state). p의 sigma 함수.
-
-    public Dictionary<Person, Dictionary<Person, float>> PQ2C; // RealPerson p => (RealPerson q => float consideration). p의 c 함수.
-
-    // 이렇게 실수쌍으로 묶어서 해버리면 안 될까? 그러면 값 바뀔 때마다 SVList를 SVDisplay한테 일일이 주지 않아도 되는 거 아니야? 클래스라 레퍼런스 타입이니까 처음 한 번만 레퍼런스 붙여주면 되니까?
-    // 이렇게 하면 왜 안 되냐면:
-    // s 함수와 sigma 함수가 따로 놀아야 할 때(state는 사람에서 가져오고 sigma는 윤리에서 가져오고 등)가 있어서 Utility 함수에 s와 sigma 따로 넣게 되어 있는데 그럴 때 어려움.
-    // => Utility 함수의 오버로드를 만들면 되는 거 아니야?
     public Dictionary<Person, Dictionary<Matter, cloat2>> PM2SV;
     public Dictionary<Person, Dictionary<Person, Dictionary<Person, Dictionary<Relation, cloat2>>>> PQRrM2SV;
+    public Dictionary<Person, Dictionary<Person, cloat>> PQ2C; // RealPerson p => (RealPerson q => float consideration). p의 c 함수.
+
+    #region cloat Dictionaries Dependent on cloat2 Dictionaries
+    public Dictionary<Person, Dictionary<Matter, cloat>> PM2State; // RealOrImagePerson p => M2Float (Matter m => float state). p의 s 함수.
+    public Dictionary<Person, Dictionary<Matter, cloat>> PM2Value; // RealOrImagePerson p => M2Float (Matter m => float state). p의 sigma 함수.
+
+    public Dictionary<Person, Dictionary<Person, Dictionary<Matter, cloat2>>> PsStateQsValue;
+
+    // public Dictionary<Person, Dictionary<Person, Dictionary<Person, Dictionary<Relation, cloat>>>> PQRrM2State; // PQRrM2S[p][q][r][rm] = p.Image(q)가 p.Image(r)에게 갖는 rm의 state.
+    // public Dictionary<Person, Dictionary<Person, Dictionary<Person, Dictionary<Relation, cloat>>>> PQRrM2Value; // PQRrM2S[p][q][r][rm] = p.Image(q)가 p.Image(r)에게 갖는 rm의 value.
+    #endregion
     #endregion
 
     #region Relation-Dependent Matters' State 계산
@@ -75,13 +73,13 @@ public class HumanForest : MonoSingleton<HumanForest>
     // SSigma2Float U = (M2Float s) => (M2Float sigma) => (float u).
 
     // 정의 대로 계산: s와 sigma가 분리되어 있을 때를 포함한 가장 일반적인 식.
-    public float Utility(Dictionary<Matter, float> s, Dictionary<Matter, float> sigma)
+    public float Utility(Dictionary<Matter, cloat> s, Dictionary<Matter, cloat> sigma)
     {
         float u = 0f;
         foreach (Matter m in Enum.GetValues(typeof(Matter)))
         {
-            float state = s[m];
-            float value = sigma[m];
+            float state = s[m].f;
+            float value = sigma[m].f;
 
             u += state * value;
         }
@@ -94,8 +92,8 @@ public class HumanForest : MonoSingleton<HumanForest>
         float u = 0f;
         foreach (Matter m in Enum.GetValues(typeof(Matter)))
         {
-            float state = m2sv[m].x;
-            float value = m2sv[m].y;
+            float state = m2sv[m].x.f;
+            float value = m2sv[m].y.f;
 
             u += state * value;
         }
@@ -116,7 +114,7 @@ public class HumanForest : MonoSingleton<HumanForest>
         }
         else
         {
-            return Utility(Extensions.SplitDictionary<Matter>(PM2SV[image], true), Extensions.SplitDictionary<Matter>(PM2SV[evaluator], false));
+            return Utility(DictExt.SplitDictionary<Matter>(PM2SV[image], true), DictExt.SplitDictionary<Matter>(PM2SV[evaluator], false));
         }
     }
 
@@ -127,18 +125,18 @@ public class HumanForest : MonoSingleton<HumanForest>
     #endregion
 
     #region Total Utility 계산
-    public float TotalUtility(Dictionary<Person, float> c) // 실제 인간들이 갖고 있는 정확한 값을 가지고 주어진 c 함수로 계산할 때.
+    public float TotalUtility(Dictionary<Person, cloat> c) // 실제 인간들이 갖고 있는 정확한 값을 가지고 주어진 c 함수로 계산할 때.
     {
         float t = 0f;
         foreach (Person p in RealSociety)
         {
             float u = Utility(PM2SV[p]);
-            t += c[p] * u;
+            t += c[p].f * u;
         }
         return t;
     }
 
-    public float TotalUtility(Person evaluator, Dictionary<Person, float> c, bool isConsiderateOfTargetsValues) // evaluator가 자신의 이미지 인간들을 윤리에서 주어진 c 함수로 계산할 때.
+    public float TotalUtility(Person evaluator, Dictionary<Person, cloat> c, bool isConsiderateOfTargetsValues) // evaluator가 자신의 이미지 인간들을 윤리에서 주어진 c 함수로 계산할 때.
     {
         float t = 0f;
         foreach (Person target in RealSociety)
@@ -146,7 +144,7 @@ public class HumanForest : MonoSingleton<HumanForest>
             Person image = PsImageOfQs[evaluator][target]; // evaluator의 이미지 속 target 
             float u = Utility(evaluator, image, isConsiderateOfTargetsValues); // 
 
-            t += c[target] * u;
+            t += c[target].f * u;
         }
         return t;
     }
@@ -232,69 +230,64 @@ public class HumanForest : MonoSingleton<HumanForest>
             }
         }
 
-        // PM2State = new Dictionary<Person, Dictionary<Matter, float>>();
-        // PM2Value = new Dictionary<Person, Dictionary<Matter, float>>();
         PM2SV = new Dictionary<Person, Dictionary<Matter, cloat2>>();
         foreach (Person p in RealAndImagesSociety)
         {
-            // Dictionary<Matter, float> m2s = new Dictionary<Matter, float>();
-            // Dictionary<Matter, float> m2v = new Dictionary<Matter, float>();
             Dictionary<Matter, cloat2> m2sv = new Dictionary<Matter, cloat2>();
+
             foreach (Matter m in Enum.GetValues(typeof(Matter)))
             {
-                // m2s.Add(m, 0.5f);
-                // m2v.Add(m, 1f);
                 m2sv.Add(m, new cloat2(rand(), rand()));
             }
-
-            // PM2State.Add(p, m2s);
-            // PM2Value.Add(p, m2v);
             PM2SV.Add(p, m2sv);
         }
 
-        // PQRrM2State = new Dictionary<Person, Dictionary<Person, Dictionary<Person, Dictionary<Relation, float>>>>();
-        // PQRrM2Value = new Dictionary<Person, Dictionary<Person, Dictionary<Person, Dictionary<Relation, float>>>>();
         PQRrM2SV = new Dictionary<Person, Dictionary<Person, Dictionary<Person, Dictionary<Relation, cloat2>>>>();
         foreach (Person p in RealSociety)
         {
-            // Dictionary<Person, Dictionary<Person, Dictionary<Relation, float>>> qRrM2State = new Dictionary<Person, Dictionary<Person, Dictionary<Relation, float>>>();
-            // Dictionary<Person, Dictionary<Person, Dictionary<Relation, float>>> qRrM2Value = new Dictionary<Person, Dictionary<Person, Dictionary<Relation, float>>>();
             Dictionary<Person, Dictionary<Person, Dictionary<Relation, cloat2>>> qRrM2SV = new Dictionary<Person, Dictionary<Person, Dictionary<Relation, cloat2>>>();
 
             foreach (Person q in RealSociety)
             {
                 Person psImageOfQ = PsImageOfQs[p][q];
-                // Dictionary<Person, Dictionary<Relation, float>> rrM2State = new Dictionary<Person, Dictionary<Relation, float>>();
-                // Dictionary<Person, Dictionary<Relation, float>> rrM2Value = new Dictionary<Person, Dictionary<Relation, float>>();
+
                 Dictionary<Person, Dictionary<Relation, cloat2>> rrM2SV = new Dictionary<Person, Dictionary<Relation, cloat2>>();
 
                 foreach (Person r in RealSociety)
                 {
                     Person psImageOfR = PsImageOfQs[p][r];
-                    // Dictionary<Relation, float> rM2State = new Dictionary<Relation, float>();
-                    // Dictionary<Relation, float> rM2Value = new Dictionary<Relation, float>();
+
                     Dictionary<Relation, cloat2> rM2SV = new Dictionary<Relation, cloat2>();
 
                     foreach (Relation rm in Enum.GetValues(typeof(Relation)))
                     {
-                        // rM2State.Add(rm, 0.5f);
-                        // rM2Value.Add(rm, 1f);
                         rM2SV.Add(rm, new cloat2(rand(), rand()));
                     }
-
-                    // rrM2State.Add(r, rM2State);
-                    // rrM2Value.Add(r, rM2State);
                     rrM2SV.Add(r, rM2SV);
                 }
-
-                // qRrM2State.Add(psImageOfQ, rrM2State);
-                // qRrM2Value.Add(psImageOfQ, rrM2State);
                 qRrM2SV.Add(psImageOfQ, rrM2SV);
             }
-
-            // PQRrM2State.Add(p, qRrM2State);
-            // PQRrM2Value.Add(p, qRrM2State);
             PQRrM2SV.Add(p, qRrM2SV);
+        }
+
+        PM2State = new Dictionary<Person, Dictionary<Matter, cloat>>();
+        PM2Value = new Dictionary<Person, Dictionary<Matter, cloat>>();
+        PsStateQsValue = new Dictionary<Person, Dictionary<Person, Dictionary<Matter, cloat2>>>();
+        foreach (Person p in RealAndImagesSociety)
+        {
+            var M2State_p = DictExt.SplitDictionary<Matter>(PM2SV[p], true);
+            PM2State.Add(p, M2State_p);
+
+            var M2Value_p = DictExt.SplitDictionary<Matter>(PM2SV[p], false);
+            PM2Value.Add(p, M2Value_p);
+
+            Dictionary<Person, Dictionary<Matter, cloat2>> fixedPsStateQsValue = new Dictionary<Person, Dictionary<Matter, cloat2>>();
+            foreach (Person q in RealAndImagesSociety)
+            {
+                var M2Value_q = DictExt.SplitDictionary<Matter>(PM2SV[q], false);
+                fixedPsStateQsValue.Add(q, DictExt.MergeDictionary<Matter>(M2State_p, M2Value_q));
+            }
+            PsStateQsValue.Add(p, fixedPsStateQsValue);
         }
     }
     #endregion

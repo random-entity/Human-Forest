@@ -100,7 +100,7 @@ public class SVDisplay : MonoBehaviour // SVDisplay.SVListëŠ” SVDisplayManagerì—
 
         foreach (cloat2 sv in SVList)
         {
-            sum += sv.y;
+            sum += sv.y.f;
         }
 
         if (sum <= 0)
@@ -112,7 +112,7 @@ public class SVDisplay : MonoBehaviour // SVDisplay.SVListëŠ” SVDisplayManagerì—
         {
             for (int i = 0; i < count; i++)
             {
-                SVList[i].y /= sum;
+                SVList[i].y.f /= sum;
             }
         }
     }
@@ -125,8 +125,8 @@ public class SVDisplay : MonoBehaviour // SVDisplay.SVListëŠ” SVDisplayManagerì—
 
         for (int i = 0; i < count; i++)
         {
-            NormXYWHList.Add((x, 0f, SVList[i].y, SVList[i].x));
-            x += SVList[i].y;
+            NormXYWHList.Add((x, 0f, SVList[i].y.f, SVList[i].x.f));
+            x += SVList[i].y.f;
         }
     }
 
@@ -159,7 +159,7 @@ public class SVDisplay : MonoBehaviour // SVDisplay.SVListëŠ” SVDisplayManagerì—
         float m = 0f;
         for (int i = 0; i < count; i++)
         {
-            m += SVList[i].y * SVList[i].x;
+            m += SVList[i].y.f * SVList[i].x.f;
         }
         return m;
     }

@@ -20,7 +20,7 @@ public class DebugManager : MonoBehaviour
             {
                 foreach (Matter m in Enum.GetValues(typeof(Matter)))
                 {
-                    pm2sv[p][m].addClamp(UnityEngine.Random.Range(-0.15f, 0.15f), UnityEngine.Random.Range(-0.5f, 0.5f));
+                    pm2sv[p][m].addClamp(UnityEngine.Random.Range(-0.01f, 0.01f), UnityEngine.Random.Range(-0.01f, 0.01f));
                 }
             }
 
