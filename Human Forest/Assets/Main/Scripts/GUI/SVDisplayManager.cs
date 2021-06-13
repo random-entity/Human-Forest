@@ -84,8 +84,9 @@ public class SVDisplayManager : MonoSingleton<SVDisplayManager>
         }
     }
 
-    public void OnUpdateUEvalTypeOrImageHolder()
+    public void UpdateUEvalTypeOrImageHolder()
     {
+        Debug.Log("sVDisplayManager.UpdateUEvalTypeOrImageHolder");
         SetSVDisplayGroup_U_pActiveByImageHolder(ImageHolderCurrent);
 
         switch (UEvalTypeCurrent)
@@ -106,7 +107,7 @@ public class SVDisplayManager : MonoSingleton<SVDisplayManager>
                 break;
         }
 
-        EventManager.InvokeOnUpdateSVListRef(); // SVList들에게 무슨 변화가 생기면 꼭 불러줍시다.
+        EventManager.InvokeOnUpdateSV(); // SVList들에게 무슨 변화가 생기면 꼭 불러줍시다.
     }
 
     // ImageHolder = ~~~ 나 UEvalTypeCurrent = ~~~ 같이 직접 assign하지 말고 Update뭐시기 메소드를 이용하세요.
@@ -129,11 +130,12 @@ public class SVDisplayManager : MonoSingleton<SVDisplayManager>
             }
         }
 
-        OnUpdateUEvalTypeOrImageHolder();
+        UpdateUEvalTypeOrImageHolder();
     }
 
     public void UpdateImageHolder(Person newImageHolder)
     {
+        Debug.Log("sVDisplayManager.UpdateImageHolder");
         if (newImageHolder.IsGod)
         {
             ImageHolderCurrent = ImageHolderWhenGod;
@@ -146,66 +148,67 @@ public class SVDisplayManager : MonoSingleton<SVDisplayManager>
             UEvalTypeCurrent = UEvalTypeWhenImageHolderRealPerson;
         }
 
-        OnUpdateUEvalTypeOrImageHolder();
+        UpdateUEvalTypeOrImageHolder();
     }
     #endregion
 
     #region T(c)
-    // public Dictionary<EvaluationTypes.TotalUtility, SVDisplay> SVDisplayGroup_T_C;
-    public Dictionary<Person, Dictionary<EvaluationTypes.Utility, Dictionary<EvaluationTypes.TotalUtility, SVDisplay>>> SVDisplayGroup_T_C; // RealPerson imageHolder(=evaluator) => UEvalType UType => CEvalType CType => cloat t... P2U2C2SVD
+    public Dictionary<EvaluationTypes.TotalUtility, SVDisplay> SVDisplayGroup_T_C;
     public Transform Band_T_C_center;
+    public Person T_Evaluator;
 
     private void InitializeSVDisplayGroup_T_C()
     {
-        // SVDisplayGroup_T_C = new Dictionary<EvaluationTypes.TotalUtility, SVDisplay>();
-        SVDisplayGroup_T_C = new Dictionary<Person, Dictionary<EvaluationTypes.Utility, Dictionary<EvaluationTypes.TotalUtility, SVDisplay>>>();
+        SVDisplayGroup_T_C = new Dictionary<EvaluationTypes.TotalUtility, SVDisplay>();
 
-        foreach (Person p in hf.RealSociety)
+        foreach (EvaluationTypes.TotalUtility c in Enum.GetValues(typeof(EvaluationTypes.TotalUtility)))
         {
-            foreach (EvaluationTypes.Utility U in Enum.GetValues(typeof(EvaluationTypes.Utility)))
-            {
-                foreach (EvaluationTypes.TotalUtility T in Enum.GetValues(typeof(EvaluationTypes.TotalUtility)))
-                {
+            Transform svd_T_C_Transform = Instantiate(SVDisplayPrefab);
+            svd_T_C_Transform.gameObject.name = "SVDisp_T_c(" + c.ToString() + ")";
 
-                }
-            }
+            float normPos = (int)c - 0.5f * (Enum.GetNames(typeof(EvaluationTypes.TotalUtility)).Length - 1);
+            svd_T_C_Transform.position = Band_T_C_center.position + Vector3.right * (SVDisplayIntervalX * normPos);
+            svd_T_C_Transform.SetParent(Band_T_C_center);
+            svd_T_C_Transform.localPosition += new Vector3(0f, 0f, -0.5f);
+
+            SVDisplayGroup_T_C.Add(c, svd_T_C_Transform.GetComponent<SVDisplay>());
         }
 
-
-        // foreach (EvaluationTypes.TotalUtility c in Enum.GetValues(typeof(EvaluationTypes.TotalUtility)))
-        // {
-        //     Transform svd_T_C_Transform = Instantiate(SVDisplayPrefab);
-        //     svd_T_C_Transform.gameObject.name = "SVDisp_T_c(" + c.ToString() + ")";
-
-        //     float normPos = (int)c - 0.5f * (Enum.GetNames(typeof(EvaluationTypes.TotalUtility)).Length - 1);
-        //     svd_T_C_Transform.position = Band_T_C_center.position + Vector3.right * (SVDisplayIntervalX * normPos);
-        //     svd_T_C_Transform.SetParent(Band_T_C_center);
-        //     svd_T_C_Transform.localPosition += new Vector3(0f, 0f, -0.5f);
-
-        //     SVDisplayGroup_T_C.Add(c, svd_T_C_Transform.GetComponent<SVDisplay>());
-        // }
-
-
+        UpdateSVDisplayGroup_T_C();
     }
 
+    public void UpdateSVDisplayGroup_T_C()
+    {
+        Debug.Log("sVDisplayManager.UpdateSVDisplayGroup_T_C");
+        foreach (EvaluationTypes.TotalUtility c in Enum.GetValues(typeof(EvaluationTypes.TotalUtility)))
+        {
+            var svd = SVDisplayGroup_T_C[c];
 
-    // public void SetSVDisplayGroup_T_CRefToPM2SV(Dictionary<EvaluationTypes.TotalUtility, Dictionary<Person, float>> c2pu)
-    // {
-    //     foreach (EvaluationTypes.TotalUtility c in Enum.GetValues(typeof(EvaluationTypes.TotalUtility)))
-    //     {
-    //         SVDisplay svd = SVDisplayGroup_T_C[c];
+            List<cloat2> p2uc = new List<cloat2>();
 
-    //         List<cloat2> cu = new List<cloat2>();
+            if (ImageHolderCurrent.IsReal)
+            {
+                foreach (Person q in hf.RealSociety)
+                {
+                    var CFunction = CFunctionPresets.GetCPreset[c];
 
-    //         foreach (Matter m in Enum.GetValues(typeof(Matter)))
-    //         {
-    //             sv.Add(p2sv[p][m]);
-    //         }
-    //         svd.SVList = sv;
-    //     }
-    // }
+                    float U_imageQ = hf.Utility(UEvalTypeCurrent, ImageHolderCurrent, q); // hf.Utility 함수 안에서 q를 p's image of q로 만들어서 계산한다. argument로 넣는 것은 RealPerson.
 
+                    p2uc.Add(new cloat2(U_imageQ, CFunction[hf.PsImageOfQs[ImageHolderCurrent][q]].f));
+                }
 
+            }
+            else
+            {
+                foreach (Person p in hf.RealSociety)
+                {
+                    p2uc.Add(new cloat2(hf.Utility(p), CFunctionPresets.GetCPreset[EvaluationTypes.TotalUtility.Equalitarian][p].f));
+                }
+            }
+
+            svd.SVList = p2uc;
+        }
+    }
 
     #endregion
 
@@ -232,11 +235,20 @@ public class SVDisplayManager : MonoSingleton<SVDisplayManager>
     {
         foreach (SVDisplay svd in SVDisplayGroup_U_p.Values)
         {
-            svd.BorderBottomLeft.position = svd.transform.position - new Vector3(0.5f * SVDisplayWidth, 0.5f * SVDisplayWidth, 0f);
-            svd.BorderTopRight.position = svd.transform.position + new Vector3(0.5f * SVDisplayWidth, 0.5f * SVDisplayWidth, 0f);
+            UpdateSVDisplaySize(svd);
+        }
+        foreach (SVDisplay svd in SVDisplayGroup_T_C.Values)
+        {
+            UpdateSVDisplaySize(svd);
         }
 
         // SVDisplayGroup_T_C 등 다른 그룹(Band)에 있는 SVDisplay들도 해줘야... 
+    }
+
+    public void UpdateSVDisplaySize(SVDisplay svd)
+    {
+        svd.BorderBottomLeft.position = svd.transform.position - new Vector3(0.5f * SVDisplayWidth, 0.5f * SVDisplayWidth, 0f);
+        svd.BorderTopRight.position = svd.transform.position + new Vector3(0.5f * SVDisplayWidth, 0.5f * SVDisplayWidth, 0f);
     }
     #endregion
 

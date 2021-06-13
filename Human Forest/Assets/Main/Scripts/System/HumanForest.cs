@@ -55,7 +55,7 @@ public class HumanForest : MonoSingleton<HumanForest>
     public Dictionary<Person, Dictionary<Person, Dictionary<Person, Dictionary<Relation, cloat2>>>> PQRrM2SV; // PQRrM2S[p][q][r][rm] = p.Image(q)가 p.Image(r)에게 갖는 rm => sv.
     public Dictionary<Person, Dictionary<Person, cloat>> PQ2C; // RealPerson Evaluator p => (ImagePerson p.Image(q) => float consideration). p의 c 함수. // 나중에 U와 연계해서 계산하게 편하게 Q는 P의 image로 한정시키자.
 
-    Dictionary<Person, Dictionary<EvaluationTypes.Utility, Dictionary<EvaluationTypes.TotalUtility, cloat>>> P2U2C2T; // RealPerson imageHolder(=evaluator) => UEvalType UType => CEvalType CType => cloat t... P2U2C2T
+    // Dictionary<Person, Dictionary<EvaluationTypes.Utility, Dictionary<EvaluationTypes.TotalUtility, cloat>>> P2U2C2T; // RealPerson imageHolder(=evaluator) => UEvalType UType => CEvalType CType => cloat t... P2U2C2T
 
     #region PsImageOfQs에 Dependent
     public Dictionary<Person, List<Person>> P2PsImageSoc;
@@ -131,10 +131,10 @@ public class HumanForest : MonoSingleton<HumanForest>
         return u;
     }
 
-    public float Utility(Person evaluator, Person target, bool isConsiderateOfTargetsValues) // RealPerson evaluator의 이미지 속 ImagePerson image[target]의 Utility // p가 q의 Utility를 Image(q)의 가치관에 따라 계산 : true
+    public float Utility(Person evaluator_real, Person target_real, bool isConsiderateOfTargetsValues) // RealPerson evaluator의 이미지 속 ImagePerson image[target]의 Utility // p가 q의 Utility를 Image(q)의 가치관에 따라 계산 : true
     // p가 q의 Utility를 p 자신의 가치관에 따라 계산 : false
     {
-        Person image_target = PsImageOfQs[evaluator][target];
+        Person image_target = PsImageOfQs[evaluator_real][target_real];
 
         if (isConsiderateOfTargetsValues)
         {
@@ -142,7 +142,7 @@ public class HumanForest : MonoSingleton<HumanForest>
         }
         else
         {
-            return Utility(PsStateQsValue[image_target][evaluator]);
+            return Utility(PsStateQsValue[image_target][evaluator_real]);
         }
     }
 

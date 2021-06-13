@@ -216,7 +216,7 @@ GameObject:
   - component: {fileID: 8315080173735098901}
   - component: {fileID: 8315080173735098903}
   m_Layer: 7
-  m_Name: SVDisplay_U_p
+  m_Name: SVDisplay
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -265,6 +265,11 @@ MonoBehaviour:
   - {r: 0, g: 0.9556165, b: 1, a: 1}
   - {r: 0, g: 0.6293888, b: 1, a: 1}
   - {r: 0.59720945, g: 0, b: 1, a: 1}
+  - {r: 1, g: 0, b: 0.93226576, a: 1}
+  - {r: 1, g: 0, b: 0.21318102, a: 1}
+  - {r: 1, g: 0.7821765, b: 0, a: 1}
+  - {r: 0.7434745, g: 1, b: 0, a: 1}
+  - {r: 0, g: 1, b: 0.9023998, a: 1}
 --- !u!1 &9068589331390349556
 GameObject:
   m_ObjectHideFlags: 0

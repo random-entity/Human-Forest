@@ -19,6 +19,7 @@ public class ClickableGUI_U_p : MonoBehaviour, IClickableGUI
 
     public void OnClicked()
     {
+        Debug.Log("ClickableGUI_U_p.OnClicked");
         if (TargetImageHolder != null)
         {
             EventManager.InvokeOnGUI_U_p_Click(TargetImageHolder);
