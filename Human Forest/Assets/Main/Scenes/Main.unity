@@ -1331,7 +1331,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1132025454
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1836,6 +1836,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SVDisplayPrefab: {fileID: 8315080173735098901, guid: 494f0be7622fc8e41b5b81aaf81bd1bd, type: 3}
+  SVDisplayIntervalX: 1.5
   Band_U_p_center: {fileID: 593971264}
   Band_T_C_center: {fileID: 2087386362}
   Text_ImageHolder: {fileID: 1837526538}
