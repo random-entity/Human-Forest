@@ -66,6 +66,8 @@ public class HumanForest : MonoSingleton<HumanForest>
 
     // p의 s와 q의 sigma를 믹스매치
     public Dictionary<Person, Dictionary<Person, Dictionary<Matter, cloat2>>> PsStateQsValue;
+    // p의 sigma와 q의 s를 믹스매치 (물론 cloat2 는 x = q.state, y = p.value 순)
+    public Dictionary<Person, Dictionary<Person, Dictionary<Matter, cloat2>>> QsStatePsValue;
 
     //// PQRrM2SV의 split version
     // public Dictionary<Person, Dictionary<Person, Dictionary<Person, Dictionary<Relation, cloat>>>> PQRrM2State;
@@ -323,6 +325,7 @@ public class HumanForest : MonoSingleton<HumanForest>
         PM2State = new Dictionary<Person, Dictionary<Matter, cloat>>();
         PM2Value = new Dictionary<Person, Dictionary<Matter, cloat>>();
         PsStateQsValue = new Dictionary<Person, Dictionary<Person, Dictionary<Matter, cloat2>>>();
+        QsStatePsValue = new Dictionary<Person, Dictionary<Person, Dictionary<Matter, cloat2>>>();
         foreach (Person p in RealAndImagesSociety)
         {
             var M2State_p = DictExt.SplitDictionary<Matter>(PM2SV[p], true);
@@ -332,12 +335,20 @@ public class HumanForest : MonoSingleton<HumanForest>
             PM2Value.Add(p, M2Value_p);
 
             Dictionary<Person, Dictionary<Matter, cloat2>> fixedPsStateQsValue = new Dictionary<Person, Dictionary<Matter, cloat2>>();
+
+            Dictionary<Person, Dictionary<Matter, cloat2>> QsStatefixedPsValue = new Dictionary<Person, Dictionary<Matter, cloat2>>();
+
             foreach (Person q in RealAndImagesSociety)
             {
                 var M2Value_q = DictExt.SplitDictionary<Matter>(PM2SV[q], false);
                 fixedPsStateQsValue.Add(q, DictExt.MergeDictionary<Matter>(M2State_p, M2Value_q));
+
+                var M2State_q = DictExt.SplitDictionary<Matter>(PM2SV[q], true);
+                QsStatefixedPsValue.Add(q, DictExt.MergeDictionary<Matter>(M2State_q, M2Value_p));
             }
+
             PsStateQsValue.Add(p, fixedPsStateQsValue);
+            QsStatePsValue.Add(p, QsStatefixedPsValue);
         }
         #endregion
     }

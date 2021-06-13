@@ -60,15 +60,17 @@ public class SVDisplay : MonoBehaviour // SVDisplay.SVList는 SVDisplayManager�
     private void OnEnable()
     {
         EventManager.OnUpdatePM2SV += OnUpdateSVList;
+        EventManager.OnUpdateSVListRef += OnUpdateSVList;
     }
     private void OnDisable()
     {
         EventManager.OnUpdatePM2SV -= OnUpdateSVList;
+        EventManager.OnUpdateSVListRef -= OnUpdateSVList;
     }
     #endregion
 
     #region OnUpdateSVList
-    private void OnUpdateSVList()
+    private void OnUpdateSVList() // 레퍼런스 타입 cloat로 뿌리가 이어져있다고 하더라도, NormXYWHList를 상시 업데이트하고 있지 않기 때문에 불러줘야 합니다.
     {
         UpdateSVListCount();
         NormalizeValues();

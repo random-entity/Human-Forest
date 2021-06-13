@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -16,7 +17,7 @@ public static class Extensions
 
 public static class DictExt
 {
-    public static Dictionary<T, cloat> SplitDictionary<T>(Dictionary<T, cloat2> original, bool xTrueYFalse)
+    public static Dictionary<T, cloat> SplitDictionary<T>(Dictionary<T, cloat2> original, bool xTrueYFalse) // T는 Enum이어야 합니다.
     {
         Dictionary<T, cloat> split = new Dictionary<T, cloat>();
 
@@ -43,6 +44,8 @@ public static class DictExt
         foreach (T key in s.Keys)
         {
             cloat2 sv = new cloat2(s[key], sigma[key]);
+
+            merged.Add(key, sv);
         }
 
         return merged;

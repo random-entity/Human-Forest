@@ -16,7 +16,7 @@ public class DebugManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.A))
         {
             var pm2sv = hf.PM2SV;
-            foreach (Person p in hf.RealSociety)
+            foreach (Person p in hf.RealAndImagesSociety)
             {
                 foreach (Matter m in Enum.GetValues(typeof(Matter)))
                 {

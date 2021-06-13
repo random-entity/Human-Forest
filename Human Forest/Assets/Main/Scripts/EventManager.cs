@@ -5,9 +5,15 @@ public delegate void OnUpdate();
 public class EventManager : MonoBehaviour
 {
     public static event OnUpdate OnUpdatePM2SV;
+    public static event OnUpdate OnUpdateSVListRef;
 
-    public static void InvokeOnUpdatePM2SV() // 이 함수를 불러주신다면, OnUpdatePM2SV를 listen하고 있는 subscriber class님들이 subscribe할 당시에 [공지 받았을 때 자기 class 안에서 부르기로 한 메소드들]을 전부 불러드리겠습니다.
+    public static void InvokeOnUpdatePM2SV()
     {
-        OnUpdatePM2SV?.Invoke();
+        OnUpdatePM2SV();
+    }
+
+    public static void InvokeOnUpdateSVListRef()
+    {
+        OnUpdateSVListRef?.Invoke();
     }
 }
