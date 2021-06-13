@@ -17,6 +17,17 @@ public class SVBoardCamera : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
+            var ray = gUICamera.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+            if (Physics.Raycast(ray, out hit))
+            {
+                var selection = hit.transform.gameObject.GetComponent<IClickableGUI>();
+                if (selection != null)
+                {
+                    selection.OnClicked();
+                }
+            }
+
             touchStart = gUICamera.ScreenToWorldPoint(Input.mousePosition);
         }
         if (Input.GetMouseButton(0))
@@ -26,6 +37,7 @@ public class SVBoardCamera : MonoBehaviour
         }
 
         Zoom(Input.GetAxis("Mouse ScrollWheel") * zoomSensitivity);
+
     }
 
     private void Zoom(float increment)
