@@ -9,7 +9,7 @@ public class SVDisplayManager : MonoSingleton<SVDisplayManager>
 
     [SerializeField] private Transform SVDisplayPrefab;
     private float SVDisplayWidth = 1f;
-    private float SVDisplayIntervalX = 1.5f;
+    public float SVDisplayIntervalX = 1.5f;
 
     #region U(p)
     public Dictionary<Person, SVDisplay> SVDisplayGroup_U_p; // RealOrImagePerson p => Quad for displaying U(p)
@@ -35,6 +35,7 @@ public class SVDisplayManager : MonoSingleton<SVDisplayManager>
             float normPos = imageHolderIndex - 0.5f * (hf.InitialPersonCount - 1);
             svd_U_p_Transform.position = Band_U_p_center.position + Vector3.right * (SVDisplayIntervalX * normPos);
             svd_U_p_Transform.SetParent(Band_U_p_center);
+            svd_U_p_Transform.localPosition += new Vector3(0f, 0f, -0.5f);
 
             svd_U_p_Transform.gameObject.SetActive(p.IsReal);
 

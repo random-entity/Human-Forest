@@ -21,8 +21,6 @@ public class ClickableGUI_U_p : MonoBehaviour, IClickableGUI
     {
         if (TargetImageHolder != null)
         {
-            Debug.Log("Button clicked!" + TargetImageHolder.gameObject.name);
-
             EventManager.InvokeOnGUI_U_p_Click(TargetImageHolder);
         }
         else

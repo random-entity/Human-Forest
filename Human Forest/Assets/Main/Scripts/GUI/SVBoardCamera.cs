@@ -37,7 +37,6 @@ public class SVBoardCamera : MonoBehaviour
         }
 
         Zoom(Input.GetAxis("Mouse ScrollWheel") * zoomSensitivity);
-
     }
 
     private void Zoom(float increment)

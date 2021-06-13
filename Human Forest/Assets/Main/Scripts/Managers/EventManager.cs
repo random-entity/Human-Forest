@@ -21,11 +21,7 @@ public class EventManager : MonoBehaviour
 
     public static void InvokeOnGUI_U_p_Click(Person clickedPerson)
     {
-        Debug.Log(OnGUI_U_p_Click.GetInvocationList().Length);
-
         if (OnGUI_U_p_Click != null)
             OnGUI_U_p_Click(clickedPerson);
-
-        // InvokeOnUpdateSVListRef();
     }
 }
