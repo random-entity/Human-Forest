@@ -3,9 +3,11 @@ using System.Linq;
 
 public enum Matter
 {
-    Test1, Test2, Test3, Test4,
     EmotionValence,
+    Health,
     Reputation,
+    SenseOfLiberty,
+
     #region landfill
     //    Test1, Test2,
     // 정서
@@ -52,6 +54,21 @@ public enum Relation
     // AestheticValue, // 저 사람의 미적 가치. 
     // => 요게 PersonalMatter.Reputation으로. 
     #endregion
+}
+
+public enum UEvalType
+{
+    Omniscient,
+    Image_Considerate,
+    Image_NonConsiderate,
+    EmotionalImpulse,
+}
+
+public enum TEvalType
+{
+    Equalitarian,
+
+    Selfish,
 }
 
 public class MatterManager : MonoSingleton<MatterManager>

@@ -74,7 +74,7 @@ public class HumanForest : MonoSingleton<HumanForest>
     #region Utility 계산
     // SSigma2Float U = (M2Float s) => (M2Float sigma) => (float u).
 
-    // 정의 대로 계산: s와 sigma가 분리되어 있을 때.
+    // 정의 대로 계산: s와 sigma가 분리되어 있을 때를 포함한 가장 일반적인 식.
     public float Utility(Dictionary<Matter, float> s, Dictionary<Matter, float> sigma)
     {
         float u = 0f;
@@ -88,7 +88,7 @@ public class HumanForest : MonoSingleton<HumanForest>
         return u;
     }
 
-    // s와 sigma가 묶여 있을 때.
+    // s와 sigma가 한 Dictionary의 cloat2로 묶여 있을 때.
     public float Utility(Dictionary<Matter, cloat2> m2sv)
     {
         float u = 0f;
