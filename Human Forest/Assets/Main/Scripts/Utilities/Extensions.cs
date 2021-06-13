@@ -65,18 +65,6 @@ public struct PersonPair
     }
 }
 
-// [System.Serializable]
-// public struct sloat2
-// {
-//     public float x, y;
-
-//     public sloat2(float _x, float _y)
-//     {
-//         this.x = _x;
-//         this.y = _y;
-//     }
-// }
-
 [System.Serializable]
 public class cloat2
 {

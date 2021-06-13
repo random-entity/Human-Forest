@@ -56,11 +56,6 @@ public class SVDisplay : MonoBehaviour // SVDisplay.SVList는 SVDisplayManager�
         OnUpdateSVList();
     }
 
-    // private void Update()
-    // {
-    //     OnUpdateSVList(); //는 performance를 위해 EventManager.OnUpdatePM2SV가 일어났을 때만 부릅시다.
-    // }
-
     #region Event Subscription
     private void OnEnable()
     {

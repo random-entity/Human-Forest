@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -16,7 +17,7 @@ public class HumanForest : MonoSingleton<HumanForest>
 
     #region Utilities
     // 히힝
-    private float rand()
+    private float randFloat()
     {
         return UnityEngine.Random.Range(0.1f, 0.9f);
     }
@@ -50,18 +51,25 @@ public class HumanForest : MonoSingleton<HumanForest>
     ** RealPerson p가 RealPerson q에게 갖는 RelationalMatter 그런 건 허용하지 않는다는 이야기.
     ** 그런 것을 포함한 모든 것은 RealPerson p의 ImageSociety 속에서만 일어나게끔 하는 것이 덜 복잡하다.
     */
-    public Dictionary<Person, Dictionary<Matter, cloat2>> PM2SV;
-    public Dictionary<Person, Dictionary<Person, Dictionary<Person, Dictionary<Relation, cloat2>>>> PQRrM2SV;
-    public Dictionary<Person, Dictionary<Person, cloat>> PQ2C; // RealPerson p => (RealPerson q => float consideration). p의 c 함수.
+    public Dictionary<Person, Dictionary<Matter, cloat2>> PM2SV; // RealOrImagePerson p => M2Cloat2 sv. p의 ssigma 함수.
+    public Dictionary<Person, Dictionary<Person, Dictionary<Person, Dictionary<Relation, cloat2>>>> PQRrM2SV; // PQRrM2S[p][q][r][rm] = p.Image(q)가 p.Image(r)에게 갖는 rm => sv.
+    public Dictionary<Person, Dictionary<Person, cloat>> PQ2C; // RealPerson Evaluator p => (ImagePerson p.Image(q) => float consideration). p의 c 함수. // 나중에 U와 연계해서 계산하게 편하게 Q는 P의 image로 한정시키자.
 
-    #region cloat Dictionaries Dependent on cloat2 Dictionaries
-    public Dictionary<Person, Dictionary<Matter, cloat>> PM2State; // RealOrImagePerson p => M2Float (Matter m => float state). p의 s 함수.
-    public Dictionary<Person, Dictionary<Matter, cloat>> PM2Value; // RealOrImagePerson p => M2Float (Matter m => float state). p의 sigma 함수.
+    #region PsImageOfQs에 Dependent
+    public Dictionary<Person, List<Person>> P2PsImageSoc;
+    #endregion
 
+    #region cloat Dictionaries Dependent on cloat2 Dictionaries for 편의
+    // PM2SV의 split version
+    public Dictionary<Person, Dictionary<Matter, cloat>> PM2State;
+    public Dictionary<Person, Dictionary<Matter, cloat>> PM2Value;
+
+    // p의 s와 q의 sigma를 믹스매치
     public Dictionary<Person, Dictionary<Person, Dictionary<Matter, cloat2>>> PsStateQsValue;
 
-    // public Dictionary<Person, Dictionary<Person, Dictionary<Person, Dictionary<Relation, cloat>>>> PQRrM2State; // PQRrM2S[p][q][r][rm] = p.Image(q)가 p.Image(r)에게 갖는 rm의 state.
-    // public Dictionary<Person, Dictionary<Person, Dictionary<Person, Dictionary<Relation, cloat>>>> PQRrM2Value; // PQRrM2S[p][q][r][rm] = p.Image(q)가 p.Image(r)에게 갖는 rm의 value.
+    //// PQRrM2SV의 split version
+    // public Dictionary<Person, Dictionary<Person, Dictionary<Person, Dictionary<Relation, cloat>>>> PQRrM2State;
+    // public Dictionary<Person, Dictionary<Person, Dictionary<Person, Dictionary<Relation, cloat>>>> PQRrM2Value;
     #endregion
     #endregion
 
@@ -71,6 +79,25 @@ public class HumanForest : MonoSingleton<HumanForest>
 
     #region Utility 계산
     // SSigma2Float U = (M2Float s) => (M2Float sigma) => (float u).
+
+    public float Utility(EvaluationTypes.Utility evalType, Person evaluator, Person target)
+    {
+        switch (evalType)
+        {
+            case EvaluationTypes.Utility.Omniscient: // 이 경우 evaluator는 의미 없다.
+                return Utility(target);
+
+            case EvaluationTypes.Utility.Image_OthersValuesConsiderate:
+                return Utility(evaluator, target, true);
+
+            case EvaluationTypes.Utility.Image_NonOthersValuesConsiderate:
+                return Utility(evaluator, target, false);
+
+            default:
+                Debug.LogWarning("[Utility] unknown Evaluation Type");
+                return float.NaN;
+        }
+    }
 
     // 정의 대로 계산: s와 sigma가 분리되어 있을 때를 포함한 가장 일반적인 식.
     public float Utility(Dictionary<Matter, cloat> s, Dictionary<Matter, cloat> sigma)
@@ -100,21 +127,18 @@ public class HumanForest : MonoSingleton<HumanForest>
         return u;
     }
 
-    // Utilities.SplitDictionary를 활용해주세요.
-
-    // p가 q의 Utility를 Image(q)의 가치관에 따라 계산 : true
+    public float Utility(Person evaluator, Person target, bool isConsiderateOfTargetsValues) // RealPerson evaluator의 이미지 속 ImagePerson image[target]의 Utility // p가 q의 Utility를 Image(q)의 가치관에 따라 계산 : true
     // p가 q의 Utility를 p 자신의 가치관에 따라 계산 : false
-    public float Utility(Person evaluator, Person target, bool isConsiderateOfTargetsValues) // RealPerson evaluator의 이미지 속 ImagePerson image[target]의 Utility
     {
-        Person image = PsImageOfQs[evaluator][target];
+        Person image_target = PsImageOfQs[evaluator][target];
 
         if (isConsiderateOfTargetsValues)
         {
-            return Utility(PM2SV[image]);
+            return Utility(PM2SV[image_target]);
         }
         else
         {
-            return Utility(DictExt.SplitDictionary<Matter>(PM2SV[image], true), DictExt.SplitDictionary<Matter>(PM2SV[evaluator], false));
+            return Utility(PsStateQsValue[image_target][evaluator]);
         }
     }
 
@@ -155,15 +179,15 @@ public class HumanForest : MonoSingleton<HumanForest>
     }
     #endregion
 
-    #region initialization
+    #region Initializations
     public override void Init()
     {
         #region 이름 정하기 게임
         PersonNames = getRandomNames();
         #endregion
 
+        #region RealSociety
         RealSociety = new List<Person>();
-
         for (int i = 0; i < InitialPersonCount; i++)
         {
             Person pi = Instantiate(PersonPrefab);
@@ -174,9 +198,10 @@ public class HumanForest : MonoSingleton<HumanForest>
 
             pi.SetIsRealAndImageHolder(true, pi);
         }
+        #endregion
 
+        #region PsImageOfQs, P2PsImageSoc
         PsImageOfQs = new Dictionary<Person, Dictionary<Person, Person>>();
-
         foreach (Person p in RealSociety)
         {
             Dictionary<Person, Person> PsImage = new Dictionary<Person, Person>();
@@ -220,6 +245,14 @@ public class HumanForest : MonoSingleton<HumanForest>
             }
         }
 
+        P2PsImageSoc = new Dictionary<Person, List<Person>>(); // Dependent on psImageOfQ
+        foreach (Person p in RealSociety)
+        {
+            P2PsImageSoc.Add(p, PsImageOfQs[p].Values.ToList<Person>());
+        }
+        #endregion
+
+        #region RealAndImagesSociety
         RealAndImagesSociety = new List<Person>();
 
         foreach (Person p in RealSociety)
@@ -229,7 +262,9 @@ public class HumanForest : MonoSingleton<HumanForest>
                 RealAndImagesSociety.Add(PsImageOfQs[p][q]);
             }
         }
+        #endregion
 
+        #region T2SV
         PM2SV = new Dictionary<Person, Dictionary<Matter, cloat2>>();
         foreach (Person p in RealAndImagesSociety)
         {
@@ -237,7 +272,7 @@ public class HumanForest : MonoSingleton<HumanForest>
 
             foreach (Matter m in Enum.GetValues(typeof(Matter)))
             {
-                m2sv.Add(m, new cloat2(rand(), rand()));
+                m2sv.Add(m, new cloat2(randFloat(), randFloat()));
             }
             PM2SV.Add(p, m2sv);
         }
@@ -261,7 +296,7 @@ public class HumanForest : MonoSingleton<HumanForest>
 
                     foreach (Relation rm in Enum.GetValues(typeof(Relation)))
                     {
-                        rM2SV.Add(rm, new cloat2(rand(), rand()));
+                        rM2SV.Add(rm, new cloat2(randFloat(), randFloat()));
                     }
                     rrM2SV.Add(r, rM2SV);
                 }
@@ -270,6 +305,21 @@ public class HumanForest : MonoSingleton<HumanForest>
             PQRrM2SV.Add(p, qRrM2SV);
         }
 
+        PQ2C = new Dictionary<Person, Dictionary<Person, cloat>>();
+        foreach (Person p in RealSociety)
+        {
+            Dictionary<Person, cloat> q2c = new Dictionary<Person, cloat>();
+            foreach (Person q in RealSociety)
+            {
+                var image_q = PsImageOfQs[p][q];
+
+                q2c.Add(image_q, new cloat(1f));
+            }
+            PQ2C.Add(p, q2c);
+        }
+        #endregion
+
+        #region Dependent fields : SV split, mixmatch 등
         PM2State = new Dictionary<Person, Dictionary<Matter, cloat>>();
         PM2Value = new Dictionary<Person, Dictionary<Matter, cloat>>();
         PsStateQsValue = new Dictionary<Person, Dictionary<Person, Dictionary<Matter, cloat2>>>();
@@ -289,6 +339,7 @@ public class HumanForest : MonoSingleton<HumanForest>
             }
             PsStateQsValue.Add(p, fixedPsStateQsValue);
         }
+        #endregion
     }
     #endregion
 }

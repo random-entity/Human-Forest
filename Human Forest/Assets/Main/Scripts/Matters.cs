@@ -1,6 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
-
 public enum Matter
 {
     EmotionValence,
@@ -54,35 +51,4 @@ public enum Relation
     // AestheticValue, // 저 사람의 미적 가치. 
     // => 요게 PersonalMatter.Reputation으로. 
     #endregion
-}
-
-public enum UEvalType
-{
-    Omniscient,
-    Image_Considerate,
-    Image_NonConsiderate,
-    EmotionalImpulse,
-}
-
-public enum TEvalType
-{
-    Equalitarian,
-
-    Selfish,
-}
-
-public class MatterManager : MonoSingleton<MatterManager>
-{
-    public Dictionary<Matter, (Relation, bool outboundTrue_inboundFalse)> InfluenceMap;
-    public Matter[] RelationDependentMatters;
-
-    public override void Init()
-    {
-        // Matter들과 Relation들 사이의 이분할일방향그래프 그리기.
-        InfluenceMap = new Dictionary<Matter, (Relation, bool outboundTrue_inboundFalse)>();
-        InfluenceMap.Add(Matter.EmotionValence, (Relation.EmotionValence, true));
-        InfluenceMap.Add(Matter.Reputation, (Relation.EmotionValence, false));
-
-        RelationDependentMatters = InfluenceMap.Keys.ToArray();
-    }
 }
