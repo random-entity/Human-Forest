@@ -151,8 +151,62 @@ public class SVDisplayManager : MonoSingleton<SVDisplayManager>
     #endregion
 
     #region T(c)
-    public Dictionary<EvaluationTypes.TotalUtility, SVDisplay> SVDisplayGroup_T_C;
+    // public Dictionary<EvaluationTypes.TotalUtility, SVDisplay> SVDisplayGroup_T_C;
+    public Dictionary<Person, Dictionary<EvaluationTypes.Utility, Dictionary<EvaluationTypes.TotalUtility, SVDisplay>>> SVDisplayGroup_T_C; // RealPerson imageHolder(=evaluator) => UEvalType UType => CEvalType CType => cloat t... P2U2C2SVD
     public Transform Band_T_C_center;
+
+    private void InitializeSVDisplayGroup_T_C()
+    {
+        // SVDisplayGroup_T_C = new Dictionary<EvaluationTypes.TotalUtility, SVDisplay>();
+        SVDisplayGroup_T_C = new Dictionary<Person, Dictionary<EvaluationTypes.Utility, Dictionary<EvaluationTypes.TotalUtility, SVDisplay>>>();
+
+        foreach (Person p in hf.RealSociety)
+        {
+            foreach (EvaluationTypes.Utility U in Enum.GetValues(typeof(EvaluationTypes.Utility)))
+            {
+                foreach (EvaluationTypes.TotalUtility T in Enum.GetValues(typeof(EvaluationTypes.TotalUtility)))
+                {
+
+                }
+            }
+        }
+
+
+        // foreach (EvaluationTypes.TotalUtility c in Enum.GetValues(typeof(EvaluationTypes.TotalUtility)))
+        // {
+        //     Transform svd_T_C_Transform = Instantiate(SVDisplayPrefab);
+        //     svd_T_C_Transform.gameObject.name = "SVDisp_T_c(" + c.ToString() + ")";
+
+        //     float normPos = (int)c - 0.5f * (Enum.GetNames(typeof(EvaluationTypes.TotalUtility)).Length - 1);
+        //     svd_T_C_Transform.position = Band_T_C_center.position + Vector3.right * (SVDisplayIntervalX * normPos);
+        //     svd_T_C_Transform.SetParent(Band_T_C_center);
+        //     svd_T_C_Transform.localPosition += new Vector3(0f, 0f, -0.5f);
+
+        //     SVDisplayGroup_T_C.Add(c, svd_T_C_Transform.GetComponent<SVDisplay>());
+        // }
+
+
+    }
+
+
+    // public void SetSVDisplayGroup_T_CRefToPM2SV(Dictionary<EvaluationTypes.TotalUtility, Dictionary<Person, float>> c2pu)
+    // {
+    //     foreach (EvaluationTypes.TotalUtility c in Enum.GetValues(typeof(EvaluationTypes.TotalUtility)))
+    //     {
+    //         SVDisplay svd = SVDisplayGroup_T_C[c];
+
+    //         List<cloat2> cu = new List<cloat2>();
+
+    //         foreach (Matter m in Enum.GetValues(typeof(Matter)))
+    //         {
+    //             sv.Add(p2sv[p][m]);
+    //         }
+    //         svd.SVList = sv;
+    //     }
+    // }
+
+
+
     #endregion
 
     public override void Init()
@@ -164,6 +218,10 @@ public class SVDisplayManager : MonoSingleton<SVDisplayManager>
         ImageHolderCurrent = God.god;
 
         InitializeSVDisplayGroup_U_p();
+
+        InitializeSVDisplayGroup_T_C();
+
+
 
         UpdateSVDisplaySize();
     }
