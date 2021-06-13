@@ -250,19 +250,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 899c2e46756782b44bb8c23db776ffb5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SVList:
-  - x: 0.25
-    y: 10
-  - x: 0.6
-    y: 20
-  - x: 0.5
-    y: 30
-  - x: 0.9
-    y: 40
+  SVList: []
   BorderBottomLeft: {fileID: 5051578974019151595}
   BorderTopRight: {fileID: 5051578972732850495}
   RectPrefab: {fileID: 8315080172422825476}
   RectParent: {fileID: 8315080173299181817}
+  RectForWeightedMean: {fileID: 0}
   Swatch:
   - {r: 1, g: 0, b: 0, a: 1}
   - {r: 1, g: 0.60045624, b: 0, a: 1}
@@ -271,3 +264,4 @@ MonoBehaviour:
   - {r: 0, g: 0.9556165, b: 1, a: 1}
   - {r: 0, g: 0.6293888, b: 1, a: 1}
   - {r: 0.59720945, g: 0, b: 1, a: 1}
+  SOSwatch: {fileID: 1, guid: c717d12fda6b13f4db043ab6d7151889, type: 2}
