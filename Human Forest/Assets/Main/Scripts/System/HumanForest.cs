@@ -52,8 +52,8 @@ public class HumanForest : MonoSingleton<HumanForest>
     ** 그런 것을 포함한 모든 것은 RealPerson p의 ImageSociety 속에서만 일어나게끔 하는 것이 덜 복잡하다.
     */
     public Dictionary<Person, Dictionary<Matter, cloat2>> PM2SV; // RealOrImagePerson p => M2Cloat2 sv. p의 ssigma 함수.
-    public Dictionary<Person, Dictionary<Person, Dictionary<Person, Dictionary<Relation, cloat2>>>> PQRrM2SV; // PQRrM2S[p][q][r][rm] = p.Image(q)가 p.Image(r)에게 갖는 rm => sv.
-    public Dictionary<Person, Dictionary<Person, cloat>> PQ2C; // RealPerson Evaluator p => (ImagePerson p.Image(q) => float consideration). p의 c 함수. // 나중에 U와 연계해서 계산하게 편하게 Q는 P의 image로 한정시키자.
+    public Dictionary<Person, Dictionary<Person, Dictionary<Person, Dictionary<Relation, cloat2>>>> PQRrM2SV; // parameter p, q, r 모두 RealPerson. PQRrM2S[p][q][r][rm] = p.Image(q)가 p.Image(r)에게 갖는 rm => sv.
+    public Dictionary<Person, Dictionary<Person, cloat>> PQ2C; // parameter p, q, r 모두 RealPerson. RealPerson Evaluator p => (ImagePerson p.Image(q) => float consideration). p의 c 함수. // 나중에 U와 연계해서 계산하게 편하게 Q는 P의 image로 한정시키자.
 
     // Dictionary<Person, Dictionary<EvaluationTypes.Utility, Dictionary<EvaluationTypes.TotalUtility, cloat>>> P2U2C2T; // RealPerson imageHolder(=evaluator) => UEvalType UType => CEvalType CType => cloat t... P2U2C2T
 
@@ -249,7 +249,7 @@ public class HumanForest : MonoSingleton<HumanForest>
             }
         }
 
-        P2PsImageSoc = new Dictionary<Person, List<Person>>(); // Dependent on psImageOfQ
+        P2PsImageSoc = new Dictionary<Person, List<Person>>(); // Dependent on PsImageOfQs
         foreach (Person p in RealSociety)
         {
             P2PsImageSoc.Add(p, PsImageOfQs[p].Values.ToList<Person>());
@@ -268,7 +268,7 @@ public class HumanForest : MonoSingleton<HumanForest>
         }
         #endregion
 
-        #region T2SV
+        #region PM2SV
         PM2SV = new Dictionary<Person, Dictionary<Matter, cloat2>>();
         foreach (Person p in RealAndImagesSociety)
         {
@@ -280,7 +280,9 @@ public class HumanForest : MonoSingleton<HumanForest>
             }
             PM2SV.Add(p, m2sv);
         }
-
+        #endregion
+        
+        #region  PQRrM2SV
         PQRrM2SV = new Dictionary<Person, Dictionary<Person, Dictionary<Person, Dictionary<Relation, cloat2>>>>();
         foreach (Person p in RealSociety)
         {
@@ -308,7 +310,9 @@ public class HumanForest : MonoSingleton<HumanForest>
             }
             PQRrM2SV.Add(p, qRrM2SV);
         }
+        #endregion
 
+        #region PQ2C
         PQ2C = new Dictionary<Person, Dictionary<Person, cloat>>();
         foreach (Person p in RealSociety)
         {

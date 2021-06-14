@@ -34,7 +34,7 @@ public class SVDisplay : MonoBehaviour // SVDisplay.SVList는 SVDisplayManager�
         fluidSystem = FluidSystem.instance;
 
         RectList = new List<Transform>();
-        for (int i = 0; i < Const.MaxSVListCount; i++)
+        for (int i = 0; i < Const.MaxSVListCount; i++) // 미리 많이(Const.MaxSVListCount 개) 생성해놓기.
         {
             Transform rect_i = Instantiate(RectPrefab, RectParent);
             rect_i.gameObject.SetActive(i < count);
@@ -53,33 +53,32 @@ public class SVDisplay : MonoBehaviour // SVDisplay.SVList는 SVDisplayManager�
 
     private void Start()
     {
-        OnUpdateSVList();
+        OnUpdateSVListHandler_UpdateNormSYWHList();
     }
 
     #region Event Subscription
     private void OnEnable()
     {
-        EventManager.OnUpdateSV += OnUpdateSVList;
+        EventManager.OnUpdateSV += OnUpdateSVListHandler_UpdateNormSYWHList;
     }
     private void OnDisable()
     {
-        EventManager.OnUpdateSV -= OnUpdateSVList;
+        EventManager.OnUpdateSV -= OnUpdateSVListHandler_UpdateNormSYWHList;
     }
     #endregion
 
     #region OnUpdateSVList (reference든 값이든) 
     // 레퍼런스 타입 cloat로 뿌리가 이어져있다고 하더라도, NormXYWHList를 상시 업데이트하고 있지 않기 때문에 불러줘야 합니다.
-    private void OnUpdateSVList()
+    private void OnUpdateSVListHandler_UpdateNormSYWHList()
     {
         Debug.Log("SVDisplay.OnUpdateSVList");
         UpdateSVListCount();
         NormalizeValues();
         UpdateXYWHList();
-        UpdateRectList();
+        UpdateRectListActiveInHierarchy();
         UpdateBorder();
         UpdateWeightedMeans();
         MatchRectListTransformToXYWH();
-        SVDisplayManager.instance.UpdateSVDisplayGroup_T_C();
     }
 
     private void UpdateSVListCount()
@@ -138,7 +137,7 @@ public class SVDisplay : MonoBehaviour // SVDisplay.SVList는 SVDisplayManager�
         MatchTransformToXYWH(RectForWeightedMean, (0f, 0f, 1f, UpdateWeightedMeans()));
     }
 
-    private void UpdateRectList()
+    private void UpdateRectListActiveInHierarchy()
     {
         for (int i = 0; i < Const.MaxSVListCount; i++)
         {

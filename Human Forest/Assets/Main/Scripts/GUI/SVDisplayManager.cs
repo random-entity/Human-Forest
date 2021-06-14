@@ -11,15 +11,18 @@ public class SVDisplayManager : MonoSingleton<SVDisplayManager>
     private float SVDisplayWidth = 1f;
     public float SVDisplayIntervalX = 1.5f;
 
+
     #region U(p)
-    public Dictionary<Person, SVDisplay> SVDisplayGroup_U_p; // RealOrImagePerson p => Quad for displaying U(p)
-    public Transform Band_U_p_center;
+
     public static EvaluationTypes.Utility UEvalTypeCurrent;
-    public static EvaluationTypes.Utility UEvalTypeWhenImageHolderRealPerson = EvaluationTypes.Utility.Image_OthersValuesConsiderate;
-    public static EvaluationTypes.Utility UEvalTypeWhenImageHolderGod = EvaluationTypes.Utility.Omniscient; // 변하지 않을 것이다.
+    public static EvaluationTypes.Utility UEvalTypeWhenImageHolderRealPerson;
+    public static EvaluationTypes.Utility UEvalTypeWhenImageHolderGod; // 변하지 않을 것이다.
     public static Person ImageHolderCurrent;
     public static Person ImageHolderWhenGod; // 변하지 않을 것이다.
     public static Person ImageHolderWhenRealPerson;
+
+    public Dictionary<Person, SVDisplay> SVDisplayGroup_U_p; // RealOrImagePerson p => Quad for displaying U(p)
+    public Transform Band_U_p_center;
 
     private void InitializeSVDisplayGroup_U_p()
     {
@@ -87,7 +90,6 @@ public class SVDisplayManager : MonoSingleton<SVDisplayManager>
     public void UpdateUEvalTypeOrImageHolder()
     {
         Debug.Log("sVDisplayManager.UpdateUEvalTypeOrImageHolder");
-        SetSVDisplayGroup_U_pActiveByImageHolder(ImageHolderCurrent);
 
         switch (UEvalTypeCurrent)
         {
@@ -106,6 +108,8 @@ public class SVDisplayManager : MonoSingleton<SVDisplayManager>
             default:
                 break;
         }
+
+        SetSVDisplayGroup_U_pActiveByImageHolder(ImageHolderCurrent);
 
         EventManager.InvokeOnUpdateSV(); // SVList들에게 무슨 변화가 생기면 꼭 불러줍시다.
     }
@@ -196,7 +200,6 @@ public class SVDisplayManager : MonoSingleton<SVDisplayManager>
 
                     p2uc.Add(new cloat2(U_imageQ, CFunction[hf.PsImageOfQs[ImageHolderCurrent][q]].f));
                 }
-
             }
             else
             {
@@ -217,35 +220,37 @@ public class SVDisplayManager : MonoSingleton<SVDisplayManager>
         hf = HumanForest.instance;
 
         ImageHolderWhenRealPerson = hf.RealSociety[0];
-        ImageHolderWhenGod = God.god;
+        ImageHolderWhenGod = God.god; // 변하지 않을 것이다.
         ImageHolderCurrent = God.god;
+
+        UEvalTypeWhenImageHolderRealPerson = EvaluationTypes.Utility.Image_OthersValuesConsiderate;
+        UEvalTypeWhenImageHolderGod = EvaluationTypes.Utility.Omniscient; // 변하지 않을 것이다.
+        UEvalTypeCurrent = EvaluationTypes.Utility.Omniscient;
 
         InitializeSVDisplayGroup_U_p();
 
         InitializeSVDisplayGroup_T_C();
 
-
-
-        UpdateSVDisplaySize();
+        UpdateAllSVDisplayBorders();
     }
 
-    #region OnUpdate SVDisplay Transform 
+    #region OnUpdate SVDisplay Border/Size/Transform 
     // SVDisplay가 갖고 있는 SVList의 Update에 의한 변화는 SVDisplay 클래스에서 처리할 것이다.
-    public void UpdateSVDisplaySize()
+    public void UpdateAllSVDisplayBorders()
     {
         foreach (SVDisplay svd in SVDisplayGroup_U_p.Values)
         {
-            UpdateSVDisplaySize(svd);
+            UpdateSVDisplayBorders(svd);
         }
         foreach (SVDisplay svd in SVDisplayGroup_T_C.Values)
         {
-            UpdateSVDisplaySize(svd);
+            UpdateSVDisplayBorders(svd);
         }
 
         // SVDisplayGroup_T_C 등 다른 그룹(Band)에 있는 SVDisplay들도 해줘야... 
     }
 
-    public void UpdateSVDisplaySize(SVDisplay svd)
+    public void UpdateSVDisplayBorders(SVDisplay svd)
     {
         svd.BorderBottomLeft.position = svd.transform.position - new Vector3(0.5f * SVDisplayWidth, 0.5f * SVDisplayWidth, 0f);
         svd.BorderTopRight.position = svd.transform.position + new Vector3(0.5f * SVDisplayWidth, 0.5f * SVDisplayWidth, 0f);
@@ -254,10 +259,13 @@ public class SVDisplayManager : MonoSingleton<SVDisplayManager>
 
     private void OnEnable()
     {
+        EventManager.OnUpdateSV += UpdateSVDisplayGroup_T_C;
         EventManager.OnGUI_U_p_Click += UpdateImageHolder;
+
     }
     private void OnDisable()
     {
+        EventManager.OnUpdateSV -= UpdateSVDisplayGroup_T_C;
         EventManager.OnGUI_U_p_Click -= UpdateImageHolder;
     }
 
@@ -284,7 +292,7 @@ public class SVDisplayManager : MonoSingleton<SVDisplayManager>
         {
             index++;
 
-            UpdateUEvalType(UEvalTypeCurrent = (EvaluationTypes.Utility)(index % 3));
+            UpdateUEvalType(UEvalTypeCurrent = (EvaluationTypes.Utility)(index % Enum.GetNames(typeof(EvaluationTypes.Utility)).Length));
         }
     }
 }
