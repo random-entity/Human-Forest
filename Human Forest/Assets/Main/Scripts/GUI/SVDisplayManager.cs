@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
@@ -13,7 +14,6 @@ public class SVDisplayManager : MonoSingleton<SVDisplayManager>
 
 
     #region U(p)
-
     public static EvaluationTypes.Utility UEvalTypeCurrent;
     public static EvaluationTypes.Utility UEvalTypeWhenImageHolderRealPerson;
     public static EvaluationTypes.Utility UEvalTypeWhenImageHolderGod; // 변하지 않을 것이다.
@@ -46,7 +46,7 @@ public class SVDisplayManager : MonoSingleton<SVDisplayManager>
             index++;
         }
 
-        SetSVDisplayGroup_U_pRefToHfPM2SV();
+        UpdateUEvalTypeOrImageHolder();
     }
 
     public void SetSVDisplayGroup_U_pRefToPM2SV(Dictionary<Person, Dictionary<Matter, cloat2>> p2sv)
@@ -111,7 +111,7 @@ public class SVDisplayManager : MonoSingleton<SVDisplayManager>
 
         SetSVDisplayGroup_U_pActiveByImageHolder(ImageHolderCurrent);
 
-        EventManager.InvokeOnUpdateSV(); // SVList들에게 무슨 변화가 생기면 꼭 불러줍시다.
+        EventManager.InvokeOnUpdateSV_U_p(); // SVList들에게 무슨 변화가 생기면 꼭 불러줍시다.
     }
 
     // ImageHolder = ~~~ 나 UEvalTypeCurrent = ~~~ 같이 직접 assign하지 말고 Update뭐시기 메소드를 이용하세요.
@@ -178,7 +178,7 @@ public class SVDisplayManager : MonoSingleton<SVDisplayManager>
             SVDisplayGroup_T_C.Add(c, svd_T_C_Transform.GetComponent<SVDisplay>());
         }
 
-        UpdateSVDisplayGroup_T_C();
+        // UpdateSVDisplayGroup_T_C();
     }
 
     public void UpdateSVDisplayGroup_T_C()
@@ -205,34 +205,34 @@ public class SVDisplayManager : MonoSingleton<SVDisplayManager>
             {
                 foreach (Person p in hf.RealSociety)
                 {
+                    Debug.Log("[SVMan] " + p.gameObject.name + "'s Utility is " + hf.Utility(p));
                     p2uc.Add(new cloat2(hf.Utility(p), CFunctionPresets.GetCPreset[EvaluationTypes.TotalUtility.Equalitarian][p].f));
                 }
             }
 
             svd.SVList = p2uc;
         }
-    }
 
+        EventManager.InvokeOnUpdateSV_T_C();
+    }
     #endregion
 
-    public override void Init()
+    #region Update SVDisplays by group
+    public void UpdateSVDisplaysXYWHInGroup_U_p()
     {
-        hf = HumanForest.instance;
-
-        ImageHolderWhenRealPerson = hf.RealSociety[0];
-        ImageHolderWhenGod = God.god; // 변하지 않을 것이다.
-        ImageHolderCurrent = God.god;
-
-        UEvalTypeWhenImageHolderRealPerson = EvaluationTypes.Utility.Image_OthersValuesConsiderate;
-        UEvalTypeWhenImageHolderGod = EvaluationTypes.Utility.Omniscient; // 변하지 않을 것이다.
-        UEvalTypeCurrent = EvaluationTypes.Utility.Omniscient;
-
-        InitializeSVDisplayGroup_U_p();
-
-        InitializeSVDisplayGroup_T_C();
-
-        UpdateAllSVDisplayBorders();
+        foreach (SVDisplay svd in SVDisplayGroup_U_p.Values)
+        {
+            svd.UpdateNormSYWHList();
+        }
     }
+    public void UpdateSVDisplaysXYWHInGroup_T_C()
+    {
+        foreach (SVDisplay svd in SVDisplayGroup_T_C.Values)
+        {
+            svd.UpdateNormSYWHList();
+        }
+    }
+    #endregion
 
     #region OnUpdate SVDisplay Border/Size/Transform 
     // SVDisplay가 갖고 있는 SVList의 Update에 의한 변화는 SVDisplay 클래스에서 처리할 것이다.
@@ -257,28 +257,47 @@ public class SVDisplayManager : MonoSingleton<SVDisplayManager>
     }
     #endregion
 
+    public override void Init()
+    {
+        hf = HumanForest.instance;
+
+        ImageHolderWhenRealPerson = hf.RealSociety[0];
+        ImageHolderWhenGod = God.god; // 변하지 않을 것이다.
+        ImageHolderCurrent = God.god;
+
+        UEvalTypeWhenImageHolderRealPerson = EvaluationTypes.Utility.Image_OthersValuesConsiderate;
+        UEvalTypeWhenImageHolderGod = EvaluationTypes.Utility.Omniscient; // 변하지 않을 것이다.
+        UEvalTypeCurrent = EvaluationTypes.Utility.Omniscient;
+
+        InitializeSVDisplayGroup_T_C();
+
+        InitializeSVDisplayGroup_U_p();
+
+        UpdateAllSVDisplayBorders();
+    }
+
     private void OnEnable()
     {
-        EventManager.OnUpdateSV += UpdateSVDisplayGroup_T_C;
+        EventManager.OnUpdateSV_U_p += UpdateSVDisplaysXYWHInGroup_U_p;
+        EventManager.OnUpdateSV_U_p += UpdateSVDisplayGroup_T_C;
+        EventManager.OnUpdateSV_T_C += UpdateSVDisplaysXYWHInGroup_T_C;
         EventManager.OnGUI_U_p_Click += UpdateImageHolder;
-
     }
     private void OnDisable()
     {
-        EventManager.OnUpdateSV -= UpdateSVDisplayGroup_T_C;
+        EventManager.OnUpdateSV_U_p -= UpdateSVDisplaysXYWHInGroup_U_p;
+        EventManager.OnUpdateSV_U_p -= UpdateSVDisplayGroup_T_C;
+        EventManager.OnUpdateSV_T_C -= UpdateSVDisplaysXYWHInGroup_T_C;
         EventManager.OnGUI_U_p_Click -= UpdateImageHolder;
     }
-
-
 
     [SerializeField] Text Text_ImageHolder;
     [SerializeField] Text Text_UEvalType;
 
-    private int index = 0;
     private void Update()
     {
-        Text_ImageHolder.text = "ImageHolder = " + ImageHolderCurrent.gameObject.name;
-        Text_UEvalType.text = "UEvalTypeCurrent = " + UEvalTypeCurrent.ToString();
+        Text_ImageHolder.text = "Evaluator = " + ImageHolderCurrent.gameObject.name;
+        Text_UEvalType.text = "Utility Evaluation Method = " + UEvalTypeCurrent.ToString();
 
         if (Input.GetKeyDown(KeyCode.C))
         {
@@ -290,9 +309,8 @@ public class SVDisplayManager : MonoSingleton<SVDisplayManager>
         }
         if (Input.GetKeyDown(KeyCode.B))
         {
-            index++;
-
-            UpdateUEvalType(UEvalTypeCurrent = (EvaluationTypes.Utility)(index % Enum.GetNames(typeof(EvaluationTypes.Utility)).Length));
+            int currentIndex = (int)UEvalTypeCurrent;
+            UpdateUEvalType(UEvalTypeCurrent = (EvaluationTypes.Utility)((currentIndex + 1) % Enum.GetNames(typeof(EvaluationTypes.Utility)).Length));
         }
     }
 }

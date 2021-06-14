@@ -5,13 +5,19 @@ public delegate void OnPersonClick(Person clickedPerson);
 
 public class EventManager : MonoBehaviour
 {
-    public static event OnUpdate OnUpdateSV;
+    public static event OnUpdate OnUpdateSV_U_p;
+    public static event OnUpdate OnUpdateSV_T_C;
     public static event OnPersonClick OnGUI_U_p_Click;
 
-    public static void InvokeOnUpdateSV()
+    public static void InvokeOnUpdateSV_U_p()
     {
         Debug.Log("EventManager.InvokeOnUpdateSV");
-        OnUpdateSV?.Invoke();
+        OnUpdateSV_U_p?.Invoke();
+    }
+
+    public static void InvokeOnUpdateSV_T_C()
+    {
+        OnUpdateSV_T_C?.Invoke();
     }
 
     public static void InvokeOnGUI_U_p_Click(Person clickedPerson)

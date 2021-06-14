@@ -47,29 +47,21 @@ public class SVDisplay : MonoBehaviour // SVDisplay.SVList는 SVDisplayManager�
             RectList.Add(rect_i);
         }
         RectForWeightedMean = Instantiate(RectPrefab, RectParent);
+        RectForWeightedMean.gameObject.name = "WeightedMean";
+        RectForWeightedMean.gameObject.SetActive(true);
+        RectForWeightedMean.position += new Vector3(0f, 0f, -1f);
 
         NormXYWHList = new List<(float, float, float, float)>();
     }
 
     private void Start()
     {
-        OnUpdateSVListHandler_UpdateNormSYWHList();
+        UpdateNormSYWHList();
     }
-
-    #region Event Subscription
-    private void OnEnable()
-    {
-        EventManager.OnUpdateSV += OnUpdateSVListHandler_UpdateNormSYWHList;
-    }
-    private void OnDisable()
-    {
-        EventManager.OnUpdateSV -= OnUpdateSVListHandler_UpdateNormSYWHList;
-    }
-    #endregion
 
     #region OnUpdateSVList (reference든 값이든) 
     // 레퍼런스 타입 cloat로 뿌리가 이어져있다고 하더라도, NormXYWHList를 상시 업데이트하고 있지 않기 때문에 불러줘야 합니다.
-    private void OnUpdateSVListHandler_UpdateNormSYWHList()
+    public void UpdateNormSYWHList()
     {
         Debug.Log("SVDisplay.OnUpdateSVList");
         UpdateSVListCount();
@@ -134,7 +126,7 @@ public class SVDisplay : MonoBehaviour // SVDisplay.SVList는 SVDisplayManager�
             MatchTransformToXYWH(RectList[i], NormXYWHList[i]);
         }
 
-        MatchTransformToXYWH(RectForWeightedMean, (0f, 0f, 1f, UpdateWeightedMeans()));
+        MatchTransformToXYWH(RectForWeightedMean, (0f, 0f, 1f, UpdateWeightedMeans()), -0.5f);
     }
 
     private void UpdateRectListActiveInHierarchy()
@@ -153,12 +145,12 @@ public class SVDisplay : MonoBehaviour // SVDisplay.SVList는 SVDisplayManager�
 
     private float UpdateWeightedMeans() //NormalizeValues를 먼저 하세요.
     {
-        float m = 0f;
+        float wm = 0f;
         for (int i = 0; i < count; i++)
         {
-            m += SVList[i].y.f * SVList[i].x.f;
+            wm += SVList[i].y.f * SVList[i].x.f;
         }
-        return m;
+        return wm;
     }
     #endregion
 
@@ -166,6 +158,10 @@ public class SVDisplay : MonoBehaviour // SVDisplay.SVList는 SVDisplayManager�
     private Vector3 XYWH2Position((float x, float y, float w, float h) xywh)
     {
         return BorderBottomLeftPosition + new Vector3(BorderWidthHeight.x * (xywh.x + 0.5f * xywh.w), BorderWidthHeight.y * (xywh.y + 0.5f * xywh.h), 0f);
+    }
+    private Vector3 XYWH2Position((float x, float y, float w, float h) xywh, float z) // RectForWeightedMean를 위한 position.z 넣어주는 오버로드
+    {
+        return BorderBottomLeftPosition + new Vector3(BorderWidthHeight.x * (xywh.x + 0.5f * xywh.w), BorderWidthHeight.y * (xywh.y + 0.5f * xywh.h), z);
     }
 
     private Vector3 XYWH2Scale((float x, float y, float w, float h) xywh)
@@ -178,5 +174,14 @@ public class SVDisplay : MonoBehaviour // SVDisplay.SVList는 SVDisplayManager�
         t.localScale = XYWH2Scale(xywh);
         t.position = XYWH2Position(xywh);
     }
+    private void MatchTransformToXYWH(Transform t, (float x, float y, float w, float h) xywh, float z) // RectForWeightedMean를 위한 position.z 넣어주는 오버로드
+    {
+        t.localScale = XYWH2Scale(xywh);
+        t.position = XYWH2Position(xywh, z);
+    }
     #endregion
+
+    // private void Update()
+    // {
+    // }
 }

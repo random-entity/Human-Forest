@@ -24,7 +24,7 @@ public class DebugManager : MonoBehaviour
                 }
             }
 
-            EventManager.InvokeOnUpdateSV();
+            EventManager.InvokeOnUpdateSV_U_p();
         }
     }
 }
